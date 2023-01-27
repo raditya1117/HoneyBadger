@@ -1,0 +1,8 @@
+credentials:
+  id: admin123
+  password: password123
+database:
+  pool: 100
+  url: postgres://user:password@host:port/database
+logging:
+  file: /var/log/web-server.log
