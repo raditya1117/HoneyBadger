@@ -1,3 +1,9 @@
+[github](https://www.geeksforgeeks.org/python/error-handling-in-fastapi/)
+[medium](https://medium.com/delivus/exception-handling-best-practices-in-python-a-fastapi-perspective-98ede2256870)
+[getorchestra](https://www.getorchestra.io/guides/fastapi-mastering-error-handling-with-examples)
+[plainenglish](https://python.plainenglish.io/effortless-exception-error-handling-in-fastapi-a-clean-and-simplified-approach-db6f6a7a497c)
+[betterstack](https://betterstack.com/community/guides/scaling-python/error-handling-fastapi/)
+
 # Error Handling in FastAPI
 The article will start by explaining how every software program can encounter errors and why it is important to handle errors in FastAPI applications. Then, we will briefly mention what we will discuss in the entire article.
 
