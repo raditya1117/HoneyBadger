@@ -1,0 +1,44 @@
+App start: uvicorn app2:app --reload --port 8080 --host 0.0.0.0
+
+----
+
+Command: curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "add", "num1":10, "num2": 10}'
+Output: {"type":"SUCCESS","output":20}
+Logs: INFO:     127.0.0.1:47488 - "POST /calculate/ HTTP/1.1" 200 OK
+----
+Command: curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/jsoum1":10, "num2": "aditya"}'
+Output: {"detail":[{"type":"int_parsing","loc":["body","num2"],"msg":"Input should be a valid integer, unable to parse string as an integer","input":"aditya"}]}
+Logs: INFO:     127.0.0.1:55650 - "POST /calculate/ HTTP/1.1" 422 Unprocessable Entity
+----
+Command: curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "addum1":10}'
+Output: {"detail":[{"type":"missing","loc":["body","num2"],"msg":"Field required","input":{"operation":"add","num1":10}}]}
+Logs: INFO:     127.0.0.1:50450 - "POST /calculate/ HTTP/1.1" 422 Unprocessable Entity
+----
+Command: curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 0}'
+Output: Internal Server Error
+Logs: 
+INFO:     127.0.0.1:53950 - "POST /calculate/ HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/data/python/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/data/JioAIspire/Code/aditya/Jio-AIspire/fastapi_app/app1.py", line 31, in calculation
+    result=num1/num2
+           ~~~~^~~~~
+ZeroDivisionError: division by zero
+
+----
+Command: curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "write", "num1":10, "num2": 5}'
+Output: {"detail":{"type":"FAILURE","reason":"Not a valid operation"}}
+Logs: INFO:     127.0.0.1:57494 - "POST /calculate/ HTTP/1.1" 404 Not Found
+
+----
+Command: curl http://127.0.0.1:8080/calculate/ -X GET -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 0}'
+Output: {"detail":"Method Not Allowed"}
+Logs: INFO:     127.0.0.1:58912 - "GET /calculate/ HTTP/1.1" 405 Method Not Allowed
+
+----
+Command: curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 0}'
+Output: {"type":"FAILURE","reason":"Not able to divide 10 by 0."}
+Logs: INFO:     127.0.0.1:48708 - "POST /calculate/ HTTP/1.1" 200 OK
+----
