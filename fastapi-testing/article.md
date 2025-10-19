@@ -5,7 +5,9 @@
 [betterstack](https://betterstack.com/community/guides/scaling-python/error-handling-fastapi/)
 
 # Error Handling in FastAPI
-The article will start by explaining how every software program can encounter errors and why it is important to handle errors in FastAPI applications. Then, we will briefly mention what we will discuss in the entire article.
+Errors and exceptions are inevitable in any software and FastAPI applications are no exception. It is imporant to handle errors in a FastAPI applications as errors can disrupt the normal flow of execution, expose sensitive information, and lead to poor user experience. Hence, we need to implement a robust error-handling mechanim in FasAPI applications.
+In this article, we will discuss the different types of errors in FastAPI to help you understand their causes and effects. We will also discuss the different ways to implement error handling in FastAPI using in-built methods and custom exception classes. Finally we will discuss some FastAPI error handling best practices to help you build robust APIs.
+
 
 ## What are errors and exceptions in FastAPI?
 This section briefly discusses the definition of errors and exceptions in FastAPI and then introduces the learner to how exceptions occur using an example.
