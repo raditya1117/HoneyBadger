@@ -1,4 +1,4 @@
-[github](https://www.geeksforgeeks.org/python/error-handling-in-fastapi/)
+[gfg](https://www.geeksforgeeks.org/python/error-handling-in-fastapi/)
 [medium](https://medium.com/delivus/exception-handling-best-practices-in-python-a-fastapi-perspective-98ede2256870)
 [getorchestra](https://www.getorchestra.io/guides/fastapi-mastering-error-handling-with-examples)
 [plainenglish](https://python.plainenglish.io/effortless-exception-error-handling-in-fastapi-a-clean-and-simplified-approach-db6f6a7a497c)
@@ -10,13 +10,24 @@ In this article, we will discuss the different types of errors in FastAPI to hel
 
 
 ## What are errors and exceptions in FastAPI?
-This section briefly discusses the definition of errors and exceptions in FastAPI and then introduces the learner to how exceptions occur using an example.
+
+Errors and exectpions in FastAPI are situations where the normal flow of an application is interrupted due to an unexpected event like invalid input, missing data, or a failed database connection. Errors are caused due to problems in the application logic that prevenets the FastAPI app to execute. For example, trying to divide a number by zero causes an error. 
+FastAPI provides a structured way to handle errors using different exception handling mechanisms. In case of an error, the program raises an exception that disrupts the normal execution flow of the FastAPI app. We can then catch the exception, log the error messages, and send a meaningful HTTP response for the given error. If we don't handle the errors properly in the FastAPI app, they lead to `500 Internal Server Error` responses and can stop the execution of the FastAPI app.
+
+Let's dsicuss the different types of errors in FastAPI so that we can implement mechanisms to handle each type of error. 
 
 After discussing the errors and exceptions, we will discuss the different types of errors in FastAPI.
 
 ## Different types of errors in FastAPI
 
-This section will discuss the different FastAPI-specific errors, such as HTTPException, RequestValidationError, ResponseValidationError, and WebSocketRequestValidationError, in addition to common Python errors. 
+
+### Internal Server Error
+
+### Request Validation Error
+
+### HTTP Exception
+
+### Response Validation Error
 
 After discussing the different FastAPI errors, we will discuss handling exceptions using different methods.
 
