@@ -16,8 +16,6 @@ FastAPI provides a structured way to handle errors using different exception han
 
 Let's dsicuss the different types of errors in FastAPI so that we can implement mechanisms to handle each type of error. 
 
-After discussing the errors and exceptions, we will discuss the different types of errors in FastAPI.
-
 ## Different types of errors in FastAPI
 
 
