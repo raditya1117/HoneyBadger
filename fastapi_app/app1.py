@@ -1,21 +1,23 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from fastapi.responses import JSONResponse
 
-#uvicorn fastapi_app:app1 --reload --port 8080 --host 0.0.0.0
-# curl -X GET "http://127.0.0.1:8080/"
+
 app = FastAPI()
 
+# Define the root API endpoint
 @app.get("/")
-async def read_root():
-    return {"message": "Welcome."}
+async def root():
+    return JSONResponse(status_code=200, content={"type":"METADATA", "output": "Welcome to Calculator by HoneyBadger."})
 
 
 # Define the input data model
 class InputData(BaseModel):
-    num1: int
-    num2: int
+    num1: float
+    num2: float
     operation: str
 
+# Define the calculator API endpoint
 @app.post("/calculate/")
 async def calculation(input_data: InputData):
     num1=input_data.num1
@@ -32,7 +34,6 @@ async def calculation(input_data: InputData):
     else:
         result=None
     if result is None:
-        return {"type":"FAILURE", "reason":"Not a valid operation"}
+        raise HTTPException(status_code=404, detail={"type":"FAILURE", "reason":"Not a valid operation"})
     else:
-        return {"type":"SUCCESS", "output":result}
-        
+        return JSONResponse(status_code=200, content={"type":"SUCCESS", "output":result})

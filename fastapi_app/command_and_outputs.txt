@@ -1,12 +1,13 @@
-App start: uvicorn app2:app --reload --port 8080 --host 0.0.0.0
-
+App start: uvicorn app1:app --reload --port 8080 --host 0.0.0.0
+#uvicorn app1:app --reload --port 8080 --host 0.0.0.0
+# curl -X GET "http://127.0.0.1:8080/"
 ----
 
 Command: curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "add", "num1":10, "num2": 10}'
 Output: {"type":"SUCCESS","output":20}
 Logs: INFO:     127.0.0.1:47488 - "POST /calculate/ HTTP/1.1" 200 OK
 ----
-Command: curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/jsoum1":10, "num2": "aditya"}'
+Command: curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "aditya", "num1":10, "num2": 10}'
 Output: {"detail":[{"type":"int_parsing","loc":["body","num2"],"msg":"Input should be a valid integer, unable to parse string as an integer","input":"aditya"}]}
 Logs: INFO:     127.0.0.1:55650 - "POST /calculate/ HTTP/1.1" 422 Unprocessable Entity
 ----
