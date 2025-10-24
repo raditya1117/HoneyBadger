@@ -14,14 +14,19 @@ In this article, we will discuss the different types of errors in FastAPI to hel
 Errors and exectpions in FastAPI are situations where the normal flow of an application is interrupted due to an unexpected event like invalid input, missing data, or a failed database connection. Errors are caused due to problems in the application logic that prevenets the FastAPI app to execute. For example, trying to divide a number by zero causes an error. 
 FastAPI provides a structured way to handle errors using different exception handling mechanisms. In case of an error, the program raises an exception that disrupts the normal execution flow of the FastAPI app. We can then catch the exception, log the error messages, and send a meaningful HTTP response for the given error. If we don't handle the errors properly in the FastAPI app, they lead to `500 Internal Server Error` responses and can stop the execution of the FastAPI app.
 
-Let's dsicuss the different types of errors in FastAPI so that we can implement mechanisms to handle each type of error. 
-
 ## Different types of errors in FastAPI
 
+Errors in FastAPI are caregorized into various types such as internal server errors, validation errors, and HTTP exceptions. Let's discss the different types of errors in FastAPI so that we can implement mechanisms to handle each of them.
 
 ### Internal Server Error
+Internal server errors are caused by unexpected runtime issues like logical errors, math errors, or database issues that aren't explicitely handled by the program. For example, if the calculator app running on the FastAPI server tries to divide a number by zero, it will return internal server error due to ZeroDivisionError, as shown in the following example.
+
+///code
 
 ### Request Validation Error
+FastAPI validates inputs using pydantic models. If an incoming request for a FastAPI server endpoint doesn't coform to the declared structure and parameter types, FastAPI returns request validation error in response.
+
+/// Code
 
 ### HTTP Exception
 
