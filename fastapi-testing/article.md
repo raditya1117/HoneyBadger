@@ -15,7 +15,7 @@ Errors and exectpions in FastAPI are situations where the normal flow of an appl
 FastAPI provides a structured way to handle errors using different exception handling mechanisms. In case of an error, the program raises an exception that disrupts the normal execution flow of the FastAPI app. We can then catch the exception, log the error messages, and send a meaningful HTTP response for the given error. 
 
 ```py
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 
@@ -51,43 +51,43 @@ async def calculation(input_data: InputData):
     else:
         result=None
     if result is None:
-        return JSONResponse(status_code=404, content={"type":"FAILURE", "reason":"Not a valid operation"})
+        raise HTTPException(status_code=404, detail={"type":"FAILURE", "reason":"Not a valid operation"})
     else:
         return JSONResponse(status_code=200, content={"type":"SUCCESS", "output":result})
 ```
 Curl command:
 
-```
+```bash
 uvicorn app1:app --reload --port 8080 --host 0.0.0.0
 ```
 
-```
+```bash
 curl -X GET "http://127.0.0.1:8080/"
 ```
 Output:
 
-```
+```json
 {"type":"METADATA","output":"Welcome to Calculator by HoneyBadger."}
 ```
 logs:
 
-```
+```py
 INFO:     127.0.0.1:57312 - "GET / HTTP/1.1" 200 OK
 ```
 
 Similarly, you can use the curl command to add two numbers as shown below:
 
 curl command
-```
+```bash
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "add", "num1":10, "num2": 10}'
 ```
 output
 
-```
+```json
 {"type":"SUCCESS","output":20.0}
 ```
 logs
-```
+```py
 INFO:     127.0.0.1:34394 - "POST /calculate/ HTTP/1.1" 200 OK
 ```
 Now that we have implemented the basic calculator app, let's discuss the differnt errors.
@@ -98,17 +98,17 @@ Errors in FastAPI are caregorized into various types such as internal server err
 ### Internal Server Error
 Internal server errors are caused by unexpected runtime issues like logical errors, math errors, or database issues that aren't explicitely handled by the program. For example, if the calculator app running on the FastAPI server tries to divide a number by zero, it will return internal server error due to ZeroDivisionError, as shown in the following example.
 
-```
+```bash
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 0}'
 ```
 
 OUtout:
-```
+```py
 Internal Server Error
 ```
 
 Logs
-```
+```py
 INFO:     127.0.0.1:46266 - "POST /calculate/ HTTP/1.1" 500 Internal Server Error
 ERROR:    Exception in ASGI application
 Traceback (most recent call last):
@@ -125,16 +125,16 @@ After an internal server error, the fastapi server stops and you need to restart
 ### Request Validation Error
 FastAPI validates inputs using pydantic models. If an incoming request for a FastAPI server endpoint doesn't coform to the declared structure and parameter types, FastAPI returns request validation error in response.
 
-```
+```bash
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 'Aditya'}'
 ```
 Output:
-```
+```json
 {"detail":[{"type":"json_invalid","loc":["body",43],"msg":"JSON decode error","input":{},"ctx":{"error":"Expecting value"}}]}
 ```
 logs:
 
-```
+```py
 INFO:     127.0.0.1:53514 - "POST /calculate/ HTTP/1.1" 422 Unprocessable Entity
 ```
 
@@ -142,8 +142,19 @@ INFO:     127.0.0.1:53514 - "POST /calculate/ HTTP/1.1" 422 Unprocessable Entity
 
 HTTP exceptions are built-in FastAPI exceptions that we can use to raise exceptions and send error responses with standard HTTP status codes. 
 
-///code
+```bash
+curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "write", "num1":10, "num2": 10}'
+```
 
+outout
+```json
+{"detail":{"type":"FAILURE","reason":"Not a valid operation"}}
+```
+logs
+
+```py
+INFO:     127.0.0.1:43230 - "POST /calculate/ HTTP/1.1" 404 Not Found
+```
 
 
 After discussing the different FastAPI errors, we will discuss handling exceptions using different methods.
