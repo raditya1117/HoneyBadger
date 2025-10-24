@@ -12,8 +12,85 @@ In this article, we will discuss the different types of errors in FastAPI to hel
 ## What are errors and exceptions in FastAPI?
 
 Errors and exectpions in FastAPI are situations where the normal flow of an application is interrupted due to an unexpected event like invalid input, missing data, or a failed database connection. Errors are caused due to problems in the application logic that prevenets the FastAPI app to execute. For example, trying to divide a number by zero causes an error. 
-FastAPI provides a structured way to handle errors using different exception handling mechanisms. In case of an error, the program raises an exception that disrupts the normal execution flow of the FastAPI app. We can then catch the exception, log the error messages, and send a meaningful HTTP response for the given error. If we don't handle the errors properly in the FastAPI app, they lead to `500 Internal Server Error` responses and can stop the execution of the FastAPI app.
+FastAPI provides a structured way to handle errors using different exception handling mechanisms. In case of an error, the program raises an exception that disrupts the normal execution flow of the FastAPI app. We can then catch the exception, log the error messages, and send a meaningful HTTP response for the given error. 
 
+```py
+from fastapi import FastAPI
+from pydantic import BaseModel
+from fastapi.responses import JSONResponse
+
+
+app = FastAPI()
+
+# Define the root API endpoint
+@app.get("/")
+async def root():
+    return JSONResponse(status_code=200, content={"type":"METADATA", "output": "Welcome to Calculator by HoneyBadger."})
+
+
+# Define the input data model
+class InputData(BaseModel):
+    num1: float
+    num2: float
+    operation: str
+
+# Define the calculator API endpoint
+@app.post("/calculate/")
+async def calculation(input_data: InputData):
+    num1=input_data.num1
+    num2=input_data.num2
+    operation=input_data.operation
+    if operation=="add":
+        result=num1+num2
+    elif operation=="subtract":
+        result=num1-num2
+    elif operation=="multiply":
+        result=num1*num2
+    elif operation=="divide":
+        result=num1/num2
+    else:
+        result=None
+    if result is None:
+        return JSONResponse(status_code=404, content={"type":"FAILURE", "reason":"Not a valid operation"})
+    else:
+        return JSONResponse(status_code=200, content={"type":"SUCCESS", "output":result})
+```
+Curl command:
+
+```
+uvicorn app1:app --reload --port 8080 --host 0.0.0.0
+```
+
+```
+curl -X GET "http://127.0.0.1:8080/"
+```
+Output:
+
+```
+{"type":"METADATA","output":"Welcome to Calculator by HoneyBadger."}
+```
+logs:
+
+```
+INFO:     127.0.0.1:57312 - "GET / HTTP/1.1" 200 OK
+```
+
+Similarly, you can use the curl command to add two numbers as shown below:
+
+curl command
+```
+curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "add", "num1":10, "num2": 10}'
+```
+output
+
+```
+{"type":"SUCCESS","output":20.0}
+```
+logs
+```
+INFO:     127.0.0.1:34394 - "POST /calculate/ HTTP/1.1" 200 OK
+```
+Now that we have implemented the basic calculator app, let's discuss the differnt errors.
 ## Different types of errors in FastAPI
 
 Errors in FastAPI are caregorized into various types such as internal server errors, validation errors, and HTTP exceptions. Let's discss the different types of errors in FastAPI so that we can implement mechanisms to handle each of them.
