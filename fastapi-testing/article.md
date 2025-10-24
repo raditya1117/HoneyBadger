@@ -98,12 +98,45 @@ Errors in FastAPI are caregorized into various types such as internal server err
 ### Internal Server Error
 Internal server errors are caused by unexpected runtime issues like logical errors, math errors, or database issues that aren't explicitely handled by the program. For example, if the calculator app running on the FastAPI server tries to divide a number by zero, it will return internal server error due to ZeroDivisionError, as shown in the following example.
 
-///code
+```
+curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 0}'
+```
+
+OUtout:
+```
+Internal Server Error
+```
+
+Logs
+```
+INFO:     127.0.0.1:46266 - "POST /calculate/ HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/aditya1117/.local/lib/python3.10/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+.....  
+  File "/home/aditya1117/codes/HoneyBadger/fastapi_app/app1.py", line 33, in calculation
+    result=num1/num2
+ZeroDivisionError: float division by zero
+
+```
+After an internal server error, the fastapi server stops and you need to restart it.
 
 ### Request Validation Error
 FastAPI validates inputs using pydantic models. If an incoming request for a FastAPI server endpoint doesn't coform to the declared structure and parameter types, FastAPI returns request validation error in response.
 
-/// Code
+```
+curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 'Aditya'}'
+```
+Output:
+```
+{"detail":[{"type":"json_invalid","loc":["body",43],"msg":"JSON decode error","input":{},"ctx":{"error":"Expecting value"}}]}
+```
+logs:
+
+```
+INFO:     127.0.0.1:53514 - "POST /calculate/ HTTP/1.1" 422 Unprocessable Entity
+```
 
 ### HTTP Exception
 
