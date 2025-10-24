@@ -30,7 +30,15 @@ FastAPI validates inputs using pydantic models. If an incoming request for a Fas
 
 ### HTTP Exception
 
+HTTP exceptions are built-in FastAPI exceptions that we can use to raise exceptions and send error responses with standard HTTP status codes. 
+
+///code
+
+
 ### Response Validation Error
+FastAPI allows us to specify the structure and data types of all the entities in an API response using response models. Response validation errors occur when the actual return value from an API endpoint does not conform to the schema or type we declare in the response model.
+
+///code
 
 After discussing the different FastAPI errors, we will discuss handling exceptions using different methods.
 
