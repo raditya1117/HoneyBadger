@@ -156,10 +156,79 @@ logs
 INFO:     127.0.0.1:43230 - "POST /calculate/ HTTP/1.1" 404 Not Found
 ```
 
+### Custom exceptions
+
+ We can also define custom FastAPI exceptions by inheriting built-in FastAPI exceptions. AFter defining the exception, we can register exception handlers using the `@app.exception_handler` decorator to handle the exception. For example, 
+
+```py
+from fastapi import FastAPI, HTTPException,Request
+from pydantic import BaseModel
+from fastapi.responses import JSONResponse
+
+
+app = FastAPI()
+
+
+# Define a custom exception class
+class InvalidOperationError(Exception):
+    def __init__(self, message: str="Not a valid operation.",type: str= "FAILURE", code: int = 404):
+        self.message = message
+        self.code = code
+        self.type=type
+        super().__init__(message)
+
+
+# Register an exception handler to handle the InvalidOperationError exception
+@app.exception_handler(InvalidOperationError)
+async def invalid_operation_exception_handler(request: Request,exc: InvalidOperationError):
+    raise HTTPException(status_code=exc.code, detail={"type":exc.type, "reason":exc.message})
+
+# Define the root API endpoint
+@app.get("/")
+async def root():
+    return JSONResponse(status_code=200, content={"type":"METADATA", "output": "Welcome to Calculator by HoneyBadger."})
+
+
+# Define the input data model
+class InputData(BaseModel):
+    num1: float
+    num2: float
+    operation: str
+
+# Define the calculator API endpoint
+@app.post("/calculate/")
+async def calculation(input_data: InputData):
+    num1=input_data.num1
+    num2=input_data.num2
+    operation=input_data.operation
+    if operation=="add":
+        result=num1+num2
+    elif operation=="subtract":
+        result=num1-num2
+    elif operation=="multiply":
+        result=num1*num2
+    elif operation=="divide":
+        result=num1/num2
+    else:
+        result=None
+    if result is None:
+        raise InvalidOperationError
+    else:
+        return JSONResponse(status_code=200, content={"type":"SUCCESS", "output":result})
+```
+
+```
+curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "write", "num1":10, "num2": 10}'
+```
+
+```
+{"detail":{"type":"FAILURE","reason":"Not a valid operation."}}
+```
 
 After discussing the different FastAPI errors, we will discuss handling exceptions using different methods.
 
 ## Error handling using try-except in FastAPI
+
 This section will discuss how to handle FastAPI errors using try-except blocks.
 
 ```py
