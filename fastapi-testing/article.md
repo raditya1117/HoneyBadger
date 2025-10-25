@@ -91,6 +91,7 @@ logs
 INFO:     127.0.0.1:34394 - "POST /calculate/ HTTP/1.1" 200 OK
 ```
 Now that we have implemented the basic calculator app, let's discuss the differnt errors.
+
 ## Different types of errors in FastAPI
 
 Errors in FastAPI are caregorized into various types such as internal server errors, validation errors, and HTTP exceptions. Let's discss the different types of errors in FastAPI so that we can implement mechanisms to handle each of them.
@@ -300,8 +301,101 @@ A single exception can occur at multiple places in a program. We can use custom 
 
 ## Custom exception handling in FastAPI
 
-This section will discuss implementing custom exception classes to handle FastAPI errors.
 
+```
+from fastapi import FastAPI, HTTPException, Request
+from pydantic import BaseModel
+from fastapi.responses import JSONResponse
+
+
+app = FastAPI()
+
+# Define a custom exception class
+class InvalidOperationError(Exception):
+    def __init__(self, message: str="Not a valid operation.",type: str= "FAILURE", code: int = 404):
+        self.message = message
+        self.code = code
+        self.type=type
+        super().__init__(self.message)
+
+class ArithmeticError(ValueError, TypeError, ZeroDivisionError):
+    def __init__(self, operation:str= "",message: str="Error in calculation.",type: str= "FAILURE", code: int = 400):
+        self.operation=operation
+        if operation=="add":
+            self.message="Error in addition."
+        elif operation=="subtract":
+            self.message="Error in subtraction."
+        elif operation=="multiply":
+            self.message= "Error in multiplication."
+        elif operation=="divide":
+            self.message= "Error in division."
+        else:
+            self.message = message
+        self.code = code
+        self.type=type
+        super().__init__(self.message)
+# Register an exception handler to handle the InvalidOperationError exception
+@app.exception_handler(InvalidOperationError)
+async def invalid_operation_exception_handler(request: Request,exc: InvalidOperationError):
+    raise HTTPException(status_code=exc.code, detail={"type":exc.type, "reason":exc.message})
+
+@app.exception_handler(ArithmeticError)
+async def arithmenic_error_handler(request: Request,exc: ArithmeticError):
+    raise HTTPException(status_code=exc.code, detail={"type":exc.type, "reason":exc.message})
+
+# Define the root API endpoint
+@app.get("/")
+async def root():
+    return JSONResponse(status_code=200, content={"type":"METADATA", "output": "Welcome to Calculator by HoneyBadger."})
+
+
+# Define the input data model
+class InputData(BaseModel):
+    num1: float
+    num2: float
+    operation: str
+
+# Define the calculator API endpoint
+@app.post("/calculate/")
+async def calculation(input_data: InputData):
+    num1=input_data.num1
+    num2=input_data.num2
+    operation=input_data.operation
+    if operation=="add":
+        try:
+            result=num1+num2
+        except:
+            raise ArithmeticError(operation="add")  
+    elif operation=="subtract":
+        try:
+            result=num1-num2
+        except:
+            raise ArithmeticError(operation="subtract")  
+    elif operation=="multiply":
+        try:
+            result=num1*num2
+        except:
+            raise ArithmeticError(operation="multiply")  
+    elif operation=="divide":
+        try:
+            result=num1/num2
+        except:
+            raise ArithmeticError(operation="divide")  
+    else:
+        result=None
+    if result is None:
+        raise InvalidOperationError
+    else:
+        return JSONResponse(status_code=200, content={"type":"SUCCESS", "output":result})
+```
+```
+curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 0}'
+```
+
+```
+{"detail":{"type":"FAILURE","reason":"Error in division."}}
+```
+We can also pass the content in the request to the  jhdsf 
 ## Using a global exception handler in FastAPI
 
 This section will discuss implementing a global FastAPI exception handler.
