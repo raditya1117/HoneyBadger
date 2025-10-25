@@ -296,11 +296,10 @@ logs
 ```py
 INFO:     127.0.0.1:34956 - "POST /calculate/ HTTP/1.1" 400 Bad Request
 ```
-
-## Error handling using FastAPI HTTPException
-This section will discuss handling FastAPI errors using the HTTPException exception class.
+A single exception can occur at multiple places in a program. We can use custom exception handlers to reduce code repetition and format all errors to follow a standard JSON format, regardless of where they originate in the code. Let's discuss how to handle FastAPI errors using custom exception classes. 
 
 ## Custom exception handling in FastAPI
+
 This section will discuss implementing custom exception classes to handle FastAPI errors.
 
 ## Using a global exception handler in FastAPI
