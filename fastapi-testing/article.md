@@ -318,30 +318,25 @@ class InvalidOperationError(Exception):
         self.type=type
         super().__init__(self.message)
 
-class ArithmeticError(ValueError, TypeError, ZeroDivisionError):
-    def __init__(self, operation:str= "",message: str="Error in calculation.",type: str= "FAILURE", code: int = 400):
-        self.operation=operation
-        if operation=="add":
-            self.message="Error in addition."
-        elif operation=="subtract":
-            self.message="Error in subtraction."
-        elif operation=="multiply":
-            self.message= "Error in multiplication."
-        elif operation=="divide":
-            self.message= "Error in division."
-        else:
-            self.message = message
-        self.code = code
-        self.type=type
-        super().__init__(self.message)
 # Register an exception handler to handle the InvalidOperationError exception
 @app.exception_handler(InvalidOperationError)
 async def invalid_operation_exception_handler(request: Request,exc: InvalidOperationError):
     raise HTTPException(status_code=exc.code, detail={"type":exc.type, "reason":exc.message})
 
-@app.exception_handler(ArithmeticError)
-async def arithmenic_error_handler(request: Request,exc: ArithmeticError):
-    raise HTTPException(status_code=exc.code, detail={"type":exc.type, "reason":exc.message})
+# Register an exception handler to handle the TypeError exception
+@app.exception_handler(TypeError)
+async def typeerror_handler(request: Request,exc: TypeError):
+    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"TypeError exception occurred due to mismatch between the expected and the actual data type of operands."})
+
+# Register an exception handler to handle the ZeroDivisionError exception
+@app.exception_handler(ZeroDivisionError)
+async def zerodivisionerror_handler(request: Request,exc: ZeroDivisionError):
+    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"Cannot perform division as the second operand is zero."})
+
+# Register an exception handler to handle the ValueError exception
+@app.exception_handler(ValueError)
+async def zerodivisionerror_handler(request: Request,exc: ValueError):
+    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"ValueError exception occurred due to operands with correct data type but an inappropriate value."})
 
 # Define the root API endpoint
 @app.get("/")
@@ -362,25 +357,13 @@ async def calculation(input_data: InputData):
     num2=input_data.num2
     operation=input_data.operation
     if operation=="add":
-        try:
-            result=num1+num2
-        except:
-            raise ArithmeticError(operation="add")  
+        result=num1+num2
     elif operation=="subtract":
-        try:
-            result=num1-num2
-        except:
-            raise ArithmeticError(operation="subtract")  
+        result=num1-num2
     elif operation=="multiply":
-        try:
-            result=num1*num2
-        except:
-            raise ArithmeticError(operation="multiply")  
+        result=num1*num2
     elif operation=="divide":
-        try:
-            result=num1/num2
-        except:
-            raise ArithmeticError(operation="divide")  
+        result=num1/num2
     else:
         result=None
     if result is None:
@@ -389,13 +372,13 @@ async def calculation(input_data: InputData):
         return JSONResponse(status_code=200, content={"type":"SUCCESS", "output":result})
 ```
 ```
-curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 0}'
+curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 0}'```
 ```
+```
+{"detail":{"type":"FAILURE","reason":"Cannot perform division as the second operand is zero."}}
+```
+We can also pass the content in the request to the  jhdsf
 
-```
-{"detail":{"type":"FAILURE","reason":"Error in division."}}
-```
-We can also pass the content in the request to the  jhdsf 
 ## Using a global exception handler in FastAPI
 
 This section will discuss implementing a global FastAPI exception handler.
