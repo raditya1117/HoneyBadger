@@ -233,12 +233,28 @@ After discussing the different FastAPI errors, we will discuss handling exceptio
 This section will discuss how to handle FastAPI errors using try-except blocks.
 
 ```py
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 
 
 app = FastAPI()
+
+
+# Define a custom exception class
+class InvalidOperationError(Exception):
+    def __init__(self, message: str="Not a valid operation.",type: str= "FAILURE", code: int = 404):
+        self.message = message
+        self.code = code
+        self.type=type
+        super().__init__(message)
+
+
+# Register an exception handler to handle the InvalidOperationError exception
+@app.exception_handler(InvalidOperationError)
+async def invalid_operation_exception_handler(request: Request,exc: InvalidOperationError):
+    raise HTTPException(status_code=exc.code, detail={"type":exc.type, "reason":exc.message})
+
 
 # Define the root API endpoint
 @app.get("/")
@@ -262,26 +278,26 @@ async def calculation(input_data: InputData):
         try:
             result=num1+num2
         except:
-            return JSONResponse(status_code=400, content={"type":"FAILURE", "reason":"Not able to add {} and {}.".format(num1, num2)})  
+            raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"Not able to add {} and {}.".format(num1, num2)})  
     elif operation=="subtract":
         try:
             result=num1-num2
         except:
-            return JSONResponse(status_code=400, content={"type":"FAILURE", "reason":"Not able to subtract {} from {}.".format(num2, num1)})
+            raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"Not able to subtract {} from {}.".format(num2, num1)})
     elif operation=="multiply":
         try:
             result=num1*num2
         except:
-            return JSONResponse(status_code=400, content={"type":"FAILURE", "reason":"Not able to multiply {} and {}.".format(num1, num2)})
+            raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"Not able to multiply {} and {}.".format(num1, num2)})
     elif operation=="divide":
         try:
             result=num1/num2
         except:
-            return JSONResponse(status_code=400, content={"type":"FAILURE", "reason":"Not able to divide {} by {}.".format(num1, num2)})
+            raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"Not able to divide {} by {}.".format(num1, num2)})
     else:
         result=None
     if result is None:
-        raise HTTPException(status_code=404, detail={"type":"FAILURE", "reason":"Not a valid operation"})
+        raise InvalidOperationError
     else:
         return JSONResponse(status_code=200, content={"type":"SUCCESS", "output":result})
 ```
@@ -291,11 +307,11 @@ curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json
 ```
 output
 ```json
-{"type":"FAILURE","reason":"Not able to divide 10.0 by 0.0."}
+{"detail":{"type":"FAILURE","reason":"Not able to divide 10.0 by 0.0."}}
 ```
 logs
 ```py
-INFO:     127.0.0.1:34956 - "POST /calculate/ HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:51748 - "POST /calculate/ HTTP/1.1" 400 Bad Request
 ```
 A single exception can occur at multiple places in a program. We can use custom exception handlers to reduce code repetition and format all errors to follow a standard JSON format, regardless of where they originate in the code. Let's discuss how to handle FastAPI errors using custom exception classes. 
 
@@ -376,6 +392,9 @@ curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json
 ```
 ```
 {"detail":{"type":"FAILURE","reason":"Cannot perform division as the second operand is zero."}}
+```
+```
+INFO:     127.0.0.1:45210 - "POST /calculate/ HTTP/1.1" 400 Bad Request
 ```
 We can also pass the content in the request to the  jhdsf
 
