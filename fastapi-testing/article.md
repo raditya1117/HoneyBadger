@@ -72,7 +72,7 @@ Output:
 logs:
 
 ```py
-INFO:     127.0.0.1:57312 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57462 - "GET / HTTP/1.1" 200 OK
 ```
 
 Similarly, you can use the curl command to add two numbers as shown below:
@@ -88,7 +88,7 @@ output
 ```
 logs
 ```py
-INFO:     127.0.0.1:34394 - "POST /calculate/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43880 - "POST /calculate/ HTTP/1.1" 200 OK
 ```
 Now that we have implemented the basic calculator app, let's discuss the differnt errors.
 
@@ -127,7 +127,7 @@ After an internal server error, the fastapi server stops and you need to restart
 FastAPI validates inputs using pydantic models. If an incoming request for a FastAPI server endpoint doesn't coform to the declared structure and parameter types, FastAPI returns request validation error in response.
 
 ```bash
-curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 'Aditya'}'
+curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 'HoneyBadger'}'
 ```
 Output:
 ```json
@@ -136,7 +136,7 @@ Output:
 logs:
 
 ```py
-INFO:     127.0.0.1:53514 - "POST /calculate/ HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:38050 - "POST /calculate/ HTTP/1.1" 422 Unprocessable Entity
 ```
 
 ### HTTP Exception
@@ -154,7 +154,7 @@ outout
 logs
 
 ```py
-INFO:     127.0.0.1:43230 - "POST /calculate/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53822 - "POST /calculate/ HTTP/1.1" 404 Not Found
 ```
 
 ### Custom exceptions
@@ -224,6 +224,10 @@ curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json
 
 ```
 {"detail":{"type":"FAILURE","reason":"Not a valid operation."}}
+```
+
+```
+INFO:     127.0.0.1:56798 - "POST /calculate/ HTTP/1.1" 404 Not Found
 ```
 
 After discussing the different FastAPI errors, we will discuss handling exceptions using different methods.
@@ -311,7 +315,7 @@ output
 ```
 logs
 ```py
-INFO:     127.0.0.1:51748 - "POST /calculate/ HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52422 - "POST /calculate/ HTTP/1.1" 400 Bad Request
 ```
 A single exception can occur at multiple places in a program. We can use custom exception handlers to reduce code repetition and format all errors to follow a standard JSON format, regardless of where they originate in the code. Let's discuss how to handle FastAPI errors using custom exception classes. 
 
@@ -342,7 +346,7 @@ async def invalid_operation_exception_handler(request: Request,exc: InvalidOpera
 # Register an exception handler to handle the TypeError exception
 @app.exception_handler(TypeError)
 async def typeerror_handler(request: Request,exc: TypeError):
-    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"TypeError exception occurred due to mismatch between the expected and the actual data type of operands."})
+    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"TypeError exception occurred due to mismatch between the expected and the actual data type of the operands."})
 
 # Register an exception handler to handle the ZeroDivisionError exception
 @app.exception_handler(ZeroDivisionError)
@@ -352,7 +356,7 @@ async def zerodivisionerror_handler(request: Request,exc: ZeroDivisionError):
 # Register an exception handler to handle the ValueError exception
 @app.exception_handler(ValueError)
 async def zerodivisionerror_handler(request: Request,exc: ValueError):
-    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"ValueError exception occurred due to operands with correct data type but an inappropriate value."})
+    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"ValueError exception occurred due to operands with correct data types but inappropriate values."})
 
 # Define the root API endpoint
 @app.get("/")
@@ -394,7 +398,18 @@ curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json
 {"detail":{"type":"FAILURE","reason":"Cannot perform division as the second operand is zero."}}
 ```
 ```py
-INFO:     127.0.0.1:45210 - "POST /calculate/ HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:50036 - "POST /calculate/ HTTP/1.1" 400 Bad Request
+```
+
+```
+curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":1e308, "num2": 1e-100}'
+```
+```
+{"detail":{"type":"FAILURE","reason":"ValueError exception occurred due to operands with correct data types but inappropriate values."}}
+```
+
+```
+INFO:     127.0.0.1:41754 - "POST /calculate/ HTTP/1.1" 400 Bad Request
 ```
 We can also pass the content in the request to the  jhdsf
 
@@ -430,7 +445,7 @@ async def typeerror_handler(request: Request,exc: TypeError):
     num1 = payload.num1
     num2 = payload.num2
     operation=payload.operation
-    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"TypeError exception occurred due to mismatch between the expected and the actual data type of operands.", "operand_1":num1, "operand_2":num2, "operation":operation})
+    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"TypeError exception occurred due to mismatch between the expected and the actual data type of the operands.", "operand_1":num1, "operand_2":num2, "operation":operation})
 
 # Register an exception handler to handle the ZeroDivisionError exception
 @app.exception_handler(ZeroDivisionError)
@@ -448,7 +463,7 @@ async def zerodivisionerror_handler(request: Request,exc: ValueError):
     num1 = payload.num1
     num2 = payload.num2
     operation=payload.operation
-    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"ValueError exception occurred due to operands with correct data type but an inappropriate value.", "operand_1":num1, "operand_2":num2, "operation":operation})
+    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"ValueError exception occurred due to operands with correct data types but inappropriate values.", "operand_1":num1, "operand_2":num2, "operation":operation})
 
 # Define the root API endpoint
 @app.get("/")
@@ -543,7 +558,7 @@ async def typeerror_handler(request: Request,exc: TypeError):
     num1 = payload.num1
     num2 = payload.num2
     operation=payload.operation
-    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"TypeError exception occurred due to mismatch between the expected and the actual data type of operands.", "operand_1":num1, "operand_2":num2, "operation":operation})
+    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"TypeError exception occurred due to mismatch between the expected and the actual data type of the operands.", "operand_1":num1, "operand_2":num2, "operation":operation})
 
 # Register an exception handler to handle the ZeroDivisionError exception
 @app.exception_handler(ZeroDivisionError)
@@ -561,7 +576,7 @@ async def zerodivisionerror_handler(request: Request,exc: ValueError):
     num1 = payload.num1
     num2 = payload.num2
     operation=payload.operation
-    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"ValueError exception occurred due to operands with correct data type but an inappropriate value.", "operand_1":num1, "operand_2":num2, "operation":operation})
+    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"ValueError exception occurred due to operands with correct data types but inappropriate values.", "operand_1":num1, "operand_2":num2, "operation":operation})
 
 # Register an exception handler to handle rest of the errors
 @app.exception_handler(Exception)
