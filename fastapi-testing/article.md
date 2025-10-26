@@ -318,7 +318,7 @@ A single exception can occur at multiple places in a program. We can use custom 
 ## Custom exception handling in FastAPI
 
 
-```
+```py
 from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
@@ -387,13 +387,13 @@ async def calculation(input_data: InputData):
     else:
         return JSONResponse(status_code=200, content={"type":"SUCCESS", "output":result})
 ```
-```
+```bash
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 0}'```
 ```
-```
+```json
 {"detail":{"type":"FAILURE","reason":"Cannot perform division as the second operand is zero."}}
 ```
-```
+```py
 INFO:     127.0.0.1:45210 - "POST /calculate/ HTTP/1.1" 400 Bad Request
 ```
 We can also pass the content in the request to the  jhdsf
