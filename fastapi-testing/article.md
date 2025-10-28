@@ -11,8 +11,11 @@ In this article, we will discuss the different types of errors in FastAPI to hel
 
 ## What are errors and exceptions in FastAPI?
 
-Errors and exectpions in FastAPI are situations where the normal flow of an application is interrupted due to an unexpected event like invalid input, missing data, or a failed database connection. Errors are caused due to problems in the application logic that prevenets the FastAPI app to execute. For example, trying to divide a number by zero causes an error. 
-FastAPI provides a structured way to handle errors using different exception handling mechanisms. In case of an error, the program raises an exception that disrupts the normal execution flow of the FastAPI app. We can then catch the exception, log the error messages, and send a meaningful HTTP response for the given error. 
+Errors and exectpions in FastAPI are situations where the normal flow of an application is interrupted due to an unexpected event, such as invalid input, missing data, or a failed database connection. For example, trying to divide a number by zero causes an error as it is not a valid mathematical operation.
+
+FastAPI provides a structured way to handle errors using different exception handling mechanisms. After encountering an error, the FastAPI app raises an exception that disrupts the normal execution flow of the app. We can then catch the exception, log the error messages, and send a meaningful HTTP response to the user.
+
+To understand the diffeerent types and errors in FastAPI and handling them, let's create a calculator app using FastAPI. 
 
 ```py
 from fastapi import FastAPI, HTTPException
@@ -55,41 +58,39 @@ async def calculation(input_data: InputData):
     else:
         return JSONResponse(status_code=200, content={"type":"SUCCESS", "output":result})
 ```
-Curl command:
+In this code, we have defined the `/calculate` endpoint in the FastAPI application that takes the operation name and operands as its input, validates the input using the `InputData` model and returns the calculated value in case of successfull execution.  Save the above code in `calculator_app.py`. Next, run the FastAPI server with the calculator application using the following command:
 
 ```bash
-uvicorn app1:app --reload --port 8080 --host 0.0.0.0
+uvicorn calculator_app:app --reload --port 8080 --host 0.0.0.0
 ```
-
+After starting the FastAPI server, you can perform different operations by sending HTTP requests to the server. For example, we can send a GET request to the root API endpoint of the calculator app as follows:
 ```bash
 curl -X GET "http://127.0.0.1:8080/"
 ```
-Output:
+In response the FastAPI application sends the following output.
 
 ```json
 {"type":"METADATA","output":"Welcome to Calculator by HoneyBadger."}
 ```
-logs:
-
+As the API call is successfully executed, the FastAPI application records it as a successfull execution using the `200 OK` HTTP code.
 ```py
 INFO:     127.0.0.1:57462 - "GET / HTTP/1.1" 200 OK
 ```
+Just like the root API endpoint, you can send a POST request to the `/calculate` endpoint to add two numbers, as shown below:
 
-Similarly, you can use the curl command to add two numbers as shown below:
-
-curl command
 ```bash
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "add", "num1":10, "num2": 10}'
 ```
-output
+Executing the above commad will give you the following output.
 
 ```json
 {"type":"SUCCESS","output":20.0}
 ```
-logs
+Again, FastAPI logs the API call as a successfull execution using the HTTP code `200 OK`.
 ```py
 INFO:     127.0.0.1:43880 - "POST /calculate/ HTTP/1.1" 200 OK
 ```
+
 Now that we have implemented the basic calculator app, let's discuss the differnt errors.
 
 ## Different types of errors in FastAPI
@@ -116,7 +117,7 @@ Traceback (most recent call last):
   File "/home/aditya1117/.local/lib/python3.10/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
     result = await app(  # type: ignore[func-returns-value]
 .....  
-  File "/home/aditya1117/codes/HoneyBadger/fastapi_app/app1.py", line 33, in calculation
+  File "/home/aditya1117/codes/HoneyBadger/fastapi_app/calculator_app.py", line 33, in calculation
     result=num1/num2
 ZeroDivisionError: float division by zero
 
@@ -137,6 +138,23 @@ logs:
 
 ```py
 INFO:     127.0.0.1:38050 - "POST /calculate/ HTTP/1.1" 422 Unprocessable Entity
+```
+### Method Not Allowed error
+Method not allowed error occurs 
+
+```
+curl http://127.0.0.1:8080/calculate/ -X GET -H "Content-Type: application/json" -d '{"operation": "add", "num1":10, "num2": 10}'
+```
+
+Output:
+
+```
+{"detail":"Method Not Allowed"}
+```
+logs
+
+```
+INFO:     127.0.0.1:34004 - "GET /calculate/ HTTP/1.1" 405 Method Not Allowed
 ```
 
 ### HTTP Exception
