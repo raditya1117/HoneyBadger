@@ -98,18 +98,18 @@ Now that we have implemented the basic calculator app, let's discuss the differn
 Errors in FastAPI are caregorized into various types such as internal server errors, validation errors, and HTTP exceptions. Let's discss the different types of errors in FastAPI so that we can implement mechanisms to handle each of them.
 
 ### Internal Server Error
-Internal server errors are caused by unexpected runtime issues like logical errors, math errors, or database issues that aren't explicitely handled by the program. For example, if the calculator app running on the FastAPI server tries to divide a number by zero, it will return internal server error due to ZeroDivisionError, as shown in the following example.
+
+Internal server errors are caused by unexpected runtime issues like logical errors, math errors, or database issues that aren't explicitely handled by the program. For example, if the calculator app running on the FastAPI server tries to divide a number by zero, it will return internal server error due to ZeroDivisionError, as shown in the following example:
 
 ```bash
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 0}'
 ```
-
-OUtout:
+In this API call, we have passed zero as the second operand. Hence, the server returns `Internal Server Error` as its output. 
 ```py
 Internal Server Error
 ```
+If you look at the execution logs of the FastAPI application, you can see the ZeroDivisionError exception with the message `ZeroDivisionError: float division by zero`.
 
-Logs
 ```py
 INFO:     127.0.0.1:46266 - "POST /calculate/ HTTP/1.1" 500 Internal Server Error
 ERROR:    Exception in ASGI application
@@ -120,9 +120,27 @@ Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/fastapi_app/calculator_app.py", line 33, in calculation
     result=num1/num2
 ZeroDivisionError: float division by zero
+```
+
+After an internal server error, the fastapi server stops and it must be restarted. 
+
+### Method Not Allowed error
+
+The `Method Not Allowed` error occurs due to wrong HTTP method in the API call. If a FastAPI endpoint is defined using the POST request method and we call the API endpoint using GET request method, the FastAPI server run into StarletteHTTPException with status code 405. For instance, we have defined the `/calculate` endpoint using the POST request method. When we send a GET request to the endpoint, the FastAPI app runs into StarletteHTTPException exception. 
 
 ```
-After an internal server error, the fastapi server stops and you need to restart it.
+curl http://127.0.0.1:8080/calculate/ -X GET -H "Content-Type: application/json" -d '{"operation": "add", "num1":10, "num2": 10}'
+```
+
+FastAPI internally handles the StarletteHTTPException and returns the `"Method Not Allowed"` message. 
+```
+{"detail":"Method Not Allowed"}
+```
+If you check the execution logs, you can see `405 Method Not Allowed` message as follows:
+```
+INFO:     127.0.0.1:34004 - "GET /calculate/ HTTP/1.1" 405 Method Not Allowed
+```
+
 
 ### Request Validation Error
 FastAPI validates inputs using pydantic models. If an incoming request for a FastAPI server endpoint doesn't coform to the declared structure and parameter types, FastAPI returns request validation error in response.
@@ -138,23 +156,6 @@ logs:
 
 ```py
 INFO:     127.0.0.1:38050 - "POST /calculate/ HTTP/1.1" 422 Unprocessable Entity
-```
-### Method Not Allowed error
-Method not allowed error occurs 
-
-```
-curl http://127.0.0.1:8080/calculate/ -X GET -H "Content-Type: application/json" -d '{"operation": "add", "num1":10, "num2": 10}'
-```
-
-Output:
-
-```
-{"detail":"Method Not Allowed"}
-```
-logs
-
-```
-INFO:     127.0.0.1:34004 - "GET /calculate/ HTTP/1.1" 405 Method Not Allowed
 ```
 
 ### HTTP Exception
