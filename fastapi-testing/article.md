@@ -455,9 +455,31 @@ In the above API call, we have passed `1e308` and `1e-100` as operands for the d
 {"detail":{"type":"FAILURE","reason":"ValueError exception occurred due to operands with correct data types but inappropriate values."}}
 ```
 
-We can also pass the content in the request to the  jhdsf
+FastAPI also allows us to access data from the API request in the in exception handlers. To do this, we can attach the input data in the API request to the payload of the Request object. Then, we can access data in the exception handler using the payload attribute of the Request.state object. 
+
+To do this, we will first define a dependency function `attach_payload` as follows:
+
+1. The `attach_payload` function takes the payload of the API request and a Request object as its input.
+2. Inside the `attach_payload` function, we will assign the payload of the API request to the state.payload parameter of the Request object.
+3. After execution the attach_payload function returns the original payload of the API request..
+
+The attach_payload function looks as follows:
+```py
+async def attach_payload(payload: InputData, request: Request = None):
+    request.state.payload = payload
+    return payload
+```
+After defining the attach_payload function, we will add it as a dependency to the calculation function of the /calculate API endpoint using the Depends function, as shown below:
 
 ```
+@app.post("/calculate/")
+async def calculation(input_data: InputData = Depends(attach_payload)):
+    function logic
+```
+After adding the dependency, FastAPI automatically executes the attach_payload function with the same input given to the calculation function. The attach_payload function then assigns the payload of the API request to the state.payload parameter of the Request object and returns the payload, which is then used by the calculate function to execute business logic. 
+Now, the Request object has all the inputs passed in the API call in its state.payload attribute. Hence, we can access the inputs in the exception handlers, log them, or send specific messages in the response to the API call based on the input values. 
+
+```py
 from fastapi import FastAPI, HTTPException, Request, Depends
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
