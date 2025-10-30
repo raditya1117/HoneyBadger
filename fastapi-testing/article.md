@@ -260,9 +260,8 @@ Now that we have discussed different FastAPI errors and custom exceptions, let's
 
 We can use the try-except blocks to manually raise HTTPExceptions with proper messages for different types of errors. We can also define custom exception handlers that handle exceptions of a particular type from the entire application. Finally, we can create a global exception handler that handles any uncaughet exception, preventing the FastAPI exception from falling into an Internal Server Error. Let's discuss all the approces to handle FastAPI errors, starting with Python try-except blocks.
 
-## Error handling using try-except in FastAPI
-
-This section will discuss how to handle FastAPI errors using try-except blocks.
+### Error handling using try-except in FastAPI
+To handle errors using try-except blocks in a FastAPI application, we can manually handle different types of errors in the except blocks and raise HTTP exceptions with proper message and status code. For example, we can use the try-except blocks to handle errors in our FastAPI application as shown in the following code:
 
 ```py
 from fastapi import FastAPI, HTTPException, Request
@@ -333,21 +332,25 @@ async def calculation(input_data: InputData):
     else:
         return JSONResponse(status_code=200, content={"type":"SUCCESS", "output":result})
 ```
+In this code, we have used try-except blocks to handle errors and raise HTTP exceptions for each operation. We also have the custom exception class with handler for the unsupported operations. Now, let's try to divide a number by zero using the /calculate API call.
 
 ```bash
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 0}'
 ```
-output
+The above API call triggers a ZeroDivisionError exception, which is handled by he except block of the divide operation, and we get the following output in the API response.
+
 ```json
 {"detail":{"type":"FAILURE","reason":"Not able to divide 10.0 by 0.0."}}
 ```
-logs
+In the logs, the above API call is recorded with the message `400 Bad Request` as we have set the status code to 400 while raising the HTTP exception.
+
 ```py
 INFO:     127.0.0.1:52422 - "POST /calculate/ HTTP/1.1" 400 Bad Request
 ```
-A single exception can occur at multiple places in a program. We can use custom exception handlers to reduce code repetition and format all errors to follow a standard JSON format, regardless of where they originate in the code. Let's discuss how to handle FastAPI errors using custom exception classes. 
 
-## Custom exception handling in FastAPI
+A single exception can occur at multiple places in a program. Also, we might miss putting all the exception types in the except block of the code, which may lead to uncaught errors. We can use custom exception handlers to reduce code repetition and handle errors of a prticular type at one place, regardless of where they originate in the code. Custom exception handles also allow us to format errors of a specific type to follow a standard JSON format. Let's discuss how to handle FastAPI errors using custom exception handlers. 
+
+## Error handling using custom exception handlers in FastAPI
 
 
 ```py
