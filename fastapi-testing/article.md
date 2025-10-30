@@ -143,35 +143,35 @@ INFO:     127.0.0.1:34004 - "GET /calculate/ HTTP/1.1" 405 Method Not Allowed
 
 
 ### Request Validation Error
-FastAPI validates inputs using pydantic models. If an incoming request for a FastAPI server endpoint doesn't coform to the declared structure and parameter types, FastAPI returns request validation error in response.
+
+FastAPI validates inputs using pydantic models. If an incoming request for a FastAPI endpoint doesn't conform to the declared structure and parameter types, FastAPI returns request validation error in response. For example, we have defined the /calculate endpoint that with three inputs where the `operation` must be a string and `num1` and `num2` must be floating point numbers or strings that can be converted to floats. When we pass a string that cannot be converted to a floating point number, we run into the request validation error.
+
 
 ```bash
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 'HoneyBadger'}'
 ```
-Output:
+For the above API call, the FastAPI app returns a json object with "JSON decode error" message.
 ```json
 {"detail":[{"type":"json_invalid","loc":["body",43],"msg":"JSON decode error","input":{},"ctx":{"error":"Expecting value"}}]}
 ```
-logs:
-
+If you look into the logs, the FastAPI app logs the API calls with request validation errors with the message `422 Unprocessable Entity`. 
 ```py
 INFO:     127.0.0.1:38050 - "POST /calculate/ HTTP/1.1" 422 Unprocessable Entity
 ```
 
 ### HTTP Exception
 
-HTTP exceptions are built-in FastAPI exceptions that we can use to raise exceptions and send error responses with standard HTTP status codes. 
+HTTP exceptions are built-in FastAPI exceptions that we can use to raise exceptions and send error responses with standard HTTP status codes. When we raise an HTTP exception, FastAPI automatially handles the exception and returns the content in the `detail` parameter to as the API response. For instance, we have raised an HTTP exception in our FastAPI app when the requested operation in the API call is other than add, subtract, multiply, and divide. Hence, if we pass `write` as an input to the operation field, the calculator app raises the HTTP exception.
 
 ```bash
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "write", "num1":10, "num2": 10}'
 ```
+In the API response, we get the content from the detail parameter of the exception as the output.
 
-outout
 ```json
 {"detail":{"type":"FAILURE","reason":"Not a valid operation"}}
 ```
-logs
-
+As we have defined the status code in the HTTPException to be 404, FastAPI logs the API execution call with the `404 Not Found` message. 
 ```py
 INFO:     127.0.0.1:53822 - "POST /calculate/ HTTP/1.1" 404 Not Found
 ```
