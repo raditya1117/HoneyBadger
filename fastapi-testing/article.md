@@ -352,7 +352,15 @@ A single exception can occur at multiple places in a program. Also, we might mis
 
 ## Error handling using custom exception handlers in FastAPI
 
-FastAPI allows us to write custom handlers for each exception using the `exception_handler` decorator. Each custom exception handler takes the request object and an exception as its input. 
+FastAPI allows us to write custom handlers for each exception by defining functions using the `exception_handler` decorator. Each custom exception handler takes a Python Request and an Exception object as its input. Inside the exception handler, we can process the exception, log the error messages, and raise HTTPException with a proper message to return the API response. Once we have defined a custom exception handler, all the uncaught exceptions of the specified exception type are handled by the exception handler. 
+
+For instance, we can define a custom exception handler to handle all the TypeError exceptions as follows:
+```
+@app.exception_handler(TypeError)
+async def typeerror_handler(request: Request, exc: TypeError):
+    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"TypeError exception occurred due to mismatch between the expected and the actual data type of the operands."})
+```
+This exception handler will process all the uncaught TypeError exceptions irrespective of where they are raised in the FastAPI application. In a similar manner, we can define custom exception handlers for ZeroDivisionError and ValueError exceptions, as shown below:
 
 ```py
 from fastapi import FastAPI, HTTPException, Request
@@ -387,7 +395,7 @@ async def zerodivisionerror_handler(request: Request,exc: ZeroDivisionError):
 
 # Register an exception handler to handle the ValueError exception
 @app.exception_handler(ValueError)
-async def zerodivisionerror_handler(request: Request,exc: ValueError):
+async def valueerror_handler(request: Request,exc: ValueError):
     raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"ValueError exception occurred due to operands with correct data types but inappropriate values."})
 
 # Define the root API endpoint
@@ -423,26 +431,30 @@ async def calculation(input_data: InputData):
     else:
         return JSONResponse(status_code=200, content={"type":"SUCCESS", "output":result})
 ```
+Now, let's try to divide a number by zero using the /calculate API call.
+
 ```bash
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 0}'```
 ```
+The FastAPI app returns an output as follows:
+
 ```json
 {"detail":{"type":"FAILURE","reason":"Cannot perform division as the second operand is zero."}}
 ```
+As you can see, the API response contains the message from the custom exception handler `zerodivisionerror_handler`. As we have defined the status code to 400 in the `zerodivisionerror_handler`, the log message also records the API call with the `400 Bad Request` message.
+
 ```py
 INFO:     127.0.0.1:50036 - "POST /calculate/ HTTP/1.1" 400 Bad Request
 ```
-
+Similarly, let's pass values to the API call that can cause the ValueError exception: 
 ```
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":1e308, "num2": 1e-100}'
 ```
+In the above API call, we have passed `1e308` and `1e-100` as operands for the divide operation. As the division causes ValueError exception due to overflow, we get the following response from the custom exception handler defined for ValueError exceptions.
 ```
 {"detail":{"type":"FAILURE","reason":"ValueError exception occurred due to operands with correct data types but inappropriate values."}}
 ```
 
-```
-INFO:     127.0.0.1:41754 - "POST /calculate/ HTTP/1.1" 400 Bad Request
-```
 We can also pass the content in the request to the  jhdsf
 
 ```
