@@ -175,10 +175,15 @@ As we have defined the status code in the HTTPException to be 404, FastAPI logs 
 ```py
 INFO:     127.0.0.1:53822 - "POST /calculate/ HTTP/1.1" 404 Not Found
 ```
+In addition to built-in errors and exceptions, we can also define custom execeptions based on business logic. Let's discuss how to do so.
 
 ### Custom exceptions
 
- We can also define custom FastAPI exceptions by inheriting built-in FastAPI exceptions. AFter defining the exception, we can register exception handlers using the `@app.exception_handler` decorator to handle the exception. For example, 
+We can define custom FastAPI exceptions for handling errors due to business logic by inheriting built-in Python exception classes. In the custom exception, we can define any number of attributes to store the information about the error. After defining the exception, we can create exception handlers to handle the custom exception. 
+
+For example, we can create a custom `InvalidOperationError` exception by inheriting the Python `Exception` class to handle errors due to unsupported `operation` in the API requests to the calculator app. Next, we can create an exception handler using the `@app.exception_handler` decorator to handle the `InvalidOperationError` by raising an HTTPException to get the output for the API call.  
+
+After defining the exception along with the exception handler, we can raise the custom exception from anywhere in the code and it gets handled by the exception handler. 
 
 ```py
 from fastapi import FastAPI, HTTPException,Request
@@ -236,20 +241,24 @@ async def calculation(input_data: InputData):
     else:
         return JSONResponse(status_code=200, content={"type":"SUCCESS", "output":result})
 ```
-
+In this code, we have raised InvalidOperationError for API calls with unsupported operations. Now, let's pass `write` as an operation to the /calculate API endpoint.
 ```
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "write", "num1":10, "num2": 10}'
 ```
-
+The FastAPI application gives the following output as the response for the above request. 
 ```
 {"detail":{"type":"FAILURE","reason":"Not a valid operation."}}
 ```
+As you can see, the handler for the InvalidOperationError raises an HTTPException, which gives us the message output using the attributes of the InvalidOperationError. In the logs, FastAPI records this execution with `404 Not Found` message as we have assigned the 404 HTTP code to the InvalidOperationError.
 
 ```
 INFO:     127.0.0.1:56798 - "POST /calculate/ HTTP/1.1" 404 Not Found
 ```
+Now that we have discussed different FastAPI errors and custom exceptions, let's discuss how to handle FastAPI errors.
 
-After discussing the different FastAPI errors, we will discuss handling exceptions using different methods.
+## How to handle errors and exceptions in FastAPI? 
+
+We can use the try-except blocks to manually raise HTTPExceptions with proper messages for different types of errors. We can also define custom exception handlers that handle exceptions of a particular type from the entire application. Finally, we can create a global exception handler that handles any uncaughet exception, preventing the FastAPI exception from falling into an Internal Server Error. Let's discuss all the approces to handle FastAPI errors, starting with Python try-except blocks.
 
 ## Error handling using try-except in FastAPI
 
