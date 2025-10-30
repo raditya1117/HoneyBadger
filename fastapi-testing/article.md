@@ -260,7 +260,7 @@ Now that we have discussed different FastAPI errors and custom exceptions, let's
 
 We can use the try-except blocks to manually raise HTTPExceptions with proper messages for different types of errors. We can also define custom exception handlers that handle exceptions of a particular type from the entire application. Finally, we can create a global exception handler that handles any uncaughet exception, preventing the FastAPI exception from falling into an Internal Server Error. Let's discuss all the approces to handle FastAPI errors, starting with Python try-except blocks.
 
-### Error handling using try-except in FastAPI
+## Error handling using try-except in FastAPI
 To handle errors using try-except blocks in a FastAPI application, we can manually handle different types of errors in the except blocks and raise HTTP exceptions with proper message and status code. For example, we can use the try-except blocks to handle errors in our FastAPI application as shown in the following code:
 
 ```py
@@ -352,6 +352,7 @@ A single exception can occur at multiple places in a program. Also, we might mis
 
 ## Error handling using custom exception handlers in FastAPI
 
+FastAPI allows us to write custom handlers for each exception using the `exception_handler` decorator. Each custom exception handler takes the request object and an exception as its input. 
 
 ```py
 from fastapi import FastAPI, HTTPException, Request
@@ -376,7 +377,7 @@ async def invalid_operation_exception_handler(request: Request,exc: InvalidOpera
 
 # Register an exception handler to handle the TypeError exception
 @app.exception_handler(TypeError)
-async def typeerror_handler(request: Request,exc: TypeError):
+async def typeerror_handler(request: Request, exc: TypeError):
     raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"TypeError exception occurred due to mismatch between the expected and the actual data type of the operands."})
 
 # Register an exception handler to handle the ZeroDivisionError exception
