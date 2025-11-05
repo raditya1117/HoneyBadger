@@ -461,7 +461,7 @@ To do this, we will first define a dependency function `attach_payload` as follo
 
 1. The `attach_payload` function takes the payload of the API request and a Request object as its input.
 2. Inside the `attach_payload` function, we will assign the payload of the API request to the state.payload parameter of the Request object.
-3. After execution the attach_payload function returns the original payload of the API request..
+3. After execution the attach_payload function returns the original payload of the API request.
 
 The attach_payload function looks as follows:
 ```py
@@ -474,8 +474,9 @@ After defining the attach_payload function, we will add it as a dependency to th
 ```
 @app.post("/calculate/")
 async def calculation(input_data: InputData = Depends(attach_payload)):
-    function logic
+    # function logic
 ```
+
 After adding the dependency, FastAPI automatically executes the attach_payload function with the same input given to the calculation function. The attach_payload function then assigns the payload of the API request to the state.payload parameter of the Request object and returns the payload, which is then used by the calculate function to execute business logic. 
 Now, the Request object has all the inputs passed in the API call in its state.payload attribute. Hence, we can access the inputs in the exception handlers, log them, or send specific messages in the response to the API call based on the input values. 
 
@@ -569,29 +570,27 @@ async def calculation(input_data: InputData = Depends(attach_payload)):
     else:
         return JSONResponse(status_code=200, content={"type":"SUCCESS", "output":result})
 ```
+In this code, we have used a dependency function to attach payload to the Request object and used the Request object to get the inputs to the API endpoint. The exception handlers also return the input along with the reason whenever an error occurs. Now, let's send an API request with unsupported operation to the FastAPI app:
 ```
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "write", "num1":10, "num2": 10}'
 ```
+The above request raises InvalidOperationError, which is then handled by the exception handler and we get the following output:
+
 ```
 {"detail":{"type":"FAILURE","reason":"Not a valid operation.","operand_1":10.0,"operand_2":10.0,"operation":"write"}}
 ```
-```
-INFO:     127.0.0.1:34688 - "POST /calculate/ HTTP/1.1" 404 Not Found
-```
 
+Similarly, let's send a request to the calculator app that raises ZeroDivisionError:
 ```
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 0}'
 ```
+The above API request causes ZeroDivisionError exception. Due to this, the calculator app returns the following output as response:
 ```
 {"detail":{"type":"FAILURE","reason":"Cannot perform division as the second operand is zero.","operand_1":10.0,"operand_2":0.0,"operation":"divide"}}
 ```
-```
-INFO:     127.0.0.1:38138 - "POST /calculate/ HTTP/1.1" 400 Bad Request
-```
 ## Using a global exception handler in FastAPI
 
-This section will discuss implementing a global FastAPI exception handler.
-
+It is almost impossible to define and handle every type of error using custom exception handlers. 
 ```py
 from fastapi import FastAPI, HTTPException, Request, Depends
 from pydantic import BaseModel
