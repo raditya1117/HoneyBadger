@@ -630,9 +630,23 @@ async def global_exception_handler(request: Request,exc: Exception):
 
 The above exception handler can handle any FastAPI error that isn't handled by any other exception handler. This makes sure that the FastAPI app doesn't run into Internal Server Error after any exception. 
 
-## FastAPI error handling best practices
-This section will discuss some FastAPI error-handling best practices.
+Now that we have discussed the different types of FastAPI errors and handling them, let's discuss some best practices for handling errors in FastAPI.
 
+## FastAPI error handling best practices
+
+### Use HTTPException for Business Logic Errors
+
+### Create Custom Exception Classes for Domain Errors
+
+### Implement a Global Exception Handler
+
+### Standardize Error Response Format
+
+### Customize Validation Error Responses
+### Use logging for observability
+-Always Log the Actual Exception Internally
+
+### Map Internal Errors to Safe Public Messages
 ## Conclusion
 This section will summarize what the article discussed and include a CTA.
 
