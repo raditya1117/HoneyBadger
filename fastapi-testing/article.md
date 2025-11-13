@@ -5,15 +5,14 @@
 [betterstack](https://betterstack.com/community/guides/scaling-python/error-handling-fastapi/)
 
 # Error Handling in FastAPI
-Errors and exceptions are inevitable in any software and FastAPI applications are no exception. It is imporant to handle errors in a FastAPI applications as errors can disrupt the normal flow of execution, expose sensitive information, and lead to poor user experience. Hence, we need to implement a robust error-handling mechanim in FasAPI applications.
+Errors and exceptions are inevitable in any software and FastAPI applications are no exception. It is imporant to handle errors in FastAPI applications as errors can disrupt the normal flow of execution, expose sensitive information, and lead to poor user experience. Hence, we need to implement a robust error-handling mechanim in FasAPI applications.
 In this article, we will discuss the different types of errors in FastAPI to help you understand their causes and effects. We will also discuss the different ways to implement error handling in FastAPI using in-built methods and custom exception classes. Finally we will discuss some FastAPI error handling best practices to help you build robust APIs.
-
 
 ## What are errors and exceptions in FastAPI?
 
 Errors and exectpions in FastAPI are situations where the normal flow of an application is interrupted due to an unexpected event, such as invalid input, missing data, or a failed database connection. For example, trying to divide a number by zero causes an error as it is not a valid mathematical operation.
 
-FastAPI provides a structured way to handle errors using different exception handling mechanisms. After encountering an error, the FastAPI app raises an exception that disrupts the normal execution flow of the app. We can then catch the exception, log the error messages, and send a meaningful HTTP response to the user.
+FastAPI provides a structured way to handle errors using different exception handling mechanisms. After encountering an error, the FastAPI app raises an exception that disrupts the normal execution flow of the app. We can catch the exception, log the error messages, and send a meaningful response to the user.
 
 To understand the diffeerent types and errors in FastAPI and handling them, let's create a calculator app using FastAPI. 
 
@@ -63,20 +62,7 @@ In this code, we have defined the `/calculate` endpoint in the FastAPI applicati
 ```bash
 uvicorn calculator_app:app --reload --port 8080 --host 0.0.0.0
 ```
-After starting the FastAPI server, you can perform different operations by sending HTTP requests to the server. For example, we can send a GET request to the root API endpoint of the calculator app as follows:
-```bash
-curl -X GET "http://127.0.0.1:8080/"
-```
-In response the FastAPI application sends the following output.
-
-```json
-{"type":"METADATA","output":"Welcome to Calculator by HoneyBadger."}
-```
-As the API call is successfully executed, the FastAPI application records it as a successfull execution using the `200 OK` HTTP code.
-```py
-INFO:     127.0.0.1:57462 - "GET / HTTP/1.1" 200 OK
-```
-Just like the root API endpoint, you can send a POST request to the `/calculate` endpoint to add two numbers, as shown below:
+After starting the FastAPI server, you can perform different operations by sending HTTP requests to the server. For example, you can send a POST request to the `/calculate` endpoint to add two numbers, as shown below:
 
 ```bash
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "add", "num1":10, "num2": 10}'
@@ -87,15 +73,16 @@ Executing the above commad will give you the following output.
 {"type":"SUCCESS","output":20.0}
 ```
 Again, FastAPI logs the API call as a successfull execution using the HTTP code `200 OK`.
+
 ```py
 INFO:     127.0.0.1:43880 - "POST /calculate/ HTTP/1.1" 200 OK
 ```
 
-Now that we have implemented the basic calculator app, let's discuss the differnt errors.
+Now that we have implemented the basic calculator app, let's discuss the differnt FastAPI errors.
 
 ## Different types of errors in FastAPI
 
-Errors in FastAPI are caregorized into various types such as internal server errors, validation errors, and HTTP exceptions. Let's discss the different types of errors in FastAPI so that we can implement mechanisms to handle each of them.
+Errors in FastAPI are caregorized into various types such as internal server error, validation error, and HTTP exception. Let's discss the different types of errors in FastAPI so that we can implement mechanisms to handle each of them.
 
 ### Internal Server Error
 
@@ -104,10 +91,12 @@ Internal server errors are caused by unexpected runtime issues like logical erro
 ```bash
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 0}'
 ```
-In this API call, we have passed zero as the second operand. Hence, the server returns `Internal Server Error` as its output. 
+In this API call, we have passed zero as the second operand. Hence, the server returns `Internal Server Error` as its output:
+
 ```py
 Internal Server Error
 ```
+
 If you look at the execution logs of the FastAPI application, you can see the ZeroDivisionError exception with the message `ZeroDivisionError: float division by zero`.
 
 ```py
@@ -126,42 +115,47 @@ After an internal server error, the fastapi server stops and it must be restarte
 
 ### Method Not Allowed error
 
-The `Method Not Allowed` error occurs due to wrong HTTP method in the API call. If a FastAPI endpoint is defined using the POST request method and we call the API endpoint using GET request method, the FastAPI server run into StarletteHTTPException with status code 405. For instance, we have defined the `/calculate` endpoint using the POST request method. When we send a GET request to the endpoint, the FastAPI app runs into StarletteHTTPException exception. 
+The `Method Not Allowed` error occurs due to wrong HTTP method in the API call. If a FastAPI endpoint is defined using the POST request method and we call the API endpoint using GET request method, the FastAPI server runs into StarletteHTTPException with status code 405. For instance, we have defined the `/calculate` endpoint using the POST request method. When we send a GET request to the endpoint, the FastAPI app runs into StarletteHTTPException exception. 
 
 ```
 curl http://127.0.0.1:8080/calculate/ -X GET -H "Content-Type: application/json" -d '{"operation": "add", "num1":10, "num2": 10}'
 ```
 
 FastAPI internally handles the StarletteHTTPException and returns the `"Method Not Allowed"` message. 
+
 ```
 {"detail":"Method Not Allowed"}
 ```
+
 If you check the execution logs, you can see `405 Method Not Allowed` message as follows:
+
 ```
 INFO:     127.0.0.1:34004 - "GET /calculate/ HTTP/1.1" 405 Method Not Allowed
 ```
 
-
 ### Request Validation Error
 
-FastAPI validates inputs using pydantic models. If an incoming request for a FastAPI endpoint doesn't conform to the declared structure and parameter types, FastAPI returns request validation error in response. For example, we have defined the /calculate endpoint that with three inputs where the `operation` must be a string and `num1` and `num2` must be floating point numbers or strings that can be converted to floats. When we pass a string that cannot be converted to a floating point number, we run into the request validation error.
+FastAPI validates inputs using pydantic models. If an incoming request for a FastAPI endpoint doesn't conform to the declared structure and parameter types, FastAPI returns request validation error in response. For example, we have defined the /calculate endpoint with three inputs where the `operation` must be a string and `num1` and `num2` must be floating point numbers or values that can be converted to floats. When we pass a string that cannot be converted to a floating point number, we run into the request validation error.
 
 
 ```bash
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 'HoneyBadger'}'
 ```
 For the above API call, the FastAPI app returns a json object with "JSON decode error" message.
+
 ```json
 {"detail":[{"type":"json_invalid","loc":["body",43],"msg":"JSON decode error","input":{},"ctx":{"error":"Expecting value"}}]}
 ```
+
 If you look into the logs, the FastAPI app logs the API calls with request validation errors with the message `422 Unprocessable Entity`. 
+
 ```py
 INFO:     127.0.0.1:38050 - "POST /calculate/ HTTP/1.1" 422 Unprocessable Entity
 ```
 
 ### HTTP Exception
 
-HTTP exceptions are built-in FastAPI exceptions that we can use to raise exceptions and send error responses with standard HTTP status codes. When we raise an HTTP exception, FastAPI automatially handles the exception and returns the content in the `detail` parameter to as the API response. For instance, we have raised an HTTP exception in our FastAPI app when the requested operation in the API call is other than add, subtract, multiply, and divide. Hence, if we pass `write` as an input to the operation field, the calculator app raises the HTTP exception.
+HTTP exceptions are built-in FastAPI exceptions that we can use to raise exceptions and send error responses with standard HTTP status codes. When we raise an HTTP exception, FastAPI automatially handles the exception and returns the content in the `detail` parameter as the API response. For instance, we have raised an HTTP exception in our FastAPI app when the requested operation in the API call is other than add, subtract, multiply, and divide. Hence, if we pass `write` as an input to the operation field, the calculator app raises the HTTP exception.
 
 ```bash
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "write", "num1":10, "num2": 10}'
@@ -171,17 +165,38 @@ In the API response, we get the content from the detail parameter of the excepti
 ```json
 {"detail":{"type":"FAILURE","reason":"Not a valid operation"}}
 ```
+
 As we have defined the status code in the HTTPException to be 404, FastAPI logs the API execution call with the `404 Not Found` message. 
+
 ```py
 INFO:     127.0.0.1:53822 - "POST /calculate/ HTTP/1.1" 404 Not Found
 ```
 In addition to built-in errors and exceptions, we can also define custom execeptions based on business logic. Let's discuss how to do so.
 
-### Custom exceptions
+### Custom exceptions in FastAPI
 
-We can define custom FastAPI exceptions for handling errors due to business logic by inheriting built-in Python exception classes. In the custom exception, we can define any number of attributes to store the information about the error. After defining the exception, we can create exception handlers to handle the custom exception. 
+We can define custom FastAPI exceptions for handling errors by inheriting built-in Python exception classes. In the custom exception, we can define any number of attributes to store the information about the error. After defining the exception, we can create exception handlers to handle the custom exception. 
 
-For example, we can create a custom `InvalidOperationError` exception by inheriting the Python `Exception` class to handle errors due to unsupported `operation` in the API requests to the calculator app. Next, we can create an exception handler using the `@app.exception_handler` decorator to handle the `InvalidOperationError` by raising an HTTPException to get the output for the API call.  
+For example, we can create a custom `InvalidOperationError` exception by inheriting the Python `Exception` class to handle errors due to unsupported `operation` in the API requests to the calculator app. 
+
+```
+# Define a custom exception class
+class InvalidOperationError(Exception):
+    def __init__(self, message: str="Not a valid operation.",type: str= "FAILURE", code: int = 404):
+        self.message = message
+        self.code = code
+        self.type=type
+        super().__init__(message)
+```
+
+Next, we can create an exception handler using the `@app.exception_handler` decorator to handle the `InvalidOperationError` by raising an HTTPException to get the output for the API call.  
+
+```
+# Register an exception handler to handle the InvalidOperationError exception
+@app.exception_handler(InvalidOperationError)
+async def invalid_operation_exception_handler(request: Request,exc: InvalidOperationError):
+    raise HTTPException(status_code=exc.code, detail={"type":exc.type, "reason":exc.message})
+```
 
 After defining the exception along with the exception handler, we can raise the custom exception from anywhere in the code and it gets handled by the exception handler. 
 
