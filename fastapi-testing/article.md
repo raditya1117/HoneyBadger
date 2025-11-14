@@ -634,11 +634,36 @@ Now that we have discussed the different types of FastAPI errors and handling th
 
 ## FastAPI error handling best practices
 
-### Use HTTPException for Business Logic Errors
+### Use HTTPException to return responses in the exception handers
 
-### Create Custom Exception Classes for Domain Errors
+HTTPException helps us raise exceptions with specific status code and error details. Also, HTTPException is automatically handled by FastAPI and the content passed to the `detail` parameter of the HTTPException construcor is returned as API response. Hence, you should use the HTTPException class to raise exceptions with proper status codes and message. 
+
+```
+@app.exception_handler(ZeroDivisionError)
+async def zerodivisionerror_handler(request: Request,exc: ZeroDivisionError):
+    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"Cannot perform division as the second operand is zero.", })
+```
+
+
+### Create Custom Exception Classes for Domain and Business Logic Errors
+
+You should use custom exception classes for domain errors instead of raising generic exceptions. This will help you handle errors, log error-specific messages, and send proper responses to the users.
+
+For instance, the calculator app supports only addition, subtraction, multiplication, and division. Hence, we have defined a custom exception class named `InvalidOperationError` to raise exceptions for unsupported operations. 
+
+```
+class InvalidOperationError(Exception):
+    def __init__(self, message: str="Not a valid operation.",type: str= "FAILURE", code: int = 404):
+        self.message = message
+        self.code = code
+        self.type=type
+        super().__init__(message)
+```
+In a similar manner, you can write custom exception classes for domain and business logic errors, and write exception handlers to handle the custom exceptions.
+
 
 ### Implement a Global Exception Handler
+
 Always implement a global exception handler that handles any uncaught exception and returns a safe response instead of crashing the server. To do this, you can build an exception handler for Python Exception class as follows:
 
 ```
@@ -650,9 +675,7 @@ async def global_exception_handler(request: Request,exc: Exception):
     operation=payload.operation
     raise HTTPException(status_code=500, detail={"type":"FAILURE", "reason":"An unexpected error occurred.", "operand_1":num1, "operand_2":num2, "operation":operation})
 ```
-
-
-
+The global exception handler handles any uncaught FastAPI error and prevents the server from running into errors.
 ### Standardize Error Response Format
 
 It is important to standardize the error response format. This makes is easier for the frontend developers to parse the error response and show proper error messages to the user. For example, we have defined the error response format with fields type, reason, operand_1, operand_2, and operation.
@@ -696,10 +719,12 @@ For the API request with missing values, we get the following response:
 As you can see, both the responses have the same structure and they can be processed by the frontend app to show appropriate error messages to the user. Hence, it is important to handle request validation errors explicitely and standardize their responses.
 
 ### Use logging and email alerts for observability
+
 It is important to log the error messages and exception trace before sending the error response. The error logs can help identify root cause of the errors and debug them to build a robust application. You should also configure email alerts for critical issues like security breaches, rate limit errors, or out of memory errors that should never be ignored.
 
-## Map Internal Errors to Safe Public Messages
+### Map Internal Errors to Safe Public Messages
 
+You should not never internal error Python error messages to users in the error response. Doing so can expose user credentials, API keys, and PII that shouldn't be accessible outside the system. Hence, Always write exception handlers that map internal Python errors to safe public messages free of credentials and PIIs.
 
 ## Conclusion
 This section will summarize what the article discussed and include a CTA.
