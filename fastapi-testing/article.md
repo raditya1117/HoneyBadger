@@ -639,10 +639,54 @@ Now that we have discussed the different types of FastAPI errors and handling th
 ### Create Custom Exception Classes for Domain Errors
 
 ### Implement a Global Exception Handler
+Always implement a global exception handler that handles any uncaught exception and returns a safe response instead of crashing the server. To do this, you can build an exception handler for Python Exception class as follows:
+
+```
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request,exc: Exception):
+    payload = getattr(request.state, "payload", None)
+    num1 = payload.num1
+    num2 = payload.num2
+    operation=payload.operation
+    raise HTTPException(status_code=500, detail={"type":"FAILURE", "reason":"An unexpected error occurred.", "operand_1":num1, "operand_2":num2, "operation":operation})
+```
 
 ### Standardize Error Response Format
 
+
+
 ### Customize Validation Error Responses
+Every validation error response has a different structure. For example, if we send an API request with correct number of fields but incorrect data types, we get the following validation error response
+
+```
+{"detail":[{"type":"json_invalid","loc":["body",43],"msg":"JSON decode error","input":{},"ctx":{"error":"Expecting value"}}]}
+```
+
+On the other hand, if we send an API request with a missing field, we get the following response:
+
+```
+{"detail":[{"type":"missing","loc":["body","num2"],"msg":"Field required","input":{"operation":"divide","num1":10}}]}
+```
+
+To standardize these responses, you can write an exception handler as follows:
+
+```
+@app.exception_handler(RequestValidationError)
+async def request_validation_error_handler(request: Request,exc: RequestValidationError):
+    error=exc.errors()
+    raise HTTPException(status_code=422, detail={"type":"RequestValidationError", "error_type":error[0]["type"], "reason":error[0]["msg"]})
+```
+After implementing this exception handler, we get the following response for the API request with incorrect values:
+
+```
+{"detail":{"type":"RequestValidationError","error_type":"json_invalid","reason":"JSON decode error"}}
+```
+For the API request with missing values, we get the following response:
+```
+{"detail":{"type":"RequestValidationError","error_type":"missing","reason":"Field required"}}
+```
+As you can see, both the responses have the same structure and they can be processed by the frontend app to show appropriate error messages to the user. Hence, it is important to handle request validation errors explicitely and standardize their responses.
+
 ### Use logging for observability
 -Always Log the Actual Exception Internally
 
