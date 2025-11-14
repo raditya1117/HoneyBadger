@@ -651,11 +651,19 @@ async def global_exception_handler(request: Request,exc: Exception):
     raise HTTPException(status_code=500, detail={"type":"FAILURE", "reason":"An unexpected error occurred.", "operand_1":num1, "operand_2":num2, "operation":operation})
 ```
 
+
+
 ### Standardize Error Response Format
 
+It is important to standardize the error response format. This makes is easier for the frontend developers to parse the error response and show proper error messages to the user. For example, we have defined the error response format with fields type, reason, operand_1, operand_2, and operation.
 
+```
+{"type":"FAILURE", "reason":"Error message", "operand_1":num1, "operand_2":num2, "operation":operation}
+```
+All the exception handlers in our app return the error messages in the same format, which will make parsing the error message easier.
 
 ### Customize Validation Error Responses
+
 Every validation error response has a different structure. For example, if we send an API request with correct number of fields but incorrect data types, we get the following validation error response
 
 ```
@@ -687,10 +695,12 @@ For the API request with missing values, we get the following response:
 ```
 As you can see, both the responses have the same structure and they can be processed by the frontend app to show appropriate error messages to the user. Hence, it is important to handle request validation errors explicitely and standardize their responses.
 
-### Use logging for observability
--Always Log the Actual Exception Internally
+### Use logging and email alerts for observability
+It is important to log the error messages and exception trace before sending the error response. The error logs can help identify root cause of the errors and debug them to build a robust application. You should also configure email alerts for critical issues like security breaches, rate limit errors, or out of memory errors that should never be ignored.
 
-### Map Internal Errors to Safe Public Messages
+## Map Internal Errors to Safe Public Messages
+
+
 ## Conclusion
 This section will summarize what the article discussed and include a CTA.
 
