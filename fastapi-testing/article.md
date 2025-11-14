@@ -634,7 +634,7 @@ Now that we have discussed the different types of FastAPI errors and handling th
 
 ## FastAPI error handling best practices
 
-### Use HTTPException to return responses in the exception handers
+### Use HTTPException to raise exceptions
 
 HTTPException helps us raise exceptions with specific status code and error details. Also, HTTPException is automatically handled by FastAPI and the content passed to the `detail` parameter of the HTTPException construcor is returned as API response. Hence, you should use the HTTPException class to raise exceptions with proper status codes and message. 
 
@@ -644,7 +644,8 @@ async def zerodivisionerror_handler(request: Request,exc: ZeroDivisionError):
     raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"Cannot perform division as the second operand is zero.", })
 ```
 
-
+### Use JSONResponse in exception handlers 
+Avoid raising HTTPException inside exception handlers as it causes nested exception. When you are handling errors through a custom exception handler, always use the JSONResponse class to return API responses. 
 ### Create Custom Exception Classes for Domain and Business Logic Errors
 
 You should use custom exception classes for domain errors instead of raising generic exceptions. This will help you handle errors, log error-specific messages, and send proper responses to the users.
