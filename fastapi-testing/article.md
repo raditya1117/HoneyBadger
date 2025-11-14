@@ -732,4 +732,12 @@ This section will summarize what the article discussed and include a CTA.
 
 ## Frequently asked questions
 
-To improve SEO visibility, we will include some FAQs from the Google search page's "people also asked " section.
+### 1. What is error 404 not found in FastAPI?
+
+### 2. What is 422 unprocessable entity in FastAPI?
+
+### 3. Should I return 204 or 404?
+
+### 4. Should HTTP delete return 200 or 204?
+
+### 5. How to avoid cors error in FastAPI?
