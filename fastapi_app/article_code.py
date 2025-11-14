@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Request, Depends
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
 
 
 app = FastAPI()
@@ -48,6 +49,12 @@ async def zerodivisionerror_handler(request: Request,exc: ValueError):
     num2 = payload.num2
     operation=payload.operation
     raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"ValueError exception occurred due to operands with correct data types but inappropriate values.", "operand_1":num1, "operand_2":num2, "operation":operation})
+    
+# Register an exception handler to handle RequestValidationError exceptions
+@app.exception_handler(RequestValidationError)
+async def request_validation_error_handler(request: Request,exc: RequestValidationError):
+    error=exc.errors()
+    raise HTTPException(status_code=422, detail={"type":"RequestValidationError", "error_type":error[0]["type"], "reason":error[0]["msg"]})
 
 # Define the root API endpoint
 @app.get("/")
