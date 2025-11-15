@@ -532,7 +532,7 @@ async def invalid_operation_exception_handler(request: Request,exc: InvalidOpera
     num1 = payload.num1
     num2 = payload.num2
     operation=payload.operation
-    raise HTTPException(status_code=exc.code, detail={"type":exc.type, "reason":exc.message, "operand_1":num1, "operand_2":num2, "operation":operation})
+    return JSONResponse(status_code=exc.code, content={"type":exc.type, "reason":exc.message, "operand_1":num1, "operand_2":num2, "operation":operation})
 
 # Register an exception handler to handle the TypeError exception
 @app.exception_handler(TypeError)
@@ -541,7 +541,7 @@ async def typeerror_handler(request: Request,exc: TypeError):
     num1 = payload.num1
     num2 = payload.num2
     operation=payload.operation
-    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"TypeError exception occurred due to mismatch between the expected and the actual data type of the operands.", "operand_1":num1, "operand_2":num2, "operation":operation})
+    return JSONResponse(status_code=400, content={"type":"FAILURE", "reason":"TypeError exception occurred due to mismatch between the expected and the actual data type of the operands.", "operand_1":num1, "operand_2":num2, "operation":operation})
 
 # Register an exception handler to handle the ZeroDivisionError exception
 @app.exception_handler(ZeroDivisionError)
@@ -550,7 +550,7 @@ async def zerodivisionerror_handler(request: Request,exc: ZeroDivisionError):
     num1 = payload.num1
     num2 = payload.num2
     operation=payload.operation
-    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"Cannot perform division as the second operand is zero.", "operand_1":num1, "operand_2":num2, "operation":operation})
+    return JSONResponse(status_code=400, content={"type":"FAILURE", "reason":"Cannot perform division as the second operand is zero.", "operand_1":num1, "operand_2":num2, "operation":operation})
 
 # Register an exception handler to handle the ValueError exception
 @app.exception_handler(ValueError)
@@ -559,7 +559,7 @@ async def zerodivisionerror_handler(request: Request,exc: ValueError):
     num1 = payload.num1
     num2 = payload.num2
     operation=payload.operation
-    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"ValueError exception occurred due to operands with correct data types but inappropriate values.", "operand_1":num1, "operand_2":num2, "operation":operation})
+    return JSONResponse(status_code=400, content={"type":"FAILURE", "reason":"ValueError exception occurred due to operands with correct data types but inappropriate values.", "operand_1":num1, "operand_2":num2, "operation":operation})
 
 # Define the root API endpoint
 @app.get("/")
@@ -607,7 +607,7 @@ curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json
 The above request raises InvalidOperationError, which is then handled by the exception handler and we get the following output:
 
 ```
-{"detail":{"type":"FAILURE","reason":"Not a valid operation.","operand_1":10.0,"operand_2":10.0,"operation":"write"}}
+{"type":"FAILURE","reason":"Not a valid operation.","operand_1":10.0,"operand_2":10.0,"operation":"write"}
 ```
 
 As you can see, the exception handler is able to access the inputs passed in the API call.
@@ -625,7 +625,7 @@ async def global_exception_handler(request: Request,exc: Exception):
     num1 = payload.num1
     num2 = payload.num2
     operation=payload.operation
-    raise HTTPException(status_code=500, detail={"type":"FAILURE", "reason":"An unexpected error occurred.", "operand_1":num1, "operand_2":num2, "operation":operation})
+    return JSONResponse(status_code=500, content={"type":"FAILURE", "reason":"An unexpected error occurred.", "operand_1":num1, "operand_2":num2, "operation":operation})
 ```
 
 The above exception handler can handle any FastAPI error that isn't handled by any other exception handler. This makes sure that the FastAPI app doesn't run into Internal Server Error after any exception. 
