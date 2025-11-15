@@ -1,7 +1,7 @@
 # Error Handling in FastAPI
-Errors and exceptions are inevitable in any software and FastAPI applications are no exception. It is imporant to implement robust error-handling mechanim in FasAPI applications as errors can disrupt the normal flow of execution, expose sensitive information, and lead to poor user experience.
+Errors and exceptions are inevitable in any software, and FastAPI applications are no exception. It is important to implement robust error-handling mechanisms in FasAPI applications as errors can disrupt the normal flow of execution, expose sensitive information, and lead to a poor user experience.
 
-In this article, we will discuss the different types of errors in FastAPI to help you understand their causes and effects. We will also discuss the different ways to implement error handling in FastAPI using in-built methods and custom exception classes. Finally, we will discuss some FastAPI error handling best practices to help you build robust APIs.
+In this article, we will discuss the different types of FastAPI errors to help you understand their causes and effects. We will also discuss various methods for implementing error handling in FastAPI, including built-in methods and custom exception classes. Finally, we will discuss some best practices for FastAPI error handling to help you build robust APIs.
 
 ## What are errors and exceptions in FastAPI?
 
