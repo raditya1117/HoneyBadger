@@ -5,11 +5,11 @@ In this article, we will discuss the different types of FastAPI errors to help y
 
 ## What are errors and exceptions in FastAPI?
 
-Errors and exectpions in FastAPI applications are situations where the normal flow of an execution is interrupted due to an unexpected event, such as invalid input, missing data, or a failed database connection. For example, trying to divide a number by zero causes an error as it is not a valid mathematical operation.
+Errors and exceptions in FastAPI applications occur when the normal execution flow is interrupted due to an unexpected event, such as invalid input, missing data, or a failed database connection. For example, attempting to divide a number by zero results in an error, as it is not a valid mathematical operation.
 
 FastAPI provides different exception handling mechanisms to handle errors. After encountering an error, the FastAPI app raises an exception that disrupts the normal execution flow of the app. We can catch the exception, log the error messages, and send a meaningful response to the user.
 
-To understand the different types and errors in FastAPI and handling them, let's create a calculator app using FastAPI. Using the calcultor app, we will disucss the different types of errors, how they occur, how to handle them.
+To understand the different types and errors in FastAPI and how to handle them, let's create a calculator app using FastAPI. Using the calculator app, we will discuss the various types of errors, their occurrence, and how to handle them.
 
 ```py
 from fastapi import FastAPI, HTTPException
