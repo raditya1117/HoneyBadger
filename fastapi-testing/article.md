@@ -684,13 +684,10 @@ Always implement a global exception handler that handles any uncaught exception 
 ```
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request,exc: Exception):
-    payload = getattr(request.state, "payload", None)
-    num1 = payload.num1
-    num2 = payload.num2
-    operation=payload.operation
-    raise HTTPException(status_code=500, detail={"type":"FAILURE", "reason":"An unexpected error occurred.", "operand_1":num1, "operand_2":num2, "operation":operation})
+    return JSONResponse(status_code=500, content={"type":"FAILURE", "reason":"An unexpected error occurred."})
 ```
-The global exception handler handles any uncaught FastAPI error and prevents the server from running into errors.
+
+The global exception handler handles any uncaught FastAPI error and prevents the server from crashing due to errors.
 
 ### Standardize Error Response Format
 
