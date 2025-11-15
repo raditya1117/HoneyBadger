@@ -636,16 +636,23 @@ Now that we have discussed the different types of FastAPI errors and handling th
 
 ### Use HTTPException to raise exceptions
 
-HTTPException helps us raise exceptions with specific status code and error details. Also, HTTPException is automatically handled by FastAPI and the content passed to the `detail` parameter of the HTTPException construcor is returned as API response. Hence, you should use the HTTPException class to raise exceptions with proper status codes and message. 
+HTTPException helps us raise exceptions with specific status code and error messages. Also, HTTPException is automatically handled by FastAPI and the content passed to the `detail` parameter of the HTTPException construcor is returned as the API response. Hence, you should use the HTTPException class to raise exceptions with proper status codes and message. 
+
+```
+if operation not in ["add", "subtract", "multiply", "divide"]:
+        raise HTTPException(status_code=404, detail={"type":"FAILURE", "reason":"Not a valid operation"})
+```
+
+### Use JSONResponse in exception handlers 
+
+You should avoid raising HTTPException inside exception handlers as it causes nested exception. While handling errors through a custom exception handler, always use the JSONResponse class to return API responses with suitable status codes. 
 
 ```
 @app.exception_handler(ZeroDivisionError)
 async def zerodivisionerror_handler(request: Request,exc: ZeroDivisionError):
-    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"Cannot perform division as the second operand is zero.", })
+    return JSONResponse(status_code=400, content={"type":"FAILURE", "reason":"Cannot perform division as the second operand is zero."})
 ```
 
-### Use JSONResponse in exception handlers 
-Avoid raising HTTPException inside exception handlers as it causes nested exception. When you are handling errors through a custom exception handler, always use the JSONResponse class to return API responses. 
 ### Create Custom Exception Classes for Domain and Business Logic Errors
 
 You should use custom exception classes for domain errors instead of raising generic exceptions. This will help you handle errors, log error-specific messages, and send proper responses to the users.
@@ -660,8 +667,15 @@ class InvalidOperationError(Exception):
         self.type=type
         super().__init__(message)
 ```
-In a similar manner, you can write custom exception classes for domain and business logic errors, and write exception handlers to handle the custom exceptions.
 
+After defining custom exception classes, you can register and exception handler to handle them.For instance, we have implemented the exception handler for the InvalidOperationError exception as follows:
+
+```
+@app.exception_handler(InvalidOperationError)
+async def invalid_operation_exception_handler(request: Request,exc: InvalidOperationError):
+    return JSONResponse(status_code=exc.code, content={"type":exc.type, "reason":exc.message})
+```
+In a similar manner, you can write custom exception classes for domain and business logic errors, and write exception handlers to handle the custom exceptions.
 
 ### Implement a Global Exception Handler
 
@@ -677,6 +691,7 @@ async def global_exception_handler(request: Request,exc: Exception):
     raise HTTPException(status_code=500, detail={"type":"FAILURE", "reason":"An unexpected error occurred.", "operand_1":num1, "operand_2":num2, "operation":operation})
 ```
 The global exception handler handles any uncaught FastAPI error and prevents the server from running into errors.
+
 ### Standardize Error Response Format
 
 It is important to standardize the error response format. This makes is easier for the frontend developers to parse the error response and show proper error messages to the user. For example, we have defined the error response format with fields type, reason, operand_1, operand_2, and operation.
@@ -684,7 +699,8 @@ It is important to standardize the error response format. This makes is easier f
 ```
 {"type":"FAILURE", "reason":"Error message", "operand_1":num1, "operand_2":num2, "operation":operation}
 ```
-All the exception handlers in our app return the error messages in the same format, which will make parsing the error message easier.
+
+All the exception handlers in our app return the error messages in the same format, which will make parsing the error messages easier.
 
 ### Customize Validation Error Responses
 
@@ -706,26 +722,26 @@ To standardize these responses, you can write an exception handler as follows:
 @app.exception_handler(RequestValidationError)
 async def request_validation_error_handler(request: Request,exc: RequestValidationError):
     error=exc.errors()
-    raise HTTPException(status_code=422, detail={"type":"RequestValidationError", "error_type":error[0]["type"], "reason":error[0]["msg"]})
+    return JSONResponse(status_code=422, content={"type":"RequestValidationError", "error_type":error[0]["type"], "reason":error[0]["msg"]})
 ```
 After implementing this exception handler, we get the following response for the API request with incorrect values:
 
 ```
-{"detail":{"type":"RequestValidationError","error_type":"json_invalid","reason":"JSON decode error"}}
+{"type":"RequestValidationError","error_type":"json_invalid","reason":"JSON decode error"}
 ```
 For the API request with missing values, we get the following response:
 ```
-{"detail":{"type":"RequestValidationError","error_type":"missing","reason":"Field required"}}
+{"type":"RequestValidationError","error_type":"missing","reason":"Field required"}
 ```
 As you can see, both the responses have the same structure and they can be processed by the frontend app to show appropriate error messages to the user. Hence, it is important to handle request validation errors explicitely and standardize their responses.
 
 ### Use logging and email alerts for observability
 
-It is important to log the error messages and exception trace before sending the error response. The error logs can help identify root cause of the errors and debug them to build a robust application. You should also configure email alerts for critical issues like security breaches, rate limit errors, or out of memory errors that should never be ignored.
+It is important to log the error messages and exception trace before sending the error response. The error logs can help identify root cause of the errors and debug them to build a robust application. You should also configure email alerts for critical issues like security breaches, rate limit errors, or out of memory errors that should not be ignored.
 
 ### Map Internal Errors to Safe Public Messages
 
-You should not never internal error Python error messages to users in the error response. Doing so can expose user credentials, API keys, and PII that shouldn't be accessible outside the system. Hence, Always write exception handlers that map internal Python errors to safe public messages free of credentials and PIIs.
+You should never reveal internal Python error messages to users in the error response. Doing so can expose user credentials, API keys, and PII that shouldn't be accessible outside the system. Hence, Always write exception handlers that map internal Python errors to safe public messages free of credentials and PIIs.
 
 ## Conclusion
 This section will summarize what the article discussed and include a CTA.
@@ -733,11 +749,33 @@ This section will summarize what the article discussed and include a CTA.
 ## Frequently asked questions
 
 ### 1. What is error 404 not found in FastAPI?
+In FastAPI, the "404 Not Found" error indicates that the URL path or endpoint we are trying to access through the API request does not correspond to any defined endpoint in the FastAPI application. 
 
 ### 2. What is 422 unprocessable entity in FastAPI?
+In FastAPI, the "422 Unprocessable Entity" error indicates that the server understands the content type and syntax of payload in the request, but it cannot process the request due to semantic errors in the request body, such as missing required fields, incorrect data types, invalid data format, or mismatch in parameter handling. 
 
 ### 3. Should I return 204 or 404?
+You should return 404 if the requested resource or endpoint doesn't exist. On the other hand, 204 should be used when the request is processed successfully but there is no content to return in the response body. 
 
 ### 4. Should HTTP delete return 200 or 204?
+You should use the "204 No Content" status for successful delete operations if you don't need to send back any information to the client in response. However, if you want to return information like confirmation message or details about the deleted resource, you should use the "200 OK" status. 
 
 ### 5. How to avoid cors error in FastAPI?
+To avoid cross origin resource sharing (CORS) errors in FastAPI, you can use CORSMiddleware in your FastAPI application to allow cross origin requests.
+
+```
+from fastapi.middleware.cors import CORSMiddleware
+
+# Define a list of origins that are allowed to make cross origin requests. 
+origins = ["http://localhost.honeybadger.io", "https://localhost.honeybadger.io", "http://localhost", "http://localhost:8080"]
+
+# Add middleware to the FastAPI app
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins = origins, # Use ["*"] to allow all the origins 
+    allow_methods = ["*"] # List of allowed HTTP methods. Defaults to ["GET"]. ["*"] allows all the methods.
+    allow_headers = ["*"] # List of HTTP request headers supported for cross origin requests. Defaults to []. ["*"] allows all the headers.
+)
+```
+
+I hope you enjoyed reading the article. Happy Learning!
