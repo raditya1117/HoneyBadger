@@ -53,7 +53,7 @@ async def calculation(input_data: InputData):
         return JSONResponse(status_code=200, content={"type":"SUCCESS", "output":result})
 ```
 
-In this code, we have defined the `/calculate` endpoint in the FastAPI application that takes the operation name and operands as its input, validates the input using the `InputData` model and returns the calculated value in case of successful execution.  Save the above code in `calculator_app.py`. Next, run the FastAPI app server with the calculator application using the following command:
+In this code, we have defined the `/calculate` endpoint in the FastAPI application, which takes the operation name and operands as input. The endpoint validates the input using the `InputData` model and returns the calculated value in case of successful execution.  Save the above code in `calculator_app.py`. Next, run the FastAPI app server with the calculator application using the following command:
 
 ```bash
 uvicorn calculator_app:app --reload --port 8080 --host 0.0.0.0
@@ -65,13 +65,13 @@ After starting the FastAPI server, you can perform different operations by sendi
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "add", "num1":10, "num2": 10}'
 ```
 
-Executing the above commad will give you the following output.
+Executing the above command will give you the following output.
 
 ```json
 {"type":"SUCCESS","output":20.0}
 ```
 
-FastAPI logs the API call as a successfull execution using the HTTP code `200 OK`.
+FastAPI logs the API call as a successful execution using the HTTP code `200 OK`.
 
 ```py
 INFO:     127.0.0.1:43880 - "POST /calculate/ HTTP/1.1" 200 OK
@@ -81,11 +81,13 @@ Now that we have implemented the basic calculator app, let's discuss the differe
 
 ## Different types of errors in FastAPI
 
-Errors in FastAPI are caregorized into various types such as internal server error, validation error, method not allowed error and HTTP exception. Let's discss the different types of errors in FastAPI so that we can implement mechanisms to handle each of them.
+Errors in FastAPI are categorized into various types, such as internal server error, validation error, method not allowed error, and HTTP exception. Let's discuss the different types of errors in FastAPI so that we can implement mechanisms to handle each of them.
 
 ### Internal Server Error
 
-Internal server errors in FastAPI applications are caused by unexpected runtime issues like logical errors, math errors, or database issues that aren't explicitely handled by the program. For example, if the calculator app running on the FastAPI server tries to divide a number by zero, it will return internal server error due to `ZeroDivisionError`. Let's send an API request to the calculator app to trigger this error:
+Internal server errors in FastAPI applications are caused by unexpected runtime issues, such as logical errors, mathematical errors, or database issues, that aren't explicitly handled by the program. For example, if the calculator app running on the FastAPI server tries to divide a number by zero, it will return an internal server error due to `ZeroDivisionError`. 
+
+Let's send an API request to the calculator app to trigger this error:
 
 ```bash
 curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 0}'
@@ -111,28 +113,28 @@ Traceback (most recent call last):
 ZeroDivisionError: float division by zero
 ```
 
-After an internal server error, the fastapi server stops and it must be restarted. 
+After an internal server error, the FastAPI server stops, and it must be restarted. 
 
 ### Method Not Allowed error
 
-The `Method Not Allowed` error occurs due to wrong HTTP method in the API call. If a FastAPI endpoint is defined using the POST request method and we call the API endpoint using GET request method, the FastAPI server runs into StarletteHTTPException with status code 405. For instance, we have defined the `/calculate` endpoint using the POST request method. When we send a GET request to the endpoint, the FastAPI app runs into StarletteHTTPException exception. 
+The `Method Not Allowed` error occurs due to a wrong HTTP method in the API call. If a FastAPI endpoint is defined using the POST request method and we call the API endpoint using the GET request method, the FastAPI server runs into StarletteHTTPException with status code 405. For instance, we have defined the `/calculate` endpoint using the POST request method. When we send a GET request to the endpoint, the FastAPI app runs into the StarletteHTTPException exception. 
 
 ```
 curl http://127.0.0.1:8080/calculate/ -X GET -H "Content-Type: application/json" -d '{"operation": "add", "num1":10, "num2": 10}'
 ```
 
-FastAPI internally handles the StarletteHTTPException and returns the `"Method Not Allowed"` message. 
+FastAPI internally handles the StarletteHTTPException and returns the "Method Not Allowed" message. 
 
 ```
 {"detail":"Method Not Allowed"}
 ```
 
-If you check the execution logs, you can see `405 Method Not Allowed` message as follows:
+If you check the execution logs, you can see the `405 Method Not Allowed` message as follows:
 
 ```
 INFO:     127.0.0.1:34004 - "GET /calculate/ HTTP/1.1" 405 Method Not Allowed
 ```
-In a similar manner, any API call with existing API endpoints but wrong HTTP method leads to Method Not Allowed Error.
+Similarly, any API call with existing API endpoints but an incorrect HTTP method results in a Method Not Allowed Error.
 
 ### Request Validation Error
 
