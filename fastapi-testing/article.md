@@ -195,7 +195,7 @@ Next, we can create an exception handler using the `@app.exception_handler` deco
 # Register an exception handler to handle the InvalidOperationError exception
 @app.exception_handler(InvalidOperationError)
 async def invalid_operation_exception_handler(request: Request,exc: InvalidOperationError):
-    raise HTTPException(status_code=exc.code, detail={"type":exc.type, "reason":exc.message})
+    return JSONResponse(status_code=exc.code, content={"type":exc.type, "reason":exc.message})
 ```
 
 After defining the exception along with the exception handler, we can raise the custom exception from anywhere in the code and it gets handled by the exception handler. 
@@ -221,7 +221,7 @@ class InvalidOperationError(Exception):
 # Register an exception handler to handle the InvalidOperationError exception
 @app.exception_handler(InvalidOperationError)
 async def invalid_operation_exception_handler(request: Request,exc: InvalidOperationError):
-    raise HTTPException(status_code=exc.code, detail={"type":exc.type, "reason":exc.message})
+    return JSONResponse(status_code=exc.code, content={"type":exc.type, "reason":exc.message})
 
 # Define the root API endpoint
 @app.get("/")
@@ -262,7 +262,7 @@ curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json
 ```
 The FastAPI application gives the following output as the response for the above request. 
 ```
-{"detail":{"type":"FAILURE","reason":"Not a valid operation."}}
+{"type":"FAILURE","reason":"Not a valid operation."}
 ```
 As you can see, the handler for the InvalidOperationError raises an HTTPException, which gives us the message output using the attributes of the InvalidOperationError. In the logs, FastAPI records this execution with `404 Not Found` message as we have assigned the 404 HTTP code to the InvalidOperationError.
 
@@ -300,7 +300,7 @@ class InvalidOperationError(Exception):
 # Register an exception handler to handle the InvalidOperationError exception
 @app.exception_handler(InvalidOperationError)
 async def invalid_operation_exception_handler(request: Request,exc: InvalidOperationError):
-    raise HTTPException(status_code=exc.code, detail={"type":exc.type, "reason":exc.message})
+    return JSONResponse(status_code=exc.code, content={"type":exc.type, "reason":exc.message})
 
 
 # Define the root API endpoint
@@ -380,7 +380,7 @@ For instance, we can define a custom exception handler to handle all the TypeErr
 ```
 @app.exception_handler(TypeError)
 async def typeerror_handler(request: Request, exc: TypeError):
-    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"TypeError exception occurred due to mismatch between the expected and the actual data type of the operands."})
+    return JSONResponse(status_code=400, content={"type":"FAILURE", "reason":"TypeError exception occurred due to mismatch between the expected and the actual data type of the operands."})
 ```
 
 This exception handler will process all the TypeError exceptions irrespective of where they are raised in the FastAPI app. In a similar manner, we can define custom exception handlers for ZeroDivisionError and ValueError exceptions, as shown below:
@@ -404,22 +404,22 @@ class InvalidOperationError(Exception):
 # Register an exception handler to handle the InvalidOperationError exception
 @app.exception_handler(InvalidOperationError)
 async def invalid_operation_exception_handler(request: Request,exc: InvalidOperationError):
-    raise HTTPException(status_code=exc.code, detail={"type":exc.type, "reason":exc.message})
+    return JSONResponse(status_code=exc.code, content={"type":exc.type, "reason":exc.message})
 
 # Register an exception handler to handle the TypeError exception
 @app.exception_handler(TypeError)
 async def typeerror_handler(request: Request, exc: TypeError):
-    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"TypeError exception occurred due to mismatch between the expected and the actual data type of the operands."})
+    return JSONResponse(status_code=400, content={"type":"FAILURE", "reason":"TypeError exception occurred due to mismatch between the expected and the actual data type of the operands."})
 
 # Register an exception handler to handle the ZeroDivisionError exception
 @app.exception_handler(ZeroDivisionError)
 async def zerodivisionerror_handler(request: Request,exc: ZeroDivisionError):
-    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"Cannot perform division as the second operand is zero."})
+    return JSONResponse(status_code=400, content={"type":"FAILURE", "reason":"Cannot perform division as the second operand is zero."})
 
 # Register an exception handler to handle the ValueError exception
 @app.exception_handler(ValueError)
 async def valueerror_handler(request: Request,exc: ValueError):
-    raise HTTPException(status_code=400, detail={"type":"FAILURE", "reason":"ValueError exception occurred due to operands with correct data types but inappropriate values."})
+    return JSONResponse(status_code=400, content={"type":"FAILURE", "reason":"ValueError exception occurred due to operands with correct data types but inappropriate values."})
 
 # Define the root API endpoint
 @app.get("/")
@@ -457,12 +457,12 @@ async def calculation(input_data: InputData):
 Now, let's try to divide a number by zero using the /calculate API call.
 
 ```bash
-curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 0}'```
+curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json" -d '{"operation": "divide", "num1":10, "num2": 0}'
 ```
 The FastAPI app returns an output as follows:
 
 ```json
-{"detail":{"type":"FAILURE","reason":"Cannot perform division as the second operand is zero."}}
+{"type":"FAILURE","reason":"Cannot perform division as the second operand is zero."}
 ```
 As you can see, the API response contains the message from the custom exception handler `zerodivisionerror_handler`. As we have defined the status code to 400 in the `zerodivisionerror_handler`, the log message also records the API call with the `400 Bad Request` message.
 
@@ -478,7 +478,7 @@ curl http://127.0.0.1:8080/calculate/ -X POST -H "Content-Type: application/json
 In the above API call, we have passed `1e308` and `1e-100` as operands for the divide operation. As the division causes ValueError exception due to overflow, we get the following response from the custom exception handler defined for ValueError exceptions.
 
 ```
-{"detail":{"type":"FAILURE","reason":"ValueError exception occurred due to operands with correct data types but inappropriate values."}}
+{"type":"FAILURE","reason":"ValueError exception occurred due to operands with correct data types but inappropriate values."}
 ```
 
 FastAPI also allows us to access data from the API request in the in exception handlers. To do this, we can attach the input data received in the API request to the payload of the Request object. Then, we can access data in the exception handler using the payload attribute of the Request.state object. 
