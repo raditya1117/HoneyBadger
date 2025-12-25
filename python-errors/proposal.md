@@ -5,31 +5,59 @@
 [betterstack](https://betterstack.com/community/guides/scaling-python/python-errors/)
 [qodo](https://www.qodo.ai/blog/common-python-error-types-and-how-to-resolve-them/)
 
-### Suggested H2/Questions to answer
+## Suggested H2/Questions to answer
+## What is an error in Python?
+
+## Different types of errors in Python
+
+- Syntax Errors
+- Runtime errors
+- Logical errors
+- System-level errors
+
+## Syntax errors in Python
+
+- Syntax errors
+- IndentationError
+- TabError
+- Unclosed strings / brackets
+- Invalid assignment errors
+
+## Runtime errors in Python
+
+- Arithmetic errors
+- TypeErrors
+- ValueErroes
+- Name errors
+- Index and Key errors
+- Attribute errors
+- Import errors
+
+## Logical errors
+
+- Incorrect conditional logic
+- Incorrect operator precedence
+- Incorrect operator usage
+- Integer vs Float errors
+- Incorrect variable initialization
+
+## System-level errors
+
+- System-exit and interruppt errors
+- File errors
+- Network errors
 
 ## SEO Briefing
-
-**URL:** https://www.honeybadger.io/blog/errors-in-python/
-
-**Target word count:** 2,328–2,677 words
-
-**Target audience:** General (web developers)
-
-**Search intent:** Informational
-
-**Article angle:** Guide
 
 ### Suggested H2/Questions to answer
 
 Answer these questions in your article using H2 headings for the question if possible:
 
 - x types of errors in python
-- syntax errors in python
 - file not found errors in pythin
 - import errors in pythin
 - runtime errors in python
 - api errors in python
-- indentation errors in python
 - semantic errors in python
 - logical errors in python
 - json errors in python
