@@ -1,4 +1,4 @@
-# Errors in Python
+# Errors in Python: Types, Causes, and Examples
 
 [gfg article](https://www.geeksforgeeks.org/python/errors-and-exceptions-in-python/)
 [rollbar](https://rollbar.com/blog/python-errors-and-how-to-handle-them/)
