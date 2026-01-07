@@ -14,3 +14,9 @@ We can broadly categorize Python errors into four types.
 Let's discuss all these errors one-by-one in detail, starting with syntax errors.
 
 ## Syntax Errors in Python
+
+### Indentation error
+
+### Unclosed strings/ brackets
+
+### Invalid assignment errors
