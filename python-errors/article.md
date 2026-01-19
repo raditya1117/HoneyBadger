@@ -15,6 +15,8 @@ Let's discuss all these errors one-by-one in detail, starting with syntax errors
 
 ## Syntax Errors in Python
 
+As the name suggests, syntax errors are the errors caused by invalid syntax or code structure. Syntax errors are often caused due to typos or incorrect indentation. Common syntax errors include indentation errors, unclosed strings and brackets, 
+
 ### Indentation error
 
 ### Unclosed strings/ brackets
