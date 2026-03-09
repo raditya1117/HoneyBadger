@@ -32,6 +32,7 @@
 - Index and Key errors
 - Attribute errors
 - Import errors
+- zero division error
 
 ## Logical errors
 
