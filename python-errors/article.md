@@ -29,7 +29,8 @@ File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1
              ^
 SyntaxError: expected ':'
 ```
-
+```
+```
 ### Indentation error
 
 ```
@@ -50,7 +51,6 @@ another
 def say_hello(name):
 print(f"Hi {name}, you are at HoneyBadger")
     
-say_hello("Aditya")
 ```
 output
 ```
@@ -63,8 +63,6 @@ IndentationError: expected an indented block after function definition on line 1
 def say_hello(name):
   print(f"Hi {name}, you are at HoneyBadger")
  print("Great seeing you here.")
-    
-say_hello("Aditya")
 ```
 output
 
@@ -99,22 +97,60 @@ output
          ^
 SyntaxError: '(' was never closed
 ```
+similarly
+
+```
+my_list=[1,2,3
+```
+output
+```
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1
+    my_list=[1,2,3
+            ^
+SyntaxError: '[' was never closed
+
+```
 Ymight run into this issue while using nested function calls, if else conditions or using pandas 
 
 ### TabError
 
 ```
 def say_hello(name):
-	print(f"Hi {name}, you are at HoneyBadger")
-    print("Great seeing you here.")
+	print(f"Hi {name}, you are at HoneyBadger") # Indentation using Tab
+    print("Great seeing you here.")  # Indentation using four spaces
 
-say_hello("Aditya")
 ```
 output:
 ```
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 3
-    print("Nice seeing you here.")
+    print("Great seeing you here.") # Indentation using four spaces
 TabError: inconsistent use of tabs and spaces in indentation
 
 ```
+Python 3 explicitly disallows mixing tabs and spaces for indentation in a way that makes the meaning ambiguous.
 ### Invalid assignment errors
+
+```
+"name"="HoneyBadger"
+```
+output
+```
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1
+    "name"="HoneyBadger"
+    ^^^^^^
+SyntaxError: cannot assign to literal here. Maybe you meant '==' instead of '='?
+```
+
+alternate
+```
+class="HoneyBadger"
+```
+output
+```
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1
+    class="HoneyBadger"
+         ^
+SyntaxError: invalid syntax
+```
+
+## Runtime errors
