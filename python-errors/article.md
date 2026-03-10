@@ -279,7 +279,7 @@ Traceback (most recent call last):
 AttributeError: 'int' object has no attribute 'append'
 ```
 
-## RecursionError
+### RecursionError
 Occurs when recursion depth exceeds limit. Happens becuase we forget to add a base case or terminating condition
 ```
 def increment_till_hundred(x):
@@ -314,3 +314,107 @@ increment_till_hundred(80)
 ```
 
 When a file cannot be opened it is an IOError but the IOError is a subset of and OSError. This change was made in Python 3.3. It is not a Runtime error. I emailed the author of my textbook and he was kind enough to reply and confirm. 
+
+## System-level errors in Python
+OSError
+
+```
+file=open("nonexistentfile.txt","r")
+```
+output:
+```
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
+    file=open("nonexistentfile.txt","r")
+FileNotFoundError: [Errno 2] No such file or directory: 'nonexistentfile.txt'
+```
+
+permission error
+
+```
+file=open("samplefile.txt","a")
+```
+output:
+```
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
+    file=open("samplefile.txt","a")
+PermissionError: [Errno 13] Permission denied: 'samplefile.txt'
+```
+alt
+```
+file=open("/home/aditya1117/codes/HoneyBadger/python-errors","r")
+```
+output:
+```
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
+    file=open("/home/aditya1117/codes/HoneyBadger/python-errors","r")
+IsADirectoryError: [Errno 21] Is a directory: '/home/aditya1117/codes/HoneyBadger/python-errors'
+```
+### MemoryError
+
+```
+my_list=[10] * (10**10)
+```
+output:
+
+```
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
+    my_list=[10] * (10**10)
+MemoryError
+```
+
+### KeyboardInterrupt
+
+```
+while True:
+	pass
+```
+output:
+```
+^CTraceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
+    while True:
+KeyboardInterrupt
+
+```
+### Connecction error
+
+```
+import requests
+response = requests.get('https://jsonplaceholder.typicode.com/todos/1')
+```
+output:
+```
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 4, in <module>
+    response = requests.get('https://jsonplaceholder.typicode.com/todos/1')
+  File "/home/aditya1117/.local/lib/python3.10/site-packages/requests/api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "/home/aditya1117/.local/lib/python3.10/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/home/aditya1117/.local/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/aditya1117/.local/lib/python3.10/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "/home/aditya1117/.local/lib/python3.10/site-packages/requests/adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='jsonplaceholder.typicode.com', port=443): Max retries exceeded with url: /todos/1 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7400d45a6c80>: Failed to resolve 'jsonplaceholder.typicode.com' ([Errno -3] Temporary failure in name resolution)"))
+```
+
+### Connection refused error
+
+```
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(("localhost", 9999))
+```
+output:
+```
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 3, in <module>
+    s.connect(("localhost", 9999))
+ConnectionRefusedError: [Errno 111] Connection refused
+```
