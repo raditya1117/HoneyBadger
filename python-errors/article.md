@@ -105,12 +105,16 @@ Ymight run into this issue while using nested function calls, if else conditions
 
 ```
 def say_hello(name):
-    print(f"Hi {name}, you are at HoneyBadger")
+	print(f"Hi {name}, you are at HoneyBadger")
     print("Great seeing you here.")
 
 say_hello("Aditya")
 ```
 output:
 ```
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 3
+    print("Nice seeing you here.")
+TabError: inconsistent use of tabs and spaces in indentation
+
 ```
 ### Invalid assignment errors
