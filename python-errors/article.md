@@ -331,6 +331,9 @@ FileNotFoundError: [Errno 2] No such file or directory: 'nonexistentfile.txt'
 
 permission error
 
+![Image showing permissions for samplefile.txt](samplefile_premissions.png)
+
+code
 ```
 file=open("samplefile.txt","a")
 ```
