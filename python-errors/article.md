@@ -154,3 +154,163 @@ SyntaxError: invalid syntax
 ```
 
 ## Runtime errors
+
+### Arithmetic errors 
+
+```
+x = 10 / 0
+```
+output
+
+```
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
+    x = 10 / 0
+ZeroDivisionError: division by zero
+
+```
+### NameError
+```
+print(HoneyBadger)
+```
+output
+```
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
+    print(HoneyBadger)
+NameError: name 'HoneyBadger' is not defined
+
+```
+### UnboundLocalError
+scope error
+```
+def say_hello():
+	print(greeting)
+	greeting="Hi, you are at HoneyBadger"
+
+say_hello()
+```
+output:
+```
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 5, in <module>
+    say_hello()
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2, in say_hello
+    print(greeting)
+UnboundLocalError: local variable 'greeting' referenced before assignment
+```
+### TypeError
+```
+x=10+"HoneyBadger"
+```
+output:
+```
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
+    x=10+"HoneyBadger"
+TypeError: unsupported operand type(s) for +: 'int' and 'str'
+```
+
+### ValueError
+correct type inappropriate value
+```
+x=10+int("HoneyBadger")
+```
+
+output:
+
+```
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
+    x=10+int("HoneyBadger")
+ValueError: invalid literal for int() with base 10: 'HoneyBadger'
+```
+
+### Index and Key errors
+
+```
+my_list=[1,2,3,4,5,6]
+print(my_list[6])
+```
+output:
+```
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2, in <module>
+    print(my_list[6])
+IndexError: list index out of range
+```
+keyerror
+```
+my_dict={"a":1,"b":2,"c":3,"d":4}
+print(my_dict["e"])
+```
+output:
+```
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2, in <module>
+    print(my_dict["e"])
+KeyError: 'e'
+```
+### Modulenotfounderrorv -- import error
+```
+import honeybadger
+print("You are at HoneyBadger")
+```
+output
+```
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
+    import honeybadger
+ModuleNotFoundError: No module named 'honeybadger'
+```
+ModuleNotFoundError is a subclass of ImportError, raised specifically when the interpreter cannot locate the module file itself. ImportError is a broader, more general exception that can be raised for various other issues during the import process, even if the module file is found.
+
+### AttributeError
+
+```
+my_list=5
+my_list.append(6)
+```
+output:
+```
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2, in <module>
+    my_list.append(6)
+AttributeError: 'int' object has no attribute 'append'
+```
+
+## RecursionError
+Occurs when recursion depth exceeds limit. Happens becuase we forget to add a base case or terminating condition
+```
+def increment_till_hundred(x):
+	x+=1
+	print(x)
+	increment_till_hundred(x)
+increment_till_hundred(80)
+```
+output:
+```
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 5, in <module>
+    increment_till_hundred(80)
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 4, in increment_till_hundred
+    increment_till_hundred(x)
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 4, in increment_till_hundred
+    increment_till_hundred(x)
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 4, in increment_till_hundred
+    increment_till_hundred(x)
+  [Previous line repeated 992 more times]
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 3, in increment_till_hundred
+    print(x)
+RecursionError: maximum recursion depth exceeded while calling a Python object
+```
+```
+def increment_till_hundred(x):
+	x+=1
+	print(x)
+	if x<100:
+		increment_till_hundred(x)
+increment_till_hundred(80)
+```
+
+When a file cannot be opened it is an IOError but the IOError is a subset of and OSError. This change was made in Python 3.3. It is not a Runtime error. I emailed the author of my textbook and he was kind enough to reply and confirm. 
