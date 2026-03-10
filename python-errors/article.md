@@ -15,10 +15,102 @@ Let's discuss all these errors one-by-one in detail, starting with syntax errors
 
 ## Syntax Errors in Python
 
-As the name suggests, syntax errors are the errors caused by invalid syntax or code structure. Syntax errors are often caused due to typos or incorrect indentation. Common syntax errors include indentation errors, unclosed strings and brackets, 
+As the name suggests, syntax errors are the errors caused by invalid syntax or code structure. Syntax errors are often caused due to typos or incorrect indentation. Common syntax errors include indentation errors, unclosed strings and brackets. 
+
+```
+if x > 10
+    print("HoneyBadger")
+```
+output:
+
+```
+File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1
+    if x > 10
+             ^
+SyntaxError: expected ':'
+```
 
 ### Indentation error
 
-### Unclosed strings/ brackets
+```
+if x > 10:
+print("HoneyBadger")
+```
+output
+```
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2
+    print("HoneyBadger")
+    ^
+IndentationError: expected an indented block after 'if' statement on line 1
+```
 
+another
+
+```
+def say_hello(name):
+print(f"Hi {name}, you are at HoneyBadger")
+    
+say_hello("Aditya")
+```
+output
+```
+File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2
+    print(f"Hi {name}, you are at HoneyBadger")
+    ^
+IndentationError: expected an indented block after function definition on line 1
+```
+```
+def say_hello(name):
+  print(f"Hi {name}, you are at HoneyBadger")
+ print("Great seeing you here.")
+    
+say_hello("Aditya")
+```
+output
+
+```
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 3
+    print("Great seeing you here.")
+                                   ^
+IndentationError: unindent does not match any outer indentation level
+```
+### Unclosed strings/ brackets
+similarly
+
+```
+if x > 10:
+    print("HoneyBadger)
+```
+output:
+```
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2
+    print("HoneyBadger)
+          ^
+SyntaxError: unterminated string literal (detected at line 2)
+```
+bracjets
+```
+print("HoneyBadger"
+```
+output
+```
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1
+    print("HoneyBadger"
+         ^
+SyntaxError: '(' was never closed
+```
+Ymight run into this issue while using nested function calls, if else conditions or using pandas 
+
+### TabError
+
+```
+def say_hello(name):
+    print(f"Hi {name}, you are at HoneyBadger")
+    print("Great seeing you here.")
+
+say_hello("Aditya")
+```
+output:
+```
+```
 ### Invalid assignment errors
