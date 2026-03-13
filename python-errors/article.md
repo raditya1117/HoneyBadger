@@ -75,6 +75,18 @@ output
                                    ^
 IndentationError: unindent does not match any outer indentation level
 ```
+```
+def say_hello(name):
+  print(f"Hi {name}, you are at HoneyBadger")
+    print("Great seeing you here.")
+```
+```
+```
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 3
+    print("Great seeing you here.")
+                                   ^
+IndentationError: unexpected indent
+```
 ### Unclosed strings/ brackets
 similarly
 
