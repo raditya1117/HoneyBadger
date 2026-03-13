@@ -213,49 +213,87 @@ Along with the above practices, you can use IDEs or code editors like PyCharm, S
 ## Runtime errors
 Runtime errors occur after the program passes the syntax check, starts executing, and something goes wrong. Examples of runtime errors include ZeroDivisionError, NameError, TypeError, and ValueError. Let's discuss the different runtime errors, their causes, and ways to avoid them. 
 
-### Arithmetic errors 
+### Zero division error
+ZeroDivisionError is one of the most common arithmetic error that occurs if the denominator of a division operation is zero. 
 
-```
+```py
 x = 10 / 0
 ```
-output
+Here, we are dividing ten by zero. Hence, the program runs into ZeroDivisionError with the message `ZeroDivisionError: division by zero`:
 
-```
+```py
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
     x = 10 / 0
 ZeroDivisionError: division by zero
+```
 
-```
 ### NameError
+The NameError exception occurs when a variable is referenced before assignment.
+
+```py
+y=x/10
 ```
-print(HoneyBadger)
-```
-output
-```
+In this code, we tried to divide `x` by 10 without defining the variable `x` or assigning it any value. Hence, the variable name `x`  isn't present in the scope of the program, and the program runs into NameError exception with the message `NameError: name 'x' is not defined` when the statement is executed.
+
+```py
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
-    print(HoneyBadger)
-NameError: name 'HoneyBadger' is not defined
+    y=x/10
+NameError: name 'x' is not defined
+```
+The NameError exception occurs also if you use a variable first and define it later in the program. For example, consider the following code:
+```py
+print(greeting)
+greeting="Hi, you are at HoneyBadger"
+```
+Here, we have referenced the variable `greeting` and later assigned it a value. However, the program still runs into the NameError exception.
 
+```py
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
+    print(greeting)
+NameError: name 'greeting' is not defined
 ```
+
 ### UnboundLocalError
-scope error
-```
+The UnboundLocalError exception occurs when a local variable is referenced before assignment. For instance, consider the following code:
+
+```py
 def say_hello():
 	print(greeting)
 	greeting="Hi, you are at HoneyBadger"
 
 say_hello()
 ```
-output:
-```
+In this code, we have referenced the `greeting` before assigning it any value in the `say_hello()` function. When we call the say_hello() function, the program runs into `UnboundLocalError` exception with the message `UnboundLocalError: local variable 'greeting' referenced before assignment`. 
+
+```py
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 5, in <module>
     say_hello()
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2, in say_hello
     print(greeting)
 UnboundLocalError: local variable 'greeting' referenced before assignment
+```
+Here, if we hadn't assigned any value to the variable after the print statement, the program would have run into NameError exception, as shown below:
+
+```py
+def say_hello():
+	print(greeting)
+	print("Hi, you are at HoneyBadger")
+
+say_hello()
+```
+Output:
+
+```py
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 5, in <module>
+    say_hello()
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2, in say_hello
+    print(greeting)
+NameError: name 'greeting' is not defined
 ```
 ### TypeError
 ```
