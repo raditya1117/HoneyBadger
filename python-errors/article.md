@@ -15,50 +15,53 @@ Let's discuss all these errors one-by-one in detail, starting with syntax errors
 
 ## Syntax Errors in Python
 
-As the name suggests, syntax errors are the errors caused by invalid syntax or code structure. Syntax errors are often caused due to typos or incorrect indentation. Common syntax errors include indentation errors, unclosed strings and brackets. 
+Syntax errors are the errors caused by invalid code structure, typos, incorrect indentation, etc. For example an `if block` is defined in Python using the `if` keyword, a boolean condition, and the `:` character. If we skip `:` while writing an if block in Python, the code runs into SyntaxError with the message `SyntaxError: expected ':'`, as shown in the following example:
 
-```
+```py
 if x > 10
     print("HoneyBadger")
 ```
-output:
+This code gives the following error message:
 
-```
+```py
 File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1
     if x > 10
              ^
 SyntaxError: expected ':'
 ```
-```
-```
-### Indentation error
+Syntax errors occur when the interpreter cannot parse the code because it violates Python’s grammar rules and syntax errors are detected while the interpreter parses the code. Let's discuss some of the common syntax errors.
 
-```
+### Indentation error
+Python uses spaces and tabs for indentation in the code blocks. The code will run into IndentationError if any code block doesn't have correct indentation. For example, defining an if blocks requries us to indent the lines in the if block to the right by two/four spaces. If we don't indent the lines in the if block, the code runs into  IndentationError with the message `IndentationError: expected an indented block after 'if' statement on line 1`.
+
+```py
 if x > 10:
 print("HoneyBadger")
 ```
-output
-```
+The Unindented if block gives the following error:
+
+```py
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2
     print("HoneyBadger")
     ^
 IndentationError: expected an indented block after 'if' statement on line 1
 ```
+Similarly, we need to indent the code block inside a function definition. Not doing so, gives us an Indentation error with the message `IndentationError: expected an indented block after function definition on line 1`, as shown below:
 
-another
-
-```
+```py
 def say_hello(name):
 print(f"Hi {name}, you are at HoneyBadger")
     
 ```
-output
-```
+In this code, the print statement inside the say_hello function isn't indented to the right. Hence, the code gives the following error:
+
+```py
 File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2
     print(f"Hi {name}, you are at HoneyBadger")
     ^
 IndentationError: expected an indented block after function definition on line 1
 ```
+When you indent a code block, it is important to keep the indentation constant. For example, if you have given the 
 ```
 def say_hello(name):
   print(f"Hi {name}, you are at HoneyBadger")
