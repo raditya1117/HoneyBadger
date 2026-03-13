@@ -91,7 +91,7 @@ IndentationError: unexpected indent
 ```
 Hence, it is important to keep same indentation for every statement in a code block.
 
-### TabError
+### Tab error
 TabError is a specific indentation error caused by mixing tabs and spaces to indent code blocks. For instance, you can indent a statement by the same distance using four spaces or one tab. Visually, it looks the same. However, if you indent a statement in a code block using tab and another using four spaces, the program will run into TabError with the message `TabError: inconsistent use of tabs and spaces in indentation`, as shown in the following example:
 
 ```py
@@ -110,45 +110,46 @@ TabError: inconsistent use of tabs and spaces in indentation
 Python 3 explicitly disallows mixing tabs and spaces for indentation in a way that makes the meaning ambiguous, and you should always avoid it.
 
 ### Unclosed strings/ brackets
-similarly
+A Python program runs into SyntaxError if you don't close a string, parentheses, or bracket. For example, if you don't close a string, the program runs into  SyntaxError with the message `SyntaxError: unterminated string literal`.
 
-```
+```py
 if x > 10:
     print("HoneyBadger)
 ```
-output:
-```
+In this code, the closing `"` is missing in the `"HoneyBadger` string. Due to this, the program runs into SyntaxError exception, as shown below:
+
+```py
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2
     print("HoneyBadger)
           ^
 SyntaxError: unterminated string literal (detected at line 2)
 ```
-bracjets
-```
+Similarly, if we forget a parentheses while calling a function or defining a tuple, the program runs into SyntaxError with the message `SyntaxError: '(' was never closed`, as shown below:
+
+```py
 print("HoneyBadger"
 ```
-output
-```
+Output:
+
+```py
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1
     print("HoneyBadger"
          ^
 SyntaxError: '(' was never closed
 ```
-similarly
+Similary, if we miss the ending bracket while defining a list, the program runs into SyntaxError with the message `SyntaxError: '[' was never closed`, as shown below:
 
-```
+```py
 my_list=[1,2,3
 ```
-output
-```
+Output:
+
+```py
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1
     my_list=[1,2,3
             ^
 SyntaxError: '[' was never closed
-
 ```
-Ymight run into this issue while using nested function calls, if else conditions or using pandas 
-
 
 ### Invalid assignment errors
 
