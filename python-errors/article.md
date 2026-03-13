@@ -5,11 +5,11 @@ Errors in Python are abnormal conditions that interrupt the normal program execu
 ## What are the different types of errors in Python?
 We can broadly categorize Python errors into four types.
 
-1. Syntax errors: Syntax errors occur due to invalid syntax, incorrect indentation, or typos.
-2. Runtime errors:Runtime errors occur during program execution when the Python interpreter encounters an invalid operation.
+1. Syntax errors: Syntax errors occur due to invalid syntax, incorrect indentation, or typos. These errors are detected before execution of the program.
+2. Runtime errors: Runtime errors occur during program execution when the Python interpreter encounters an invalid operation.
 3. Logical errors: Logical errors are caused due to error in the logic of the program when the code runs without error but produces incorrect results.
-4. File and I/O errors: These errors occur during file operations or input/output tasks.
-5. System level errors: System level errors are raised by the Python runtime environment or the operating system due to reasons like memory overflow or interruptions.
+4. System level errors: System level errors are raised by the Python runtime environment or the operating system due to reasons like memory overflow or interruptions.
+5. File and I/O errors: These errors are a subset of system level errors that occur during file operations or input/output tasks.
 
 Let's discuss all these errors one-by-one in detail, starting with syntax errors.
 
@@ -137,7 +137,7 @@ Output:
          ^
 SyntaxError: '(' was never closed
 ```
-Similary, if we miss the ending bracket while defining a list, the program runs into SyntaxError with the message `SyntaxError: '[' was never closed`, as shown below:
+Just like the parentheses, if we miss the ending bracket while defining a list, the program runs into SyntaxError with the message `SyntaxError: '[' was never closed`, as shown below:
 
 ```py
 my_list=[1,2,3
@@ -152,31 +152,66 @@ SyntaxError: '[' was never closed
 ```
 
 ### Invalid assignment errors
+Invalid assignment errors are mostly caused to due to assigning values to literals or function calls. For example, we we assign the value `"HoneyBadger"` to a string literal `"name"`, the program runs into SyntaxError with the message `SyntaxError: cannot assign to literal here. Maybe you meant '==' instead of '='?`, as shown below:
 
-```
+```py
 "name"="HoneyBadger"
 ```
-output
-```
+
+Output:
+
+```py
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1
     "name"="HoneyBadger"
     ^^^^^^
 SyntaxError: cannot assign to literal here. Maybe you meant '==' instead of '='?
 ```
+Similary, if we assign a value to a Python keyword, the program runs into SyntaxError. For example, assigning the value `HoneyBadger` to a variable `class` leads results in SyntaxError exception with the message `SyntaxError: invalid syntax` as `class` is a Python keyword.
 
-alternate
-```
+```py
 class="HoneyBadger"
 ```
-output
-```
+
+Output:
+
+```py
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1
     class="HoneyBadger"
          ^
 SyntaxError: invalid syntax
 ```
+Assignment error also occur when we miss a `=` character while comparing values using the equality operator. For example, if we use `=` instead of `==` to compare two values, the program runs into SyntaxError exception with the message `SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?`, as shown below:
+
+```py
+name="HoneyBadger"
+input_string="HoneyBadger"
+if name=input_string:
+  print(name)
+```
+Output:
+
+```py
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 3
+    if name=input_string:
+       ^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
+```
+
+### How to avoid syntax error in Python? 
+
+Syntax errors occur due to incorrect indentation, mismatched delimiters, missing punctuation, invalid variable names, or incorrect operators. You can avoid syntax errors using the following best practices:
+
+- Add required colons `:` after block statements like `if`, `for`, `while`, `def`, and `class`.
+- Avoid using reserved keywords such as `class`, `for`, `if`, or `return` as variable names.
+- Close all parentheses `()`, brackets `[]`, and braces `{}`.
+- Close all string literals with matching quotation marks `'` or `"`.
+- Follow Python syntax rules and ensure statements are written in the correct format.
+- Maintain consistent indentation, preferably using 4 spaces per indentation level and do not mix tabs and spaces for indentation.
+
+Along with the above practices, you can use IDEs or code editors like PyCharm, Spyder, or VS Code that provide syntax highlighting and linting to detect syntax issues early.
 
 ## Runtime errors
+Runtime errors occur after the program passes the syntax check, starts executing, and something goes wrong. Examples of runtime errors include ZeroDivisionError, NameError, TypeError, and ValueError. Let's discuss the different runtime errors, their causes, and ways to avoid them. 
 
 ### Arithmetic errors 
 
