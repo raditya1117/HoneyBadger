@@ -80,7 +80,7 @@ def say_hello(name):
   print(f"Hi {name}, you are at HoneyBadger")
     print("Great seeing you here.")
 ```
-```
+output
 ```
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 3
     print("Great seeing you here.")
