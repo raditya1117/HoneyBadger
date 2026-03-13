@@ -38,7 +38,7 @@ Python uses spaces and tabs for indentation in the code blocks. The code will ru
 if x > 10:
 print("HoneyBadger")
 ```
-The Unindented if block gives the following error:
+The unindented if block gives the following error:
 
 ```py
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2
@@ -61,32 +61,54 @@ File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2
     ^
 IndentationError: expected an indented block after function definition on line 1
 ```
-When you indent a code block, it is important to keep the indentation constant. For example, if you have given the 
-```
-def say_hello(name):
-  print(f"Hi {name}, you are at HoneyBadger")
- print("Great seeing you here.")
-```
-output
+When you indent a code block, it is important to keep the indentation same for each statement in the code block. Otherwise, the program runs into indentation error. For example, if you use the first statement of a code block by four spaces and the second statement by two spaces, the program will run into IndentationError with the message `IndentationError: unindent does not match any outer indentation level`, as shown in the following example:
 
+```py
+def say_hello(name):
+    print(f"Hi {name}, you are at HoneyBadger")
+  print("Great seeing you here.")
 ```
+Output:
+```py
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 3
     print("Great seeing you here.")
                                    ^
 IndentationError: unindent does not match any outer indentation level
 ```
-```
+Similary, if you indent the first statement in a code block by two spaces and the second statement by four spaces, the program will run into IndentationError with the message `IndentationError: unexpected indent`, as shown below:
+
+```py
 def say_hello(name):
   print(f"Hi {name}, you are at HoneyBadger")
     print("Great seeing you here.")
 ```
-output
-```
+Output:
+
+```py
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 3
     print("Great seeing you here.")
-                                   ^
 IndentationError: unexpected indent
 ```
+Hence, it is important to keep same indentation for every statement in a code block.
+
+### TabError
+TabError is a specific indentation error caused by mixing tabs and spaces to indent code blocks. For instance, you can indent a statement by the same distance using four spaces or one tab. Visually, it looks the same. However, if you indent a statement in a code block using tab and another using four spaces, the program will run into TabError with the message `TabError: inconsistent use of tabs and spaces in indentation`, as shown in the following example:
+
+```py
+def say_hello(name):
+	print(f"Hi {name}, you are at HoneyBadger") # Indentation using Tab
+    print("Great seeing you here.")  # Indentation using four spaces
+
+```
+Output:
+```py
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 3
+    print("Great seeing you here.") # Indentation using four spaces
+TabError: inconsistent use of tabs and spaces in indentation
+```
+
+Python 3 explicitly disallows mixing tabs and spaces for indentation in a way that makes the meaning ambiguous, and you should always avoid it.
+
 ### Unclosed strings/ brackets
 similarly
 
@@ -127,22 +149,7 @@ SyntaxError: '[' was never closed
 ```
 Ymight run into this issue while using nested function calls, if else conditions or using pandas 
 
-### TabError
 
-```
-def say_hello(name):
-	print(f"Hi {name}, you are at HoneyBadger") # Indentation using Tab
-    print("Great seeing you here.")  # Indentation using four spaces
-
-```
-output:
-```
-  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 3
-    print("Great seeing you here.") # Indentation using four spaces
-TabError: inconsistent use of tabs and spaces in indentation
-
-```
-Python 3 explicitly disallows mixing tabs and spaces for indentation in a way that makes the meaning ambiguous.
 ### Invalid assignment errors
 
 ```
