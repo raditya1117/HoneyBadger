@@ -358,92 +358,108 @@ ValueError: math domain error
 ```
 In the above code, -10 has correct data type (int) required by the sqrt() function. However, it is an inappropriate value because square roots are defined for non-negative numbers and we get a ValueError exception with the message `ValueError: math domain error`. Hence, ValueError exception occurs everytime we use a variable with correct data type but an inappropriate value.
 
-### Index and Key errors
+### IndexError
+IndexError occurs when we try to access an element at an index that doesn't exist in an iterable object like a string, list, or tuple. For example, if a list has six elements and we try to access the element at index 6 (the seventh element), the program runs into IndexError exception with the message `IndexError: list index out of range`, as shown below:
 
-```
+```py
 my_list=[1,2,3,4,5,6]
 print(my_list[6])
 ```
-output:
-```
+Output:
+```py
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2, in <module>
     print(my_list[6])
 IndexError: list index out of range
 ```
-keyerror
+Similarly, if we try to access an element at a non-existent index in a string, the program runs into IndexError exception with the message `IndexError: string index out of range`, as shown in the following code:
+
+```py
+name="HoneyBadger"
+print(name[20])
 ```
+In this code, we tried to access the character at index 20 in the string. However, the string is of length 11. Hence, the program runs into an IndexError exception.
+```py
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2, in <module>
+    print(name[20])
+IndexError: string index out of range
+```
+### KeyError
+KeyError exceptions occur when we try to access a non-existent key in a Python dictionary. For instance, the dictionay in the following code has keys "a", "b", "c", and "d". When we try to access a value with the key "e", the program runs into KeyError exception, as shown below:
+
+```py
 my_dict={"a":1,"b":2,"c":3,"d":4}
 print(my_dict["e"])
 ```
-output:
-```
+Output:
+
+```py
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2, in <module>
     print(my_dict["e"])
 KeyError: 'e'
 ```
-### Modulenotfounderrorv -- import error
-```
+### ModuleNotFoundError
+The ModuleNotFoundError occurs when we try to import a module that hasn't already been installed or downloaded to the Python module search path. For example, suppose that you want to use [HoneyBadger for error monitoring in a Python application](https://docs.honeybadger.io/lib/python/integrations/other/). However, if you don't [install honeybadger using pip](https://pypi.org/project/honeybadger/) and directly start by importing the `honeybadger` module into your code, your program will run into ModuleNotFoundError with the message `ModuleNotFoundError: No module named 'honeybadger'`.
+
+```py
 import honeybadger
 print("You are at HoneyBadger")
 ```
-output
-```
+Output:
+
+```py
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
     import honeybadger
 ModuleNotFoundError: No module named 'honeybadger'
 ```
-ModuleNotFoundError is a subclass of ImportError, raised specifically when the interpreter cannot locate the module file itself. ImportError is a broader, more general exception that can be raised for various other issues during the import process, even if the module file is found.
+Note that `ModuleNotFoundError` is a specific type of `ImportError` that occurs when Python cannot find the module file being imported. In contrast, `ImportError` is a more general exception that can arise from various problems during the import process, even when the module file exists but cannot be imported successfully due to dependency requirements or other issues.
 
 ### AttributeError
+In Python, every object has a set of assoicated attributes i.e. field names and methods. For example, a Python list has the append() method that we use to add new values to a list. However, a tuple, an integer, a string, or a floating-point value doesn't have the append() method. Hence, if we invoke the append() method on a tuple, the program runs into AttributeError exception. 
 
+```py
+my_tuple=(1,2,3,4,5)
+my_tuple.append(6)
 ```
-my_list=5
-my_list.append(6)
-```
-output:
-```
+In this code, we have used the append() method on a tuple. Hence, the program runs into AttributeError exception with the message `AttributeError: 'tuple' object has no attribute 'append'`. 
+
+```py
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2, in <module>
-    my_list.append(6)
-AttributeError: 'int' object has no attribute 'append'
+    my_tuple.append(6)
+AttributeError: 'tuple' object has no attribute 'append'
 ```
 
 ### RecursionError
-Occurs when recursion depth exceeds limit. Happens becuase we forget to add a base case or terminating condition
-```
+Recursion error is a runtime error that occurs when recursion depth exceeds limit of 1000 recursive calls. The RecursionError exception occurs if we forget to add a base case or terminating condition while defining a function that uses recursion.  For instance, consider the following `increment_till_hundred()` function: 
+
+```py
 def increment_till_hundred(x):
 	x+=1
 	print(x)
 	increment_till_hundred(x)
 increment_till_hundred(80)
 ```
-output:
+In the increment_till_hundred function, we haven't defined any condition for the function to return a value if the value of x reaches 10. Hence, the function keeps making the recursive call, exceeding the limit of 1000 recursive calls and the program runs into RecursionError with the message `RecursionError: maximum recursion depth exceeded while calling a Python object`, as shown below:
 ```
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 5, in <module>
     increment_till_hundred(80)
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 4, in increment_till_hundred
     increment_till_hundred(x)
-  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 4, in increment_till_hundred
-    increment_till_hundred(x)
-  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 4, in increment_till_hundred
-    increment_till_hundred(x)
-  [Previous line repeated 992 more times]
+  [Previous line repeated 994 more times]
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 3, in increment_till_hundred
     print(x)
 RecursionError: maximum recursion depth exceeded while calling a Python object
 ```
-```
-def increment_till_hundred(x):
-	x+=1
-	print(x)
-	if x<100:
-		increment_till_hundred(x)
-increment_till_hundred(80)
-```
+
+
+### How to avoid runtime errors in Python?
+
+
 
 When a file cannot be opened it is an IOError but the IOError is a subset of and OSError. This change was made in Python 3.3. It is not a Runtime error. I emailed the author of my textbook and he was kind enough to reply and confirm. 
 
