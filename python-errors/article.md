@@ -257,6 +257,7 @@ NameError: name 'greeting' is not defined
 ```
 
 ### UnboundLocalError
+
 The UnboundLocalError exception occurs when a local variable is referenced before assignment. For instance, consider the following code:
 
 ```py
@@ -296,31 +297,66 @@ Traceback (most recent call last):
 NameError: name 'greeting' is not defined
 ```
 ### TypeError
-```
+TypeError exceptions occur when an operation is applied to a value or variable of incompatible data types. For example, adding an integer and a string results in TypeError exception with the error message `TypeError: unsupported operand type(s) for +: 'int' and 'str'`, as shown below:
+
+```py
 x=10+"HoneyBadger"
 ```
-output:
-```
+Output:
+
+```py
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
     x=10+"HoneyBadger"
 TypeError: unsupported operand type(s) for +: 'int' and 'str'
 ```
+Similarly, calling a non callable object or iterating a non-iterable object also results in a TypeError exception, as shown below:
+
+```py
+name="HoneyBadger"
+name()
+```
+Output:
+
+```py
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2, in <module>
+    name()
+TypeError: 'str' object is not callable
+```
+In the above code, we defined a string variable `name` and tried to use it as a function in the second line. Hence, the program runs into TypeError exception with the message `TypeError: 'str' object is not callable`. Thus, TypeError exception occurs everytime we apply an operation or function to a variable or value of incompatible data type.
 
 ### ValueError
-correct type inappropriate value
-```
-x=10+int("HoneyBadger")
-```
 
-output:
+ValueError exception occurs when we use a value or a variable with correct data type but inappropriate value. For instance, the int() function converts a string to an integer. If the string passed to the int() function cannot be converted into an integer, the program runs into ValueError exception, as shown in the following example:
 
+```py
+x=int("10")
+y=x+int("HoneyBadger")
+print(y)
 ```
+In this code, the state `x=int("10")` executes successfully as `"10"` is successfully converted into an integer. However, the string `"HoneyBadger"` cannot be converted into an integer. Hence, the second line of the code raises ValueError exception with the message `ValueError: invalid literal for int() with base 10: 'HoneyBadger'`, as follows:
+
+```py
 Traceback (most recent call last):
-  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
-    x=10+int("HoneyBadger")
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2, in <module>
+    y=x+int("HoneyBadger")
 ValueError: invalid literal for int() with base 10: 'HoneyBadger'
 ```
+Similarly, square roots aren't defined for negative numbers. Hence, passing a negative number to the math.sqrt() function results in the ValueError exception due to inappropriate value.
+
+```py
+import math
+x = math.sqrt(-10)
+```
+Output:
+```py
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2, in <module>
+    x = math.sqrt(-10)
+ValueError: math domain error
+```
+In the above code, -10 has correct data type (int) required by the sqrt() function. However, it is an inappropriate value because square roots are defined for non-negative numbers and we get a ValueError exception with the message `ValueError: math domain error`. Hence, ValueError exception occurs everytime we use a variable with correct data type but an inappropriate value.
 
 ### Index and Key errors
 
