@@ -458,13 +458,22 @@ RecursionError: maximum recursion depth exceeded while calling a Python object
 
 
 ### How to avoid runtime errors in Python?
+Runtime errors are difficult to detect because they do not prevent the program starting execution, unlike syntax errors. Hence, the program runs normally at first, and the error may only appear later when the line containing the problematic code is executed. To avoid runtime errors, you can use the following best practices:
 
+- Always validate input data before processing to ensure it has the correct type, format, and range.
+- Always [implement exception handling in your Python code](https://www.honeybadger.io/blog/a-guide-to-exception-handling-in-python/) to catch and handle runtime errors gracefully instead of crashing the program.
+- Perform type checking using the isinstance() function or convert data type of values using using int(), float(), str(), etc functions before applying operations on values.
+- Follow proper module and package management to ensure required libraries are installed and correctly imported.
+- Test the code with different edge cases to identify potential runtime failures early.
 
-
-When a file cannot be opened it is an IOError but the IOError is a subset of and OSError. This change was made in Python 3.3. It is not a Runtime error. I emailed the author of my textbook and he was kind enough to reply and confirm. 
+Apart from the above practices, always write modular and well-structured code so that you can easily isolate and debug errors if they occur.
 
 ## System-level errors in Python
-OSError
+System-level error occur in Python program when the program runs into errors such as I/O failures, memory overflow, connection error, or keyboard interruptions. All the system-level errors in Python are raised using the OSError exception or its subclasses.  Let's discuss the different system-level errors in Python and how to avoid them.
+
+
+### FileNotFoundError
+
 
 ```
 file=open("nonexistentfile.txt","r")
@@ -476,6 +485,7 @@ Traceback (most recent call last):
     file=open("nonexistentfile.txt","r")
 FileNotFoundError: [Errno 2] No such file or directory: 'nonexistentfile.txt'
 ```
+When a file cannot be opened it is an IOError but the IOError is a subset of and OSError. This change was made in Python 3.3. It is not a Runtime error. I emailed the author of my textbook and he was kind enough to reply and confirm. 
 
 permission error
 
