@@ -401,7 +401,8 @@ Traceback (most recent call last):
 KeyError: 'e'
 ```
 ### ModuleNotFoundError
-The ModuleNotFoundError occurs when we try to import a module that hasn't already been installed or downloaded to the Python module search path. For example, suppose that you want to use [HoneyBadger for error monitoring in a Python application](https://docs.honeybadger.io/lib/python/integrations/other/). However, if you don't [install honeybadger using pip](https://pypi.org/project/honeybadger/) and directly start by importing the `honeybadger` module into your code, your program will run into ModuleNotFoundError with the message `ModuleNotFoundError: No module named 'honeybadger'`.
+
+The ModuleNotFoundError occurs when we try to import a module that hasn't already been installed or downloaded to the Python module search path. For example, suppose that you want to use [Honeybadger for error monitoring in a Python application](https://docs.honeybadger.io/lib/python/integrations/other/). However, if you don't [install honeybadger using pip](https://pypi.org/project/honeybadger/) and directly start by importing the `honeybadger` module into your code, your program will run into ModuleNotFoundError with the message `ModuleNotFoundError: No module named 'honeybadger'`.
 
 ```py
 import honeybadger
@@ -415,19 +416,21 @@ Traceback (most recent call last):
     import honeybadger
 ModuleNotFoundError: No module named 'honeybadger'
 ```
-Note that `ModuleNotFoundError` is a specific type of `ImportError` that occurs when Python cannot find the module file being imported. In contrast, `ImportError` is a more general exception that can arise from various problems during the import process, even when the module file exists but cannot be imported successfully due to dependency requirements or other issues.
-
+`ModuleNotFoundError` is a specific type of `ImportError` that occurs when Python cannot find the module file being imported. Since Python 3.6+, when the interpreter cannot locate a module, it raises ModuleNotFoundError.
 ### ImportError in Python
-Since Python 3.6+, when the interpreter cannot locate a module, it raises ModuleNotFoundError. If a module exists but raises an exception while being imported, Python raises ImportError.
+
+`ImportError` is a more general exception that can arise from various problems during the import process, even when the module file exists but cannot be imported successfully due to dependency requirements or other issues. If a module exists but raises an exception while being imported, Python raises ImportError. For instance, if we try to import a non existent function from the `honeybadger` module, the program runs into ImportError exception.
+
+```py
+from honeybadger import nonexistingfunction
 ```
-from honeybadger import nonexistingmodule
-```
-Output:
-```
+Here, we tried to import nonexistingfunction from the honeybadger module. Hence, the program runs into ImportError with the message `ImportError: cannot import name 'nonexistingfunction' from 'honeybadger'`:
+
+```py
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
-    from honeybadger import nonexistingmodule
-ImportError: cannot import name 'nonexistingmodule' from 'honeybadger'
+    from honeybadger import nonexistingfunction
+ImportError: cannot import name 'nonexistingfunction' from 'honeybadger'
 ```
 ### AttributeError
 In Python, every object has a set of assoicated attributes i.e. field names and methods. For example, a Python list has the append() method that we use to add new values to a list. However, a tuple, an integer, a string, or a floating-point value doesn't have the append() method. Hence, if we invoke the append() method on a tuple, the program runs into AttributeError exception. 
@@ -455,8 +458,10 @@ def increment_till_hundred(x):
 	increment_till_hundred(x)
 increment_till_hundred(80)
 ```
+
 In the increment_till_hundred function, we haven't defined any condition for the function to return a value if the value of x reaches 10. Hence, the function keeps making the recursive call, exceeding the limit of 1000 recursive calls and the program runs into RecursionError with the message `RecursionError: maximum recursion depth exceeded while calling a Python object`, as shown below:
-```
+
+```py
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 5, in <module>
     increment_till_hundred(80)
@@ -467,9 +472,8 @@ Traceback (most recent call last):
     print(x)
 RecursionError: maximum recursion depth exceeded while calling a Python object
 ```
-
-
 ### How to avoid runtime errors in Python?
+
 Runtime errors are difficult to detect because they do not prevent the program starting execution, unlike syntax errors. Hence, the program runs normally at first, and the error may only appear later when the line containing the problematic code is executed. To avoid runtime errors, you can use the following best practices:
 
 - Always validate input data before processing to ensure it has the correct type, format, and range.
