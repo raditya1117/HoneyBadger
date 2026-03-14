@@ -479,7 +479,7 @@ Runtime errors are difficult to detect because they do not prevent the program s
 - Always validate input data before processing to ensure it has the correct type, format, and range.
 - Always [implement exception handling in your Python code](https://www.honeybadger.io/blog/a-guide-to-exception-handling-in-python/) to catch and handle runtime errors gracefully instead of crashing the program.
 - Perform type checking using the isinstance() function or convert data type of values using using int(), float(), str(), etc functions before applying operations on values.
-- Follow proper module and package management to ensure required libraries are installed and correctly imported.
+- Maintain a properly configured runtime environment, ensuring all required modules, dependencies, and system libraries are correctly installed.
 - Test the code with different edge cases to identify potential runtime failures early.
 
 Apart from the above practices, always write modular and well-structured code so that you can easily isolate and debug errors if they occur.
@@ -489,109 +489,112 @@ System-level error occur in Python program when the program runs into errors suc
 
 
 ### FileNotFoundError
+The FileNotFoundError error exception occurs when we try to read a non-existent file. For example, suppose that we want to read a text file named `sampletextfile.txt` using the open() function. If the file doesn't exist, the program runs into FileNotFoundError with the message `FileNotFoundError: [Errno 2] No such file or directory: 'sampletextfile.txt'`, as shown below:
 
+```py
+file=open("sampletextfile.txt","r")
+```
+Output:
 
-```
-file=open("nonexistentfile.txt","r")
-```
-output:
-```
+```py
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
-    file=open("nonexistentfile.txt","r")
-FileNotFoundError: [Errno 2] No such file or directory: 'nonexistentfile.txt'
+    file=open("sampletextfile.txt","r")
+FileNotFoundError: [Errno 2] No such file or directory: 'sampletextfile.txt'
 ```
-When a file cannot be opened it is an IOError but the IOError is a subset of and OSError. This change was made in Python 3.3. It is not a Runtime error. I emailed the author of my textbook and he was kind enough to reply and confirm. 
-
-permission error
-
+### PermissionError
+If a file exists and don't have the permission to read or modify it, the program runs into the PermissionError exception. For instance, suppose that we have a file `samplefile.txt` with only read access, as shown in the image:
 ![Image showing permissions for samplefile.txt](samplefile_premissions.png)
 
-code
-```
+Now, if we try to open the file in `append` mode and modify it, the the program runs into PermissionError exception with the message `PermissionError: [Errno 13] Permission denied: 'samplefile.txt'`. However, opening the file in `read` mode will not cause any issue as we have the permission to read the file.
+
+```py
 file=open("samplefile.txt","a")
 ```
-output:
-```
+Output:
+```py
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
     file=open("samplefile.txt","a")
 PermissionError: [Errno 13] Permission denied: 'samplefile.txt'
 ```
-alt
-```
+### IsADirectoryError
+If you try to open a directory using the open() function in Python, the program runs into IsADirectoryError exception.
+
+```py
 file=open("/home/aditya1117/codes/HoneyBadger/python-errors","r")
 ```
-output:
-```
+
+In this code, `/home/aditya1117/codes/HoneyBadger/python-errors` is a directory. Hence, the program runs into IsADirectoryError exception with the message `IsADirectoryError: [Errno 21] Is a directory`
+
+```py
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
     file=open("/home/aditya1117/codes/HoneyBadger/python-errors","r")
 IsADirectoryError: [Errno 21] Is a directory: '/home/aditya1117/codes/HoneyBadger/python-errors'
 ```
-### MemoryError
 
-```
+### MemoryError
+MemoryError in Python is a built-in exception that occurs when a program attempts to allocate more than available memory in the system’s RAM. It usually occurs when handling extremely large datasets, constructing oversized data structures, or running inefficient code that leads to excessive memory consumption, memory leaks, or uncontrolled growth in memory usage.
+
+For example, creating a huge list of length 10^10 can lead to MemoryError exception, as shown below:
+
+```py
 my_list=[10] * (10**10)
 ```
-output:
+Output:
 
-```
+```py
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
     my_list=[10] * (10**10)
 MemoryError
 ```
-
-### KeyboardInterrupt
-
-```
-while True:
-	pass
-```
-output:
-```
-^CTraceback (most recent call last):
-  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
-    while True:
-KeyboardInterrupt
-
-```
 ### Connecction error
+In Python, the ConnectionError exception occurs due to network related issues like lost internet connection, DNS errors, server downtime, or when the client fails to establish a connection to the server within a certain time limit. For instance, using the requests module to make an API call without connecting the system to the network results in the ConnectionError exception.
 
-```
+```py
 import requests
 response = requests.get('https://jsonplaceholder.typicode.com/todos/1')
 ```
-output:
-```
+Output:
+
+```py
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 4, in <module>
     response = requests.get('https://jsonplaceholder.typicode.com/todos/1')
-  File "/home/aditya1117/.local/lib/python3.10/site-packages/requests/api.py", line 73, in get
-    return request("get", url, params=params, **kwargs)
-  File "/home/aditya1117/.local/lib/python3.10/site-packages/requests/api.py", line 59, in request
-    return session.request(method=method, url=url, **kwargs)
-  File "/home/aditya1117/.local/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
-    resp = self.send(prep, **send_kwargs)
-  File "/home/aditya1117/.local/lib/python3.10/site-packages/requests/sessions.py", line 703, in send
-    r = adapter.send(request, **kwargs)
+  .
+  .
   File "/home/aditya1117/.local/lib/python3.10/site-packages/requests/adapters.py", line 700, in send
     raise ConnectionError(e, request=request)
 requests.exceptions.ConnectionError: HTTPSConnectionPool(host='jsonplaceholder.typicode.com', port=443): Max retries exceeded with url: /todos/1 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7400d45a6c80>: Failed to resolve 'jsonplaceholder.typicode.com' ([Errno -3] Temporary failure in name resolution)"))
 ```
 
 ### Connection refused error
+The ConnectionRefusedError is a subclass of ConnectionError, which specifically indicates that a connection attempt was explicitly refused by the remote host. It occurs due to incorrect IP address or portnumber , firewall blocking, or if the server is not running or has reached its maximum capacity for pending connections. For example, consider the following code: 
 
-```
+```py
 import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(("localhost", 9999))
 ```
-output:
-```
+We have not run any application on port 9999. Hence when the Python program tries to connect to the port, the program runs into ConnectionRefusedError with the message `ConnectionRefusedError: [Errno 111] Connection refused`, as shown below:
+
+```py
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 3, in <module>
     s.connect(("localhost", 9999))
 ConnectionRefusedError: [Errno 111] Connection refused
 ```
+### How to avoid system-level errors in Python?
+System-level errors are often caused by issues such as missing files, insufficient permissions, memory limitations, or network failures. Although we cannot always prevent them, we can minimize system-level errors through careful resource management, validation checks, and proper exception handling. You can use the following practices to avoid system-level errors in Python.
+
+- Always check the file and directory existence before performing file operations using methods like os.path.exists() or pathlib.Path.exists().
+- Check access permissions to ensure the program has the required rights to read, write, or execute files and directories.
+- Manage memory efficiently by avoiding extremely large data structures and using generators or batch processing for large datasets.
+- Use context managers (with statement) when working with files, sockets, or other resources to ensure they are automatically closed after use.
+- Ensure required system resources, such as disk space, memory, and network connectivity are available.
+
+System-level errors are mostly caused by environmental or resource constraints, so the best way to avoid them is by anticipating potential system failures and writing defensive code that validates resources and handles exceptions gracefully.
+
+## Logical errors in Python
