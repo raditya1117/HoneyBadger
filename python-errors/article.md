@@ -598,3 +598,29 @@ System-level errors are often caused by issues such as missing files, insufficie
 System-level errors are mostly caused by environmental or resource constraints, so the best way to avoid them is by anticipating potential system failures and writing defensive code that validates resources and handles exceptions gracefully.
 
 ## Logical errors in Python
+
+A logical error in Python occurs when a program runs without crashing or raising exceptions, but produces incorrect or unintended results due to flawed logic in the code. Unlike syntax errors or runtime errors, Python cannot detect logical errors automatically because the code is syntactically valid and executes successfully. Logical errors occur due to incorrect algorithms, wrong conditions, faulty calculations, or incorrect assumptions in program logic.
+
+For example, consider that you a writing a Python application to determine the voting eligibility of a person based on their age. It is given that a person aged 18 or more is eligible to vote. Now condier the following code:
+
+```py
+if age > 18:
+    print("Eligible to vote")
+else:
+    print("Not eligible")
+```
+This code executes successfully. But it prduces incorrect output for people aged 18 due to incorrect condition. Hence, we should have used `>=` operator instead of the `>` operator in the if block.
+
+Logical errors can also occur due to wrong usage of logical operators. For example, suppose we need to identify if a person is in working age, which is from 18 to 60 years of age, both included. Now, consider the following code:
+
+```py
+if age >= 18 or age =< 60:
+    print("Working age")
+```
+This code prints `"Working age"` even if the person is more than 60 years old because the first condtion will be True and the or operator evaluates to True if any operator is True. Hence, we should have used the `and` operator instead of the `or` operator to get the correct output. 
+
+Logical errors are harder to detect because the Python application does not run into exceptions and the output may appear reasonable but still be incorrect. 
+We can detect and avoid logical errors through unit testing, debugging, and code review ensuring there is no logical flaw in the code.
+
+## Wrapping up
+
