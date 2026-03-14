@@ -417,6 +417,18 @@ ModuleNotFoundError: No module named 'honeybadger'
 ```
 Note that `ModuleNotFoundError` is a specific type of `ImportError` that occurs when Python cannot find the module file being imported. In contrast, `ImportError` is a more general exception that can arise from various problems during the import process, even when the module file exists but cannot be imported successfully due to dependency requirements or other issues.
 
+### ImportError in Python
+Since Python 3.6+, when the interpreter cannot locate a module, it raises ModuleNotFoundError. If a module exists but raises an exception while being imported, Python raises ImportError.
+```
+from honeybadger import nonexistingmodule
+```
+Output:
+```
+Traceback (most recent call last):
+  File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 1, in <module>
+    from honeybadger import nonexistingmodule
+ImportError: cannot import name 'nonexistingmodule' from 'honeybadger'
+```
 ### AttributeError
 In Python, every object has a set of assoicated attributes i.e. field names and methods. For example, a Python list has the append() method that we use to add new values to a list. However, a tuple, an integer, a string, or a floating-point value doesn't have the append() method. Hence, if we invoke the append() method on a tuple, the program runs into AttributeError exception. 
 
