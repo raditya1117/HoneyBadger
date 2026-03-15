@@ -508,11 +508,11 @@ Apart from the above practices, always write modular and well-structured code so
 
 ## System-level errors in Python
 
-System-level error occur in Python program when the program runs into errors such as I/O failure, memory overflow, or connection error. All the system-level errors in Python are raised using the OSError exception or its subclasses.  Let's discuss the different system-level errors in Python and how to avoid them.
+System-level error occur in a Python program when the program runs into errors such as I/O failure, memory overflow, or connection error. All the system-level errors in Python are raised using the `OSError` exception or its subclasses.  Let's discuss the different system-level errors in Python and how to avoid them.
 
 ### File not found errors in python
 
-The FileNotFoundError error exception occurs when we try to read a non-existent file. For example, suppose that we want to read a text file named `sampletextfile.txt` using the `open()` function. If the file doesn't exist, the program runs into `FileNotFoundError` with the message `FileNotFoundError: [Errno 2] No such file or directory: 'sampletextfile.txt'`, as shown below:
+The `FileNotFoundError` exception occurs when we try to read a non-existent file. For example, suppose that we want to read a text file named `sampletextfile.txt` using the `open()` function. If the file doesn't exist, the program runs into `FileNotFoundError` with the message `FileNotFoundError: [Errno 2] No such file or directory: 'sampletextfile.txt'`, as shown below:
 
 ```py
 file=open("sampletextfile.txt","r")
@@ -525,9 +525,9 @@ Traceback (most recent call last):
     file=open("sampletextfile.txt","r")
 FileNotFoundError: [Errno 2] No such file or directory: 'sampletextfile.txt'
 ```
-### PermissionError
+### Permission error
 
-If a file exists and we don't have the permission to read or modify it, the program runs into the `PermissionError` exception. For instance, suppose that we have a file `samplefile.txt` with only read access, as shown in the image:
+If a file exists and we don't have the permission to read or modify it, the program runs into the `PermissionError` exception. For example, suppose that we have a file `samplefile.txt` with only read access, as shown in the image:
 ![Image showing permissions for samplefile.txt](samplefile_premissions.png)
 
 Now, if we try to open the file in `append` mode and modify it, the the program runs into `PermissionError` exception with the message `PermissionError: [Errno 13] Permission denied: 'samplefile.txt'`. However, opening the file in `read` mode will not cause any issue as we have the permission to read the file.
@@ -542,8 +542,9 @@ Traceback (most recent call last):
     file=open("samplefile.txt","a")
 PermissionError: [Errno 13] Permission denied: 'samplefile.txt'
 ```
+### Is a directory error
 
-We can open files using the open() function in Python. However, if you try to open a directory using the `open()` function, the program runs into `IsADirectoryError` exception.
+We can open files using the `open()` function in Python. However, if you try to open a directory using the `open()` function, the program runs into `IsADirectoryError` exception.
 
 ```py
 file=open("/home/aditya1117/codes/HoneyBadger/python-errors","r")
@@ -558,7 +559,7 @@ Traceback (most recent call last):
 IsADirectoryError: [Errno 21] Is a directory: '/home/aditya1117/codes/HoneyBadger/python-errors'
 ```
 
-### MemoryError
+### Memory error
 
 MemoryError in Python is a built-in exception that occurs when a program attempts to allocate more than available memory in the system’s RAM. It usually occurs when handling extremely large datasets, constructing oversized data structures, or running inefficient code that leads to excessive memory consumption or memory leaks.
 
@@ -598,14 +599,14 @@ requests.exceptions.ConnectionError: HTTPSConnectionPool(host='jsonplaceholder.t
 
 ### Connection refused error
 
-The ConnectionRefusedError is a subclass of ConnectionError, which specifically indicates that a connection attempt was explicitly refused by the remote host. It occurs due to incorrect IP address or portnumber, firewall blocking, or if the server is not running or has reached its maximum capacity for pending connections. For example, consider the following code: 
+The `ConnectionRefusedError` is a subclass of `ConnectionError`, which specifically indicates that a connection attempt was explicitly refused by the remote host. It occurs due to incorrect IP address or portnumber, firewall blocking, or if the server is not running or has reached its maximum capacity for pending connections. For example, consider the following code: 
 
 ```py
 import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(("localhost", 9999))
 ```
-We have not run any application on port 9999. Hence when the Python program tries to connect to the port, the program runs into `ConnectionRefusedError` with the message `ConnectionRefusedError: [Errno 111] Connection refused`, as shown below:
+We have not run any application on port 9999. Hence, when the Python program tries to connect to the port, the program runs into `ConnectionRefusedError` with the message `ConnectionRefusedError: [Errno 111] Connection refused`, as shown below:
 
 ```py
 Traceback (most recent call last):
@@ -615,7 +616,7 @@ ConnectionRefusedError: [Errno 111] Connection refused
 ```
 ### How to avoid system-level errors in Python?
 
-System-level errors are often caused by issues such as missing files, insufficient permissions, memory limitations, or network failures. Although we cannot always prevent them, we can minimize system-level errors through careful resource management, validation checks, and proper exception handling. You can use the following practices to avoid system-level errors in Python.
+System-level errors in Python are often caused by issues such as missing files, insufficient permissions, memory limitations, or network failures. Although we cannot always prevent them, we can minimize system-level errors through careful resource management, validation checks, and proper exception handling. You can use the following practices to avoid system-level errors in Python.
 
 - Always check the file and directory existence before performing file operations.
 - Check access permissions to ensure the program has the required rights to read, write, or execute files and directories.
@@ -623,11 +624,11 @@ System-level errors are often caused by issues such as missing files, insufficie
 - Use context managers (with statement) when working with files, sockets, or other resources to ensure they are automatically closed after use.
 - Ensure required system resources, such as disk space, memory, and network connectivity are available.
 
-System-level errors are mostly caused by environmental or resource constraints, so the best way to avoid them is by anticipating potential system failures and writing defensive code that validates resources and handles exceptions gracefully.
+The best way to avoid system-level errors is by anticipating potential system failures and writing defensive code that validates resources and handles exceptions gracefully as they are mostly caused by environmental or resource constraints.
 
 ## Logical errors in Python
 
-A logical error in Python occurs when a program runs without crashing or raising exceptions, but produces incorrect or unintended results due to flawed logic in the code. Unlike syntax errors or runtime errors, Python cannot detect logical errors automatically because the code is syntactically valid and executes successfully. Logical errors occur due to incorrect algorithms, wrong conditions, faulty calculations, or incorrect assumptions in program logic.
+A logical error or semantic error in Python occurs when a program runs without crashing or raising exceptions, but produces incorrect or unintended results due to flawed logic in the code. Unlike syntax errors or runtime errors, Python cannot detect logical errors automatically because the code is syntactically valid and executes successfully. Logical errors occur due to incorrect algorithms, wrong conditions, faulty calculations, or incorrect assumptions in program logic.
 
 For example, consider that you a writing a Python application to determine the voting eligibility of a person based on their age. It is given that a person aged 18 or more is eligible to vote. Now consider the following code:
 
@@ -637,7 +638,7 @@ if age > 18:
 else:
     print("Not eligible")
 ```
-This code executes successfully. But it prduces incorrect output for people aged 18 due to incorrect condition. Hence, we should have used `>=` operator instead of the `>` operator in the if block.
+This code executes successfully. But it produces incorrect output for people aged 18 due to incorrect condition. Hence, we should have used `>=` operator instead of the `>` operator in the if block.
 
 Logical errors can also occur due to wrong usage of logical operators. For example, suppose we need to identify if a person is in working age, which is from 18 to 60 years of age, both included. Now, consider the following code:
 
@@ -647,12 +648,12 @@ if age >= 18 or age =< 60:
 ```
 This code prints `"Working age"` even if the person is more than 60 years old because the first condition will be True and the `or` operator evaluates to True if any of the operands is True. Hence, we should have used the `and` operator instead of the `or` operator to get the correct output. 
 
-Logical errors are harder to detect because the Python application does not run into exceptions and the output may appear reasonable but still be incorrect. We can detect and avoid logical errors through [unit testing](https://www.honeybadger.io/blog/beginners-guide-to-software-testing-in-python/), debugging, and code review ensuring there is no logical flaw in the code.
+Logical errors are harder to detect because the Python application does not run into exceptions and the output may appear reasonable but still be incorrect. We can detect and avoid logical errors through [unit testing](https://www.honeybadger.io/blog/beginners-guide-to-software-testing-in-python/), debugging, and code review, ensuring there is no logical flaw in the code.
 
 ## Wrapping up
 
-In Python programming, errors are an inevitable part of the development process. In this article, we discussed the different syntax errors, runtime errors, system-level errors, and logical errors in Python. Understanding these error types will help you diagnose errors effectively and write more robust and reliable Python applications.
+In programming, errors are an inevitable part of the development process. In this article, we discussed the different syntax errors, runtime errors, system-level errors, and logical errors in Python. Understanding these error types will help you diagnose errors effectively and write more robust and reliable Python applications.
 
-While we cannot eliminate errors entirely, we can significantly reduce them through the programming practices we discussed in this article. By adopting these practices and learning to interpret error messages carefully, you can quickly identify the root causes of issues and fix them. You can also [sign up for a free trial of Honeybadger](https://www.honeybadger.io/plans/) to monitor your applications by combining error-tracking, logging, uptime monitoring, and lightweight application-performance monitoring into one platform. 
+While we cannot eliminate errors entirely, we can significantly reduce them through the programming practices we discussed in this article. By adopting these practices and learning to interpret error messages carefully, you can quickly identify the root causes of errors and fix them. You can also [sign up for a free trial of Honeybadger](https://www.honeybadger.io/plans/) to monitor your applications by combining error-tracking, logging, uptime monitoring, and lightweight application-performance monitoring into one platform. 
 
 Happy learning!
