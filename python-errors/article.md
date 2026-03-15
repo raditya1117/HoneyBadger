@@ -5,16 +5,16 @@ Errors in Python are conditions that interrupt the normal program execution. Und
 
 We can broadly categorize Python errors into four types.
 
-1. **Syntax errors**: Syntax errors in Python occur due to invalid syntax, incorrect indentation, or typos. These errors are detected before execution of the program while the Python interpreter parses the code.
+1. **Syntax errors**: Syntax errors in Python occur due to invalid syntax, incorrect indentation, or typos. These errors are detected before the program is executed, while the Python interpreter parses the code.
 2. **Runtime errors**: Runtime errors in Python occur during code execution when the program runs into an invalid operation.
-3. **System-level errors**: System-level errors in Python are raised by the runtime environment or the operating system due to reasons like memory overflow or interruptions.
-4. **Logical errors**: Logical errors are caused due to error in the logic of the program when the code runs without error but produces incorrect results.
+3. **System-level errors**: System-level errors in Python are raised by the runtime environment or the operating system due to issues such as memory overflow or interruptions.
+4. **Logical errors**: Logical errors occur when the program's logic is incorrect, even though the code runs without errors, producing incorrect results.
 
-Let's discuss all these Python error types one-by-one in detail with examples, starting with syntax errors.
+Let's discuss all these Python error types one by one in detail with examples, starting with syntax errors.
 
 ## Syntax Errors in Python
 
-Syntax errors are the errors caused by invalid code structure, typos, incorrect indentation, etc. For example an `if` block is defined in Python using the `if` keyword, a boolean condition, and the `:` character. If we skip `:` while writing an `if` block in Python, the code runs into `SyntaxError` with the error message `SyntaxError: expected ':'`, as shown in the following example:
+Syntax errors are the errors caused by invalid code structure, typos, incorrect indentation, etc. For example, an `if` block is defined in Python using the `if` keyword, a boolean condition, and the `:` character. If we skip `:` while writing an `if` block in Python, the code runs into `SyntaxError` with the error message `SyntaxError: expected ':'`, as shown in the following example:
 
 ```py
 if x > 10
@@ -32,7 +32,7 @@ Syntax errors occur when the interpreter cannot parse the code because it violat
 
 ### Indentation error
 
-Python uses spaces and tabs for indentation in the code blocks. The code will run into `IndentationError` if a code block doesn't have correct indentation. For example, defining an `if` block requries us to indent the lines in the `if` block to the right by two/four spaces. If we don't indent the lines in the `if` block, the code runs into `IndentationError` with the error message `IndentationError: expected an indented block after 'if' statement on line x`.
+Python uses spaces and tabs for code indentation. The code will run into `IndentationError` if a code block doesn't have correct indentation. For example, defining an `if` block requires us to indent the lines in the `if` block to the right by two/four spaces. If we don't indent the lines in the `if` block, the code runs into `IndentationError` with the error message `IndentationError: expected an indented block after 'if' statement on line x`.
 
 ```py
 if x > 10:
@@ -60,7 +60,7 @@ File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2
     ^
 IndentationError: expected an indented block after function definition on line 1
 ```
-When you indent a code block, it is important to keep the indentation same for each statement in the code block. Otherwise, the program runs into `IndentationError`. For example, if you indent the first statement of a code block by four spaces and the second statement by two spaces, the program will run into `IndentationError` with the error message `IndentationError: unindent does not match any outer indentation level`, as shown in the following example:
+When you indent a code block, it is important to keep the indentation the same for each statement in the code block. Otherwise, the program runs into `IndentationError`. For example, if you indent the first statement of a code block by four spaces and the second statement by two spaces, the program will run into `IndentationError` with the error message `IndentationError: unindent does not match any outer indentation level`, as shown in the following example:
 
 ```py
 def say_hello(name):
@@ -74,7 +74,7 @@ Output:
                                    ^
 IndentationError: unindent does not match any outer indentation level
 ```
-Similary, if you indent the first statement in a code block by two spaces and the second statement by four spaces, the program will run into `IndentationError` with the message `IndentationError: unexpected indent`, as shown below:
+Similarly, if you indent the first statement in a code block by two spaces and the second statement by four spaces, the program will run into `IndentationError` with the message `IndentationError: unexpected indent`, as shown below:
 
 ```py
 def say_hello(name):
@@ -91,7 +91,7 @@ IndentationError: unexpected indent
 
 ### Tab error
 
-TabError is a specific indentation error caused by mixing tabs and spaces to indent code blocks. For instance, you can indent a statement by the same distance using four spaces or one tab. Visually, it looks the same. However, if you indent a statement in a code block using tab and another using four spaces, the program will run into `TabError` with the error message `TabError: inconsistent use of tabs and spaces in indentation`, as shown in the following example:
+TabError is a specific indentation error caused by mixing tabs and spaces to indent code blocks. For instance, you can indent a statement by the same distance using four spaces or one tab. Visually, it looks the same. However, if you indent a statement in a code block using a tab and another using four spaces, the program will run into `TabError` with the error message `TabError: inconsistent use of tabs and spaces in indentation`, as shown in the following example:
 
 ```py
 def say_hello(name):
@@ -109,7 +109,7 @@ Python 3 explicitly disallows mixing tabs and spaces for indentation in a way th
 
 ### Unclosed strings/ brackets/ parentheses
 
-A Python program runs into SyntaxError if you don't close a string, a parentheses, or a bracket. For example, if you don't close a string, the program runs into  `SyntaxError` with the message `SyntaxError: unterminated string literal`.
+A Python program runs into a `SyntaxError` if you don't close a string, a parentheses, or a bracket. For example, if you don't close a string, the program runs into  `SyntaxError` with the message `SyntaxError: unterminated string literal`.
 
 ```py
 if x > 10:
@@ -123,7 +123,7 @@ In this code, the closing `"` is missing in the `"HoneyBadger` string. Due to th
           ^
 SyntaxError: unterminated string literal (detected at line 2)
 ```
-Similarly, if we forget a parentheses while calling a function or defining a tuple, the program runs into `SyntaxError` with the message `SyntaxError: '(' was never closed`, as shown below:
+Similarly, if we forget the closing parenthesis while calling a function or defining a tuple, the program runs into `SyntaxError` with the message `SyntaxError: '(' was never closed`, as shown below:
 
 ```py
 print("HoneyBadger"
@@ -152,7 +152,7 @@ SyntaxError: '[' was never closed
 
 ### Invalid assignment errors
 
-Invalid assignment errors are mostly caused to due to assigning values to literals or function calls. For example, we we assign the value `"HoneyBadger"` to a string literal `"name"`, the program runs into `SyntaxError` with the message `SyntaxError: cannot assign to literal here. Maybe you meant '==' instead of '='?`, as shown below:
+Invalid assignment errors are mostly caused by assigning values to literals or function calls. For example, if we assign the value `"HoneyBadger"` to a string literal `"name"`, the program throws a `SyntaxError` with the message `SyntaxError: cannot assign to literal here. Maybe you meant '==' instead of '='?`, as shown below:
 
 ```py
 "name"="HoneyBadger"
@@ -166,7 +166,7 @@ Output:
     ^^^^^^
 SyntaxError: cannot assign to literal here. Maybe you meant '==' instead of '='?
 ```
-Similary, if we assign a value to a Python keyword, the program runs into `SyntaxError`. For example, assigning the value `HoneyBadger` to a variable `class` results in `SyntaxError` with the message `SyntaxError: invalid syntax` as `class` is a Python keyword.
+Similarly, if we assign a value to a Python keyword, the program runs into a `SyntaxError`. For example, assigning the value `HoneyBadger` to a variable `class` results in a `SyntaxError` with the message `SyntaxError: invalid syntax`, as `class` is a Python keyword.
 
 ```py
 class="HoneyBadger"
@@ -180,7 +180,7 @@ Output:
          ^
 SyntaxError: invalid syntax
 ```
-Assignment error also occurs when we miss a `=` character while comparing values using the equality operator. For example, if we use `=` instead of `==` to compare two values, the program runs into `SyntaxError` with the error message `SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?`, as shown below:
+An assignment error also occurs when we miss a `=` character while comparing values using the equality operator. For example, if we use `=` instead of `==` to compare two values, the program runs into `SyntaxError` with the error message `SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?`, as shown below:
 
 ```py
 name="HoneyBadger"
@@ -202,14 +202,14 @@ SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
 
 Syntax errors occur due to incorrect indentation, mismatched delimiters, missing punctuation, invalid variable names, or incorrect operators. You can avoid syntax errors using the following best practices:
 
-- Always add required colons `:` after block statements like `if`, `for`, `while`, `def`, and `class`.
+- Always add required colon `:` after block statements like `if`, `for`, `while`, `def`, and `class`.
 - Avoid using reserved keywords such as `class`, `for`, `if`, or `return` as variable names.
 - Always close all the parentheses `()`, brackets `[]`, and braces `{}`.
 - Close all string literals with matching quotation marks `'` or `"`.
 - Follow Python syntax rules and ensure statements are written in the correct format.
-- Maintain consistent indentation, preferably using 4 spaces per indentation level and do not mix tabs and spaces for indentation.
+- Maintain consistent indentation, preferably using 4 spaces per indentation level, and do not mix tabs and spaces for indentation.
 
-Along with the above practices, you can use IDEs or code editors like PyCharm, Spyder, or VS Code that provide syntax highlighting and linting to detect syntax issues early.
+In addition to the above practices, you can use IDEs or code editors such as PyCharm, Spyder, or VS Code that provide syntax highlighting and linting to detect syntax errors early.
 
 ## Runtime errors in Python
 
