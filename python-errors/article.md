@@ -238,7 +238,7 @@ The NameError exception occurs when a variable is referenced before assignment.
 y=x/10
 ```
 
-In this code, we tried to divide `x` by 10 without defining the variable `x` or assigning it any value. Hence, the variable name `x`  isn't present in the scope of the program, and the program runs into `NameError` exception with the message `NameError: name 'x' is not defined`.
+In this code, we tried to divide `x` by 10 without defining the variable `x` or assigning it any value. Hence, the variable name `x`  isn't present in the scope of the program, and the program runs into `NameError` exception with the python error message `NameError: name 'x' is not defined`.
 
 ```py
 Traceback (most recent call last):
@@ -426,7 +426,7 @@ ModuleNotFoundError: No module named 'honeybadger'
 ```
 `ModuleNotFoundError` is a specific type of `ImportError` that occurs when Python cannot find the module file being imported.
 
-### ImportError in Python
+### Import errors in python
 
 `ImportError` is a more general exception that can arise from various problems during the import process, even when the module file exists but cannot be imported successfully due to dependency requirements or other issues. If a module exists but raises an exception while being imported, Python raises ImportError. For instance, if we try to import a non existent function from the `honeybadger` module after installing it, the program runs into `ImportError` exception.
 
@@ -500,7 +500,7 @@ Apart from the above practices, always write modular and well-structured code so
 
 System-level error occur in Python program when the program runs into errors such as I/O failure, memory overflow, or connection error. All the system-level errors in Python are raised using the OSError exception or its subclasses.  Let's discuss the different system-level errors in Python and how to avoid them.
 
-### FileNotFoundError
+### File not found errors in python
 
 The FileNotFoundError error exception occurs when we try to read a non-existent file. For example, suppose that we want to read a text file named `sampletextfile.txt` using the `open()` function. If the file doesn't exist, the program runs into `FileNotFoundError` with the message `FileNotFoundError: [Errno 2] No such file or directory: 'sampletextfile.txt'`, as shown below:
 
