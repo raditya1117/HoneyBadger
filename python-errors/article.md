@@ -12,7 +12,7 @@ We can broadly categorize Python errors into four types.
 
 Let's discuss all these Python error types one by one in detail with examples, starting with syntax errors.
 
-## Syntax Errors in Python
+## Syntax errors in Python
 
 Syntax errors are the errors caused by invalid code structure, typos, incorrect indentation, etc. For example, an `if` block is defined in Python using the `if` keyword, a boolean condition, and the `:` character. If we skip `:` while writing an `if` block in Python, the code runs into `SyntaxError` with the error message `SyntaxError: expected ':'`, as shown in the following example:
 
