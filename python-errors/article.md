@@ -213,16 +213,16 @@ Along with the above practices, you can use IDEs or code editors like PyCharm, S
 
 ## Runtime errors in Python
 
-Runtime errors occur after a Python program passes the syntax check, starts executing, and something goes wrong. Examples of runtime errors include ZeroDivisionError, NameError, TypeError, and ValueError. Let's discuss the different runtime errors, their causes, and ways to avoid them. 
+Runtime errors occur in a Python program after the program passes the syntax check, starts executing, and something goes wrong. Examples of runtime errors in Python include ZeroDivisionError, NameError, TypeError, and ValueError. Let's discuss the different runtime errors, their causes, and ways to avoid them. 
 
 ### Zero division error
 
-ZeroDivisionError is one of the most common arithmetic errors that occurs if the denominator of a division operation is zero. 
+The `ZeroDivisionError` exception is one of the most common arithmetic errors that occurs if the denominator of a division operation is zero. 
 
 ```py
 x = 10 / 0
 ```
-Here, we are dividing 10 by 0. Hence, the program runs into `ZeroDivisionError` with the message `ZeroDivisionError: division by zero`:
+Here, we are dividing 10 by 0. Hence, the program runs into `ZeroDivisionError` with the error message `ZeroDivisionError: division by zero`:
 
 ```py
 Traceback (most recent call last):
@@ -231,15 +231,15 @@ Traceback (most recent call last):
 ZeroDivisionError: division by zero
 ```
 
-### NameError
+### Name error
 
-The NameError exception occurs when a variable is referenced before assignment.
+The NameError exception is a runtime error that occurs when a variable is referenced before assignment.
 
 ```py
 y=x/10
 ```
 
-In this code, we tried to divide `x` by 10 without defining the variable `x` or assigning it any value. Hence, the variable name `x`  isn't present in the scope of the program, and the program runs into `NameError` exception with the python error message `NameError: name 'x' is not defined`.
+In this code, we tried to divide `x` by 10 without defining the variable `x` or assigning it any value. Hence, the variable name `x`  isn't present in the scope of the program, and the program runs into `NameError` exception with the error message `NameError: name 'x' is not defined`.
 
 ```py
 Traceback (most recent call last):
@@ -261,9 +261,9 @@ Traceback (most recent call last):
 NameError: name 'greeting' is not defined
 ```
 
-### UnboundLocalError
+### Unbound local error
 
-The UnboundLocalError exception occurs when a local variable is referenced before assignment in a function or a method. For instance, consider the following code:
+The `UnboundLocalError` exception occurs when a local variable is referenced before assignment in a function or a method. For instance, consider the following code:
 
 ```py
 def say_hello():
@@ -302,9 +302,9 @@ Traceback (most recent call last):
 NameError: name 'greeting' is not defined
 ```
 
-### TypeError
+### Type error
 
-TypeError exceptions occur when an operation is applied to a value or variable of incompatible data type. For example, adding an integer and a string results in TypeError exception with the error message `TypeError: unsupported operand type(s) for +: 'int' and 'str'`, as shown below:
+The `TypeError` exceptions in Python occur when an operation is applied to a value or variable of incompatible data type. For example, adding an integer and a string results in `TypeError` exception with the error message `TypeError: unsupported operand type(s) for +: 'int' and 'str'`, as shown below:
 
 ```py
 x=10+"HoneyBadger"
@@ -317,7 +317,7 @@ Traceback (most recent call last):
     x=10+"HoneyBadger"
 TypeError: unsupported operand type(s) for +: 'int' and 'str'
 ```
-Similarly, calling a non callable object or iterating on a non-iterable object also results in TypeError exception, as shown below:
+Similarly, calling a non callable object or iterating on a non-iterable object also results in `TypeError` exception, as shown below:
 
 ```py
 name="HoneyBadger"
@@ -333,16 +333,16 @@ TypeError: 'str' object is not callable
 ```
 In this code, we defined a string variable `name` and tried to use it as a function in the second line. Hence, the program runs into `TypeError` exception with the message `TypeError: 'str' object is not callable`.
 
-### ValueError
+### Value error
 
-ValueError exception occurs when we use a value or a variable with correct data type but inappropriate value. For instance, the `int()` function converts a string to an integer. If the string passed to the `int()` function cannot be converted into an integer, the program runs into `ValueError` exception, as shown in the following example:
+The `ValueError` exception occurs in a Python program when we use an input or a variable with correct data type but inappropriate value. For instance, the `int()` function converts a string to an integer. If the string passed to the `int()` function cannot be converted into an integer, the program runs into `ValueError` exception, as shown in the following example:
 
 ```py
 x=int("10")
 y=x+int("HoneyBadger")
 print(y)
 ```
-In this code, the state `x=int("10")` executes successfully as `"10"` is successfully converted into an integer. However, the string `"HoneyBadger"` cannot be converted into an integer. Hence, the second line of the code raises `ValueError` exception with the message `ValueError: invalid literal for int() with base 10: 'HoneyBadger'`, as follows:
+In this code, the statement `x=int("10")` executes successfully as `"10"` is successfully converted into an integer. However, the string `"HoneyBadger"` cannot be converted into an integer. Hence, the second line of the code raises `ValueError` exception with the error message `ValueError: invalid literal for int() with base 10: 'HoneyBadger'`, as follows:
 
 ```py
 Traceback (most recent call last):
@@ -350,6 +350,7 @@ Traceback (most recent call last):
     y=x+int("HoneyBadger")
 ValueError: invalid literal for int() with base 10: 'HoneyBadger'
 ```
+
 Similarly, square roots aren't defined for negative numbers. Hence, passing a negative number to the `math.sqrt()` function results in a `ValueError` exception due to inappropriate value.
 
 ```py
@@ -363,11 +364,11 @@ Traceback (most recent call last):
     x = math.sqrt(-10)
 ValueError: math domain error
 ```
-In the above code, -10 has correct data type (int) required by the `sqrt()` function. However, it is an inappropriate value and we get a `ValueError` exception with the message `ValueError: math domain error`.
+In this code, -10 has the correct data type integer required by the `sqrt()` function. However, it is an inappropriate value and we get a `ValueError` exception with the message `ValueError: math domain error`.
 
-### IndexError
+### Index error
 
-IndexError occurs when we try to access an element at an index that doesn't exist in an iterable object like a string, list, or tuple. For example, if a list has six elements and we try to access the element at index 6 (the seventh element), the program runs into `IndexError` exception with the message `IndexError: list index out of range`, as shown below:
+The `IndexError` exceptions occur in a Python program when we try to access an element at an index that doesn't exist in an iterable object like a string, list, or tuple. For example, if a list has six elements and we try to access the element at index 6 (the seventh element), the program runs into `IndexError` exception with the message `IndexError: list index out of range`, as shown below:
 
 ```py
 my_list=[1,2,3,4,5,6]
@@ -387,15 +388,17 @@ name="HoneyBadger"
 print(name[20])
 ```
 In this code, we tried to access the character at index 20 in the string. However, the string is of length 11. Hence, the program runs into an `IndexError` exception.
+
 ```py
 Traceback (most recent call last):
   File "/home/aditya1117/codes/HoneyBadger/python-errors/code.py", line 2, in <module>
     print(name[20])
 IndexError: string index out of range
 ```
-### KeyError
 
-KeyError exceptions occur when we try to access a non-existent key in a Python dictionary. For instance, the dictionay in the following code has keys "a", "b", "c", and "d". When we try to access a value with the key "e", the program runs into `KeyError` exception, as shown below:
+### Key error
+
+KeyError exceptions occur when we try to access a non-existent key in a Python dictionary. For instance, the dictionay in the following code has keys `"a"`, `"b"`, `"c"`, and `"d"`. When we try to fetch a value with the key `"e"`, the program runs into `KeyError` exception, as shown below:
 
 ```py
 my_dict={"a":1,"b":2,"c":3,"d":4}
@@ -409,9 +412,12 @@ Traceback (most recent call last):
     print(my_dict["e"])
 KeyError: 'e'
 ```
-### ModuleNotFoundError
 
-The ModuleNotFoundError occurs when we try to import a module that hasn't already been installed or downloaded to the Python module search path. For example, suppose you want to use [Honeybadger for error monitoring in a Python application](https://docs.honeybadger.io/lib/python/integrations/other/). However, if you don't [install honeybadger using pip](https://pypi.org/project/honeybadger/) and directly start by importing the `honeybadger` module into your code, your program will run into `ModuleNotFoundError` with the message `ModuleNotFoundError: No module named 'honeybadger'`.
+### Module not found error
+
+The `ModuleNotFoundError` occurs when we try to import a module that hasn't already been installed or downloaded to the Python module search path. 
+
+For example, suppose you want to use [Honeybadger for error monitoring in a Python application](https://docs.honeybadger.io/lib/python/integrations/other/). However, if you don't [install honeybadger using pip](https://pypi.org/project/honeybadger/) and start directly by importing the `honeybadger` module into your code, the program will run into `ModuleNotFoundError` with the message `ModuleNotFoundError: No module named 'honeybadger'`.
 
 ```py
 import honeybadger
@@ -429,7 +435,9 @@ ModuleNotFoundError: No module named 'honeybadger'
 
 ### Import errors in python
 
-`ImportError` is a more general exception that can arise from various problems during the import process, even when the module file exists but cannot be imported successfully due to dependency requirements or other issues. If a module exists but raises an exception while being imported, Python raises ImportError. For instance, if we try to import a non existent function from the `honeybadger` module after installing it, the program runs into `ImportError` exception.
+`ImportError` is a more general exception that can arise from various problems during the import process, even when the module file exists but cannot be imported successfully due to dependency requirements or other issues. If a module exists but raises an exception while being imported, Python raises `ImportError`. 
+
+For instance, if we try to import a non existent function from the `honeybadger` module after installing it, the program runs into `ImportError` exception.
 
 ```py
 from honeybadger import nonexistingfunction
@@ -442,9 +450,10 @@ Traceback (most recent call last):
     from honeybadger import nonexistingfunction
 ImportError: cannot import name 'nonexistingfunction' from 'honeybadger'
 ```
-### AttributeError
 
-In Python, every object has a set of assoicated attributes i.e. field names and methods. For example, a Python list has the `append()` method that we use to insert new values to a list. However, a tuple, an integer, a string, or a floating-point value doesn't have the `append()` method. Hence, if we invoke the `append()` method on a tuple, the program runs into `AttributeError` exception. 
+### Attribute error
+
+In Python, every object has a set of assoicated attributes i.e. field names and methods. For example, a Python list has the `append()` method that we use to add new values to a list. However, a tuple, an integer, a string, or a floating-point value doesn't have the `append()` method. Hence, if we invoke the `append()` method on a tuple, the program runs into `AttributeError` exception. 
 
 ```py
 my_tuple=(1,2,3,4,5)
@@ -459,9 +468,9 @@ Traceback (most recent call last):
 AttributeError: 'tuple' object has no attribute 'append'
 ```
 
-### RecursionError
+### Recursion error
 
-Recursion error is a runtime error that occurs when recursion depth exceeds the limit of 1000 recursive calls. The `RecursionError` exception occurs if we forget to add a base case or terminating condition while defining a function that uses recursion. For instance, consider the following `increment_till_hundred()` function: 
+Recursion error is a runtime error that occurs when recursion depth exceeds the limit of 1000 recursive calls. The `RecursionError` exception occurs if we forget to add a base case or terminating condition while defining a recursive function. For instance, consider the following `increment_till_hundred()` function: 
 
 ```py
 def increment_till_hundred(x):
@@ -471,7 +480,7 @@ def increment_till_hundred(x):
 increment_till_hundred(80)
 ```
 
-In the `increment_till_hundred` function, we haven't defined any termination condition if the value of `x` reaches 100. Hence, the function keeps making the recursive call, exceeding the limit of 1000 recursive calls, and the program runs into `RecursionError` with the message `RecursionError: maximum recursion depth exceeded while calling a Python object`, as shown below:
+In the `increment_till_hundred()` function, we haven't defined any termination condition if the value of `x` reaches 100. Hence, the function keeps making the recursive call, exceeding the limit of 1000 recursive calls, and the program runs into `RecursionError` with the message `RecursionError: maximum recursion depth exceeded while calling a Python object`, as shown below:
 
 ```py
 Traceback (most recent call last):
@@ -489,7 +498,7 @@ RecursionError: maximum recursion depth exceeded while calling a Python object
 
 Runtime errors are difficult to detect because they do not prevent the program from starting execution, unlike syntax errors. Hence, the program runs normally at first, and the error may only appear later when the line containing the problematic code is executed. To avoid runtime errors, you can use the following best practices:
 
-- Always validate the input data before processing to ensure it has the correct type, format, and range.
+- Always validate the input data before processing to ensure it has the correct data type, format, and range.
 - Always [implement exception handling in your Python code](https://www.honeybadger.io/blog/a-guide-to-exception-handling-in-python/) to catch and handle runtime errors gracefully instead of crashing the program.
 - Perform type checking using the `isinstance()` function or convert data type of values using using `int()`, `float()`, `str()` functions before applying operations on values.
 - Maintain a properly configured runtime environment, ensuring all required modules, dependencies, and system libraries are correctly installed.
