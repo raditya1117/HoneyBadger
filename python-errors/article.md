@@ -1,12 +1,13 @@
 # Errors in Python
-Errors in Python are abnormal conditions that interrupt the normal program execution. Understanding the different types of errors in Python and learning how to avoid them is essential for writing reliable, efficient, and maintainable code. In this article, we will discuss the different types of errors and exceptions in Python and how to avoid them.
+Errors in Python are conditions that interrupt the normal program execution. Understanding the different types of errors in Python and learning how to avoid them is essential for writing reliable and robust code. In this article, we will discuss the different types of errors in Python and how to avoid them.
 
 ## Different types of errors in Python
+
 We can broadly categorize Python errors into four types.
 
-1. **Syntax errors**: Syntax errors occur due to invalid syntax, incorrect indentation, or typos. These errors are detected before execution of the program.
-2. **Runtime errors**: Runtime errors occur during program execution when the Python interpreter encounters an invalid operation.
-3. **System-level errors**: System-level errors are raised by the Python runtime environment or the operating system due to reasons like memory overflow or interruptions.
+1. **Syntax errors**: Syntax errors in Python occur due to invalid syntax, incorrect indentation, or typos. These errors are detected before execution of the program while the Python interpreter parses the code.
+2. **Runtime errors**: Runtime errors in Python occur during code execution when the program runs into an invalid operation.
+3. **System-level errors**: System-level errors in Python are raised by the runtime environment or the operating system due to reasons like memory overflow or interruptions.
 4. **Logical errors**: Logical errors are caused due to error in the logic of the program when the code runs without error but produces incorrect results.
 
 Let's discuss all these Python error types one-by-one in detail with examples, starting with syntax errors.
