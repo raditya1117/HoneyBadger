@@ -6,7 +6,7 @@ Errors in Python are conditions that interrupt the normal program execution. Und
 We can broadly categorize Python errors into four types.
 
 1. **Syntax errors**: Syntax errors in Python occur due to invalid syntax, incorrect indentation, or typos. These errors are detected before the program is executed, while the Python interpreter parses the code.
-2. **Runtime errors**: Runtime errors in Python occur during code execution when the program runs into an invalid operation.
+2. **Runtime errors**: In Python, runtime errors occur during execution when the program encounters an invalid operation.
 3. **System-level errors**: System-level errors in Python are raised by the runtime environment or the operating system due to issues such as memory overflow or interruptions.
 4. **Logical errors**: Logical errors occur when the program's logic is incorrect, even though the code runs without errors, producing incorrect results.
 
@@ -213,7 +213,7 @@ In addition to the above practices, you can use IDEs or code editors such as PyC
 
 ## Runtime errors in Python
 
-Runtime errors occur in a Python program after the program passes the syntax check, starts executing, and something goes wrong. Examples of runtime errors in Python include ZeroDivisionError, NameError, TypeError, and ValueError. Let's discuss the different runtime errors, their causes, and ways to avoid them. 
+Runtime errors occur in a Python program after it passes the syntax check and starts executing, when something goes wrong. Examples of runtime errors in Python include ZeroDivisionError, NameError, TypeError, and ValueError. Let’s discuss the different runtime errors, their causes, and ways to avoid them.
 
 ### Zero division error
 
@@ -239,7 +239,7 @@ The NameError exception is a runtime error that occurs when a variable is refere
 y=x/10
 ```
 
-In this code, we tried to divide `x` by 10 without defining the variable `x` or assigning it any value. Hence, the variable name `x`  isn't present in the scope of the program, and the program runs into `NameError` exception with the error message `NameError: name 'x' is not defined`.
+In this code, we tried to divide `x` by 10 without defining `x` or assigning it a value. Hence, the variable name `x`  isn't present in the scope of the program, and the program runs into `NameError` exception with the error message `NameError: name 'x' is not defined`.
 
 ```py
 Traceback (most recent call last):
@@ -247,12 +247,12 @@ Traceback (most recent call last):
     y=x/10
 NameError: name 'x' is not defined
 ```
-The `NameError` exception occurs also if you use a variable first and define it later in the program. For example, consider the following code:
+The `NameError` exception also occurs if you use a variable first and define it later in the program. For example, consider the following code:
 ```py
 print(greeting)
 greeting="Hi, you are at HoneyBadger"
 ```
-Here, we have referenced the variable `greeting` and later assigned it a value. However, the program still runs into the `NameError` exception.
+Here, we have referenced the variable `greeting` and later assigned it a value. Hence, the program throws a `NameError` exception.
 
 ```py
 Traceback (most recent call last):
@@ -263,7 +263,7 @@ NameError: name 'greeting' is not defined
 
 ### Unbound local error
 
-The `UnboundLocalError` exception occurs when a local variable is referenced before assignment in a function or a method. For instance, consider the following code:
+The `UnboundLocalError` exception occurs when a local variable is referenced before assignment, in a function or method. For instance, consider the following code:
 
 ```py
 def say_hello():
@@ -272,7 +272,7 @@ def say_hello():
 
 say_hello()
 ```
-In this code, we have referenced the variable `greeting` before assigning it any value in the `say_hello()` function. When we call the `say_hello()` function, the program runs into `UnboundLocalError` exception with the message `UnboundLocalError: local variable 'greeting' referenced before assignment`. 
+In this code, we have referenced the variable `greeting` before assigning it a value in the `say_hello()` function. When we call the `say_hello()` function, the program raises the `UnboundLocalError` exception with the message `UnboundLocalError: local variable 'greeting' referenced before assignment`. 
 
 ```py
 Traceback (most recent call last):
@@ -282,7 +282,7 @@ Traceback (most recent call last):
     print(greeting)
 UnboundLocalError: local variable 'greeting' referenced before assignment
 ```
-Here, if we hadn't assigned any value to the variable after the print statement, the program would have run into `NameError` exception, as shown below:
+Here, if we hadn't assigned any value to the variable after the print statement, the program would have run into a `NameError` exception, as shown below:
 
 ```py
 def say_hello():
@@ -304,7 +304,7 @@ NameError: name 'greeting' is not defined
 
 ### Type error
 
-The `TypeError` exceptions in Python occur when an operation is applied to a value or variable of incompatible data type. For example, adding an integer and a string results in `TypeError` exception with the error message `TypeError: unsupported operand type(s) for +: 'int' and 'str'`, as shown below:
+The `TypeError` exceptions in Python occur when an operation is applied to a value or variable of an incompatible data type. For example, adding an integer and a string results in a `TypeError` exception with the error message `TypeError: unsupported operand type(s) for +: 'int' and 'str'`, as shown below:
 
 ```py
 x=10+"HoneyBadger"
@@ -317,7 +317,7 @@ Traceback (most recent call last):
     x=10+"HoneyBadger"
 TypeError: unsupported operand type(s) for +: 'int' and 'str'
 ```
-Similarly, calling a non callable object or iterating on a non-iterable object also results in `TypeError` exception, as shown below:
+Similarly, calling a non-callable object or iterating on a non-iterable object also results in a `TypeError` exception, as shown below:
 
 ```py
 name="HoneyBadger"
@@ -331,18 +331,18 @@ Traceback (most recent call last):
     name()
 TypeError: 'str' object is not callable
 ```
-In this code, we defined a string variable `name` and tried to use it as a function in the second line. Hence, the program runs into `TypeError` exception with the message `TypeError: 'str' object is not callable`.
+In this code, we defined a string variable `name` and tried to use it as a function in the second line. Hence, the program throws a `TypeError` exception with the message `TypeError: 'str' object is not callable`.
 
 ### Value error
 
-The `ValueError` exception occurs in a Python program when we use an input or a variable with correct data type but inappropriate value. For instance, the `int()` function converts a string to an integer. If the string passed to the `int()` function cannot be converted into an integer, the program runs into `ValueError` exception, as shown in the following example:
+The `ValueError` exception occurs in a Python program when we use an input or a variable with the correct data type but an inappropriate value. For instance, the `int()` function converts a string to an integer. If the string passed to the `int()` function cannot be converted into an integer, the program runs into a `ValueError` exception, as shown in the following example:
 
 ```py
 x=int("10")
 y=x+int("HoneyBadger")
 print(y)
 ```
-In this code, the statement `x=int("10")` executes successfully as `"10"` is successfully converted into an integer. However, the string `"HoneyBadger"` cannot be converted into an integer. Hence, the second line of the code raises `ValueError` exception with the error message `ValueError: invalid literal for int() with base 10: 'HoneyBadger'`, as follows:
+In this code, the statement `x=int("10")` executes successfully because `"10"` is successfully converted into an integer. However, the string `"HoneyBadger"` cannot be converted to an integer. Hence, the second line of the code raises a `ValueError` exception with the error message `ValueError: invalid literal for int() with base 10: 'HoneyBadger'`, as follows:
 
 ```py
 Traceback (most recent call last):
@@ -351,7 +351,7 @@ Traceback (most recent call last):
 ValueError: invalid literal for int() with base 10: 'HoneyBadger'
 ```
 
-Similarly, square roots aren't defined for negative numbers. Hence, passing a negative number to the `math.sqrt()` function results in a `ValueError` exception due to inappropriate value.
+Similarly, square roots aren't defined for negative numbers. Hence, passing a negative number to the `math.sqrt()` function results in a `ValueError` exception due to an inappropriate value.
 
 ```py
 import math
@@ -364,11 +364,11 @@ Traceback (most recent call last):
     x = math.sqrt(-10)
 ValueError: math domain error
 ```
-In this code, -10 has the correct data type integer required by the `sqrt()` function. However, it is an inappropriate value and we get a `ValueError` exception with the message `ValueError: math domain error`.
+In this code, -10 has the correct data type integer required by the `sqrt()` function. However, it is an invalid value and we get a `ValueError` exception with the message `ValueError: math domain error`.
 
 ### Index error
 
-The `IndexError` exceptions occur in a Python program when we try to access an element at an index that doesn't exist in an iterable object like a string, list, or tuple. For example, if a list has six elements and we try to access the element at index 6 (the seventh element), the program runs into `IndexError` exception with the message `IndexError: list index out of range`, as shown below:
+The `IndexError` exception occurs in a Python program when we try to access an element at an index that doesn't exist in an iterable object like a string, list, or tuple. For example, if a list has six elements and we try to access the element at index 6 (the seventh element), the program runs into an `IndexError` exception with the message `IndexError: list index out of range`, as shown below:
 
 ```py
 my_list=[1,2,3,4,5,6]
@@ -381,13 +381,13 @@ Traceback (most recent call last):
     print(my_list[6])
 IndexError: list index out of range
 ```
-Similarly, if we try to access an element at a non-existent index in a string, the program runs into `IndexError` exception with the message `IndexError: string index out of range`, as shown in the following code:
+Similarly, if we try to access an element at a non-existent index in a string, the program runs into an `IndexError` exception with the message `IndexError: string index out of range`, as shown in the following code:
 
 ```py
 name="HoneyBadger"
 print(name[20])
 ```
-In this code, we tried to access the character at index 20 in the string. However, the string is of length 11. Hence, the program runs into an `IndexError` exception.
+In this code, we tried to access the character at index 20 in the string. However, the string is eleven characters long. Hence, the program raises an `IndexError` exception.
 
 ```py
 Traceback (most recent call last):
@@ -398,7 +398,7 @@ IndexError: string index out of range
 
 ### Key error
 
-KeyError exceptions occur when we try to access a non-existent key in a Python dictionary. For instance, the dictionay in the following code has keys `"a"`, `"b"`, `"c"`, and `"d"`. When we try to fetch a value with the key `"e"`, the program runs into `KeyError` exception, as shown below:
+KeyError exceptions occur when we try to access a non-existent key in a Python dictionary. For instance, the dictionary in the following code has keys `"a"`, `"b"`, `"c"`, and `"d"`. When we try to fetch a value with the key `"e"`, the program runs into a `KeyError` exception, as shown below:
 
 ```py
 my_dict={"a":1,"b":2,"c":3,"d":4}
@@ -433,16 +433,16 @@ ModuleNotFoundError: No module named 'honeybadger'
 ```
 `ModuleNotFoundError` is a specific type of `ImportError` that occurs when Python cannot find the module file being imported.
 
-### Import errors in python
+### Import errors in Python
 
-`ImportError` is a more general exception that can arise from various problems during the import process, even when the module file exists but cannot be imported successfully due to dependency requirements or other issues. If a module exists but raises an exception while being imported, Python raises `ImportError`. 
+`ImportError` is a more general exception that can occur for various reasons during the import process, even when the module file exists but cannot be imported successfully due to dependency requirements or other issues. If a module exists but raises an exception while being imported, Python raises `ImportError`. 
 
-For instance, if we try to import a non existent function from the `honeybadger` module after installing it, the program runs into `ImportError` exception.
+For instance, if we try to import a non-existent function from the `honeybadger` module after installing it, the program runs into an `ImportError` exception.
 
 ```py
 from honeybadger import nonexistingfunction
 ```
-Here, we tried to import `nonexistingfunction` from the `honeybadger` module. Hence, the program runs into `ImportError` with the message `ImportError: cannot import name 'nonexistingfunction' from 'honeybadger'`:
+Here, we tried to import `nonexistingfunction` from the `honeybadger` module. Hence, the program raises an `ImportError` with the message `ImportError: cannot import name 'nonexistingfunction' from 'honeybadger'`:
 
 ```py
 Traceback (most recent call last):
@@ -453,13 +453,13 @@ ImportError: cannot import name 'nonexistingfunction' from 'honeybadger'
 
 ### Attribute error
 
-In Python, every object has a set of assoicated attributes i.e. field names and methods. For example, a Python list has the `append()` method that we use to add new values to a list. However, a tuple, an integer, a string, or a floating-point value doesn't have the `append()` method. Hence, if we invoke the `append()` method on a tuple, the program runs into `AttributeError` exception. 
+In Python, every object has a set of associated attributes, i.e., field names and methods. For example, a Python list has the `append()` method that we use to add new values to a list. However, a tuple, an integer, a string, or a floating-point value doesn't have the `append()` method. Hence, if we invoke the `append()` method on a tuple, the program raises an `AttributeError` exception. 
 
 ```py
 my_tuple=(1,2,3,4,5)
 my_tuple.append(6)
 ```
-In this code, we have used the `append()` method on a tuple. Hence, the program runs into `AttributeError` exception with the message `AttributeError: 'tuple' object has no attribute 'append'`. 
+In this code, we have used the `append()` method on a tuple. Hence, the program throws an `AttributeError` exception with the message `AttributeError: 'tuple' object has no attribute 'append'`. 
 
 ```py
 Traceback (most recent call last):
@@ -470,7 +470,7 @@ AttributeError: 'tuple' object has no attribute 'append'
 
 ### Recursion error
 
-Recursion error is a runtime error that occurs when recursion depth exceeds the limit of 1000 recursive calls. The `RecursionError` exception occurs if we forget to add a base case or terminating condition while defining a recursive function. For instance, consider the following `increment_till_hundred()` function: 
+Recursion error is a runtime error that occurs when the recursion depth exceeds the limit of 1000 recursive calls. The `RecursionError` exception occurs if we forget to add a base case or a terminating condition while defining a recursive function. For instance, consider the following `increment_till_hundred()` function: 
 
 ```py
 def increment_till_hundred(x):
@@ -499,18 +499,18 @@ RecursionError: maximum recursion depth exceeded while calling a Python object
 Runtime errors are difficult to detect because they do not prevent the program from starting execution, unlike syntax errors. Hence, the program runs normally at first, and the error may only appear later when the line containing the problematic code is executed. To avoid runtime errors, you can use the following best practices:
 
 - Always validate the input data before processing to ensure it has the correct data type, format, and range.
-- Always [implement exception handling in your Python code](https://www.honeybadger.io/blog/a-guide-to-exception-handling-in-python/) to catch and handle runtime errors gracefully instead of crashing the program.
-- Perform type checking using the `isinstance()` function or convert data type of values using using `int()`, `float()`, `str()` functions before applying operations on values.
+- Always [implement exception handling in your Python code](https://www.honeybadger.io/blog/a-guide-to-exception-handling-in-python/) to catch and handle runtime errors gracefully, rather than crashing the program.
+- Perform type checking using the `isinstance()` function or convert the data type of values using `int()`, `float()`, and `str()` functions before applying operations on values.
 - Maintain a properly configured runtime environment, ensuring all required modules, dependencies, and system libraries are correctly installed.
 - Test the code with different edge cases to identify potential runtime failures early.
 
-Apart from the above practices, always write modular and well-structured code so that you can easily isolate and debug errors if they occur.
+Apart from the above practices, always write modular, well-structured code so you can easily isolate and debug errors if they occur.
 
 ## System-level errors in Python
 
-System-level error occur in a Python program when the program runs into errors such as I/O failure, memory overflow, or connection error. All the system-level errors in Python are raised using the `OSError` exception or its subclasses.  Let's discuss the different system-level errors in Python and how to avoid them.
+System-level errors occur in a Python program when it encounters issues such as I/O failures, memory overflows, or connection errors. All the system-level errors in Python are raised using the `OSError` exception or its subclasses.  Let's discuss the different system-level errors in Python and how to avoid them.
 
-### File not found errors in python
+### File not found errors in Python
 
 The `FileNotFoundError` exception occurs when we try to read a non-existent file. For example, suppose that we want to read a text file named `sampletextfile.txt` using the `open()` function. If the file doesn't exist, the program runs into `FileNotFoundError` with the message `FileNotFoundError: [Errno 2] No such file or directory: 'sampletextfile.txt'`, as shown below:
 
@@ -527,10 +527,10 @@ FileNotFoundError: [Errno 2] No such file or directory: 'sampletextfile.txt'
 ```
 ### Permission error
 
-If a file exists and we don't have the permission to read or modify it, the program runs into the `PermissionError` exception. For example, suppose that we have a file `samplefile.txt` with only read access, as shown in the image:
+If a file exists and we don't have permission to read or modify it, the program raises a `PermissionError` exception. For example, suppose that we have a file `samplefile.txt` with only read access, as shown in the image:
 ![Image showing permissions for samplefile.txt](samplefile_premissions.png)
 
-Now, if we try to open the file in `append` mode and modify it, the the program runs into `PermissionError` exception with the message `PermissionError: [Errno 13] Permission denied: 'samplefile.txt'`. However, opening the file in `read` mode will not cause any issue as we have the permission to read the file.
+Now, if we try to open the file in `append` mode and modify it, the program raises a `PermissionError` exception with the message `PermissionError: [Errno 13] Permission denied: 'samplefile.txt'`. However, opening the file in read mode will not cause any issues, as we have permission to read it.
 
 ```py
 file=open("samplefile.txt","a")
@@ -544,13 +544,13 @@ PermissionError: [Errno 13] Permission denied: 'samplefile.txt'
 ```
 ### Is a directory error
 
-We can open files using the `open()` function in Python. However, if you try to open a directory using the `open()` function, the program runs into `IsADirectoryError` exception.
+We can open files using the `open()` function in Python. However, if you try to open a directory using the `open()` function, the program raises the `IsADirectoryError` exception.
 
 ```py
 file=open("/home/aditya1117/codes/HoneyBadger/python-errors","r")
 ```
 
-In this code, `/home/aditya1117/codes/HoneyBadger/python-errors` is a directory. Hence, the program runs into `IsADirectoryError` exception with the message `IsADirectoryError: [Errno 21] Is a directory`
+In this code, `/home/aditya1117/codes/HoneyBadger/python-errors` is a directory. Hence, the program throws an `IsADirectoryError` exception with the message `IsADirectoryError: [Errno 21] Is a directory`
 
 ```py
 Traceback (most recent call last):
@@ -561,9 +561,9 @@ IsADirectoryError: [Errno 21] Is a directory: '/home/aditya1117/codes/HoneyBadge
 
 ### Memory error
 
-MemoryError in Python is a built-in exception that occurs when a program attempts to allocate more than available memory in the system’s RAM. It usually occurs when handling extremely large datasets, constructing oversized data structures, or running inefficient code that leads to excessive memory consumption or memory leaks.
+MemoryError in Python is a built-in exception that occurs when a program attempts to allocate more memory than is available in the system’s RAM. It usually occurs when handling extremely large datasets, constructing oversized data structures, or running inefficient code that leads to excessive memory consumption or memory leaks.
 
-For example, creating a huge list of length 10<sup>10</sup> can lead to `MemoryError` exception, as shown below:
+For example, creating a huge list of length 10<sup>10</sup> can lead to a `MemoryError` exception, as shown below:
 
 ```py
 my_list=[10] * (10**10)
@@ -576,9 +576,9 @@ Traceback (most recent call last):
     my_list=[10] * (10**10)
 MemoryError
 ```
-### Connecction error
+### Connection error
 
-In Python, the `ConnectionError` exception occurs due to network related issues like lost internet connection, DNS errors, server downtime, or when the client fails to establish a connection to the server within a certain time limit. For instance, using the `requests` module to make an API call without connecting the system to the network results in the `ConnectionError` exception, as shown below:
+In Python, the `ConnectionError` exception occurs due to network issues such as a lost internet connection, DNS errors, server downtime, or when the client fails to establish a connection to the server within a specified time limit. For instance, using the `requests` module to make an API call without connecting the system to the network results in the `ConnectionError` exception, as shown below:
 
 ```py
 import requests
@@ -599,7 +599,7 @@ requests.exceptions.ConnectionError: HTTPSConnectionPool(host='jsonplaceholder.t
 
 ### Connection refused error
 
-The `ConnectionRefusedError` is a subclass of `ConnectionError`, which specifically indicates that a connection attempt was explicitly refused by the remote host. It occurs due to incorrect IP address or portnumber, firewall blocking, or if the server is not running or has reached its maximum capacity for pending connections. For example, consider the following code: 
+The `ConnectionRefusedError` is a subclass of `ConnectionError`, which specifically indicates that a connection attempt was explicitly refused by the remote host. It occurs due to an incorrect IP address or port number, firewall blocking, or if the server is not running or has reached its maximum capacity for pending connections. For example, consider the following code: 
 
 ```py
 import socket
@@ -616,21 +616,21 @@ ConnectionRefusedError: [Errno 111] Connection refused
 ```
 ### How to avoid system-level errors in Python?
 
-System-level errors in Python are often caused by issues such as missing files, insufficient permissions, memory limitations, or network failures. Although we cannot always prevent them, we can minimize system-level errors through careful resource management, validation checks, and proper exception handling. You can use the following practices to avoid system-level errors in Python.
+System-level errors in Python are often caused by missing files, insufficient permissions, memory limitations, or network failures. Although we cannot always prevent them, we can minimize system-level errors through careful resource management, validation checks, and proper exception handling. You can use the following practices to avoid system-level errors in Python.
 
-- Always check the file and directory existence before performing file operations.
-- Check access permissions to ensure the program has the required rights to read, write, or execute files and directories.
+- Always check whether files and directories exist before performing file operations.
+- Check access permissions to ensure the program has the required read, write, and execute permissions for files and directories.
 - Manage memory efficiently by avoiding extremely large data structures and using generators or batch processing for large datasets.
 - Use context managers (with statement) when working with files, sockets, or other resources to ensure they are automatically closed after use.
-- Ensure required system resources, such as disk space, memory, and network connectivity are available.
+- * Ensure required system resources, such as disk space, memory, and network connectivity, are available.
 
-The best way to avoid system-level errors is by anticipating potential system failures and writing defensive code that validates resources and handles exceptions gracefully as they are mostly caused by environmental or resource constraints.
+The best way to avoid system-level errors is to anticipate potential failures and write defensive code that validates resources and handles exceptions gracefully, since these are mostly caused by environmental or resource constraints.
 
 ## Logical errors in Python
 
-A logical error or semantic error in Python occurs when a program runs without crashing or raising exceptions, but produces incorrect or unintended results due to flawed logic in the code. Unlike syntax errors or runtime errors, Python cannot detect logical errors automatically because the code is syntactically valid and executes successfully. Logical errors occur due to incorrect algorithms, wrong conditions, faulty calculations, or incorrect assumptions in program logic.
+A logical or semantic error in Python occurs when a program runs without crashing or raising exceptions but produces incorrect or unintended results due to flawed code logic. Unlike syntax errors or runtime errors, Python cannot detect logical errors automatically because the code is syntactically valid and executes successfully. Logical errors occur due to incorrect algorithms, wrong conditions, faulty calculations, or incorrect assumptions in program logic.
 
-For example, consider that you a writing a Python application to determine the voting eligibility of a person based on their age. It is given that a person aged 18 or more is eligible to vote. Now consider the following code:
+For example, consider that you are writing a Python application to determine the voting eligibility of a person based on their age. It is given that a person aged 18 or older is eligible to vote. Now consider the following code:
 
 ```py
 if age > 18:
@@ -638,17 +638,17 @@ if age > 18:
 else:
     print("Not eligible")
 ```
-This code executes successfully. But it produces incorrect output for people aged 18 due to incorrect condition. Hence, we should have used `>=` operator instead of the `>` operator in the if block.
+This code executes successfully. But it produces incorrect output for people aged 18 due to an incorrect condition. Hence, we should have used the `>=` operator instead of the `>` operator in the if block.
 
-Logical errors can also occur due to wrong usage of logical operators. For example, suppose we need to identify if a person is in working age, which is from 18 to 60 years of age, both included. Now, consider the following code:
+Logical errors can also occur due to incorrect use of logical operators. For example, suppose we need to determine whether a person is of working age, defined as 18 to 60 years old, inclusive. Now, consider the following code:
 
 ```py
 if age >= 18 or age =< 60:
     print("Working age")
 ```
-This code prints `"Working age"` even if the person is more than 60 years old because the first condition will be True and the `or` operator evaluates to True if any of the operands is True. Hence, we should have used the `and` operator instead of the `or` operator to get the correct output. 
+This code prints `"Working age"` even if the person is over 60 because the first condition is True, and the `or` operator evaluates to True if either operand is True. Hence, we should have used the `and` operator rather than the `or` operator to get the correct output.
 
-Logical errors are harder to detect because the Python application does not run into exceptions and the output may appear reasonable but still be incorrect. We can detect and avoid logical errors through [unit testing](https://www.honeybadger.io/blog/beginners-guide-to-software-testing-in-python/), debugging, and code review, ensuring there is no logical flaw in the code.
+Logical errors are harder to detect because the Python application does not run into exceptions, and the output may appear reasonable but still be incorrect. We can detect and avoid logical errors through [unit testing](https://www.honeybadger.io/blog/beginners-guide-to-software-testing-in-python/), debugging, and code review, ensuring there are no flaws in the code.
 
 ## Wrapping up
 
