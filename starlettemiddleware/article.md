@@ -27,5 +27,51 @@ An ASGI application has core parameters like scope, receive, and send that defin
 ```py
 pure asgi starlette middleware
 ```
- 
+Instead of using the scope, receive, and send parameters to define a middleware, we can use the BaseHTTPMiddleware class defined in the starlette.middleware.base module to create starlette middlewares for HTTP connections.
 
+#### BaseHTTPMiddleware
+BaseHTTPMiddleware helps us create starlette middlewares using a simple request/response interface instead of handling the low-level ASGI messages. To create a middleware using BaseHTTPMiddleware, we just need to inherit the BaseHTTPMiddleware class and implement a dispatch() method to process requets and responses, as shown below:
+
+```py
+BaseHTTPMiddleware example
+```
+
+Both the approaches to create starlette middlewares has it own advantages and disadvantages. For instance, Middlewares created using BaseHTTPMiddleware only process requests with scope type 'http'. They do not work on websocket connections. However,BaseHTTPMiddleware is sufficient for tasks like logging, authentication, rate limiting, and request-ID injection. 
+
+On the contrary, pure ASGI middlewares are useful for applications that must intercept websocket traffic, preserve streaming, share contextvars, or operae in high-throughput environments. For example, streaming tasks where the web application returns chunks over time. 
+
+Now that we have a basic understanding of what middlewares are and what they do, let's discuss some starlette middleware examples. 
+
+## Starlette middleware examples
+
+### CORSMiddleware
+
+### SessionMiddleware
+
+### HTTPSRedirectMiddleware
+
+### TrustedHostMiddleware
+
+### GZipMiddleware
+
+### Custom starlette middleware examples
+
+## How to add a middleware in a starlette application?
+
+### Using add_middleware()
+
+### Passing middleware to starlette constructor
+
+## How to add a starlette middleware in a FastAPI application? 
+
+### Using add_middleware()
+
+### Using FastAPI's @app.middleware("http") Decorator
+
+### Using starlette middleware in FastAPI's Constructor
+
+## Using multiple starlette midllewares in an application
+
+### Starlette middleware execution order
+
+### Example using multiple starlette middlewares in a FastAPI application
