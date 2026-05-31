@@ -45,12 +45,36 @@ Now that we have a basic understanding of what middlewares are and what they do,
 ## Starlette middleware examples
 
 ### CORSMiddleware
+Browsers enforce same-origin policy. A page loaded from one network endpoint(IP and port pair) isn't allowed to make fetch requests to another network endpoint, unles the server explicitely permits it. CORSMiddleware handles this issue by intercepting every incoming request and attaching appropriate access control response headers. We can define a CORSMiddleware in starlette as follows:
+
+```
+CORSMiddleware example
+```
+
+In the above middleware definition
+
+- The allow_origins parameter takes a list of origin strings permitted to make cross-origin requests. To allow cross-origin requests for all the origins, you can pass a list `['*']` as input to the allow_origins parameter.
+- The allow_credentials parameter, when set to True, permits the browser to include cookies and Authorization headers in cross-origin requests. The allow_credentials parameter cannot be set to True when  allow_origins is set to `['*']`.
+-  The allow_methods parameters takes a list of methods the browser is allowed to use in cross-origin requests. By default, it is set to `["GET"]`.
+-  The expose_headers parameter defines the response headers the browser is allowed to read from cross-origin responses via Javascript. By default, browsers only expose a set of safe headers like 'Cache-Control', 'Content-Language', 'Content-Type', 'Expires', 'Last-Modified', and 'Pragma'.
+-  The allow_headers parameter defines the request headers the browser is allowed to include.
+-  The max_age parameter defines the maximum time in seconds the browser can cache a preflight response. It defaults to 600 seconds.
+
 
 ### SessionMiddleware
 
 ### HTTPSRedirectMiddleware
+The HTTPSRedirectMiddleware ensures that all the traffic reaches the web application over and encrypted connection. It inspects the `scope['scheme']` attribute of every incoming request and responds with a `307 Temporary Redirect` to the equivalent `https` or `wss` URL for every `HTTP` or `ws` request. We can define a HTTPSRedirectMiddleware as follows 
+
+```py
+HTTPSRedirectMiddleware example
+```
+The HTTPSRedirectMiddleware takes no configuration parameter. It redirects every plaintext request and lets the encrypted requets pass through unchanged. 
+
 
 ### TrustedHostMiddleware
+
+The TrustedHostMiddleware guards the web application against HTTP host header injection attacks. 
 
 ### GZipMiddleware
 
