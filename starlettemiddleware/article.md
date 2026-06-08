@@ -112,11 +112,10 @@ gzip middleware code
 In this code, 
 
 - The minimum_size parameter defines the lower limit of response size in Bytes to be Gzipped. Response bodies smaller than `minimum_size` bytes aren't compressed.
-- The compresslevel parameter control the speed and ratio of compression. 
+- The compresslevel parameter control the speed and ratio of compression. Level 1 compresses the response quickly while level 9 compresess more aggressively and takes time. For most API rsponses, level 6 provides the right balance between compression and time. 
 
+The GZipMiddleware processes the response after the route handler runs. If the client supports GZip encoding and the response body exceeds minimum_size, the middleware replaces the response body with a compressed version and adds `Content-Encoding: gzip` to the response headers. It also adds `Vary: Accept-Encoding` to the header so that caching proxies store separate compressed and uncompressed copies keyed by the client's `Accept-Encoding`. Responses smaller than minimum_size are passed untouched. 
 
-compresslevel — Controls the speed/ratio trade-off. Level 1 compresses very quickly with moderate savings; level 9 compresses more aggressively but takes more CPU. For most API responses, level 6 (the default) is the right balance — level 9 rarely improves the ratio enough to justify the extra CPU time.
-The middleware inspects the response after the route handler runs. If the client supports GZip and the response body exceeds minimum_size, it replaces the response body with a compressed version, adds Content-Encoding: gzip to the response headers, and adds Vary: Accept-Encoding so caching proxies store separate compressed and uncompressed copies keyed by the client's Accept-Encoding. Responses smaller than minimum_size are passed through untouched, since compression overhead would exceed the savings on tiny payloads.
 ### Custom starlette middleware examples
 
 ## How to add a middleware in a starlette application?
