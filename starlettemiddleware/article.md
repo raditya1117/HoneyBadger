@@ -96,15 +96,27 @@ The TrustedHostMiddleware guards the web application against HTTP host header in
 ```
 trusted host example
 ```
-- The allowed_hosts parameter exact hostnames or `*` prefixed wildcard patterns. The hostname matching is performed on exact hostnames by default, while the subdomnains are supported via the `*` prefix. If you pass a list with single `*` i.e. `["*"]` to the allowed_hosts parameter, it allows all the hosts, effectively disabling the protection provided by TrustedHostMiddleware.
-- The www_redirect parameter redirects the requests from host myapp.com to www.myapp.com if only the www variant 
+- The allowed_hosts parameter exact hostnames or `*` prefixed wildcard patterns. The hostname matching is performed on exact values by default, while the subdomnains are supported via the `*` prefix. If you pass a list with single `*` i.e. `["*"]` to the allowed_hosts parameter, it allows all the hosts, effectively disabling the protection provided by TrustedHostMiddleware.
+- The www_redirect parameter redirects the requests from host myapp.com to www.myapp.com if only the www.myapp.com is present in the allowed_hosts list.
 
-
-www_redirect — When True (the default), a request whose Host is myapp.com is redirected to www.myapp.com if only the www. variant appears in allowed_hosts.
+The TrustedHostMiddleware should reside at the outermost layer of the middleware stack so that invalid hosts are rejected before any other layer processes the request. 
 
 
 ### GZipMiddleware
+The GZipMiddleware compresses the response body using the GZip algorithn whenever the client advertises support via `Accept-Encoding: gzip`. Compressing the response reduces bytes transmitted over the network, which lowers latency and bandwidth costs. It reduces the size of JSON responses by 70-90% and HMTL responses by 60-80%. We can define the GZipMiddleware as follows:
 
+```
+gzip middleware code
+```
+
+In this code, 
+
+- The minimum_size parameter defines the lower limit of response size in Bytes to be Gzipped. Response bodies smaller than `minimum_size` bytes aren't compressed.
+- The compresslevel parameter control the speed and ratio of compression. 
+
+
+compresslevel — Controls the speed/ratio trade-off. Level 1 compresses very quickly with moderate savings; level 9 compresses more aggressively but takes more CPU. For most API responses, level 6 (the default) is the right balance — level 9 rarely improves the ratio enough to justify the extra CPU time.
+The middleware inspects the response after the route handler runs. If the client supports GZip and the response body exceeds minimum_size, it replaces the response body with a compressed version, adds Content-Encoding: gzip to the response headers, and adds Vary: Accept-Encoding so caching proxies store separate compressed and uncompressed copies keyed by the client's Accept-Encoding. Responses smaller than minimum_size are passed through untouched, since compression overhead would exceed the savings on tiny payloads.
 ### Custom starlette middleware examples
 
 ## How to add a middleware in a starlette application?
