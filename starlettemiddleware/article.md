@@ -56,25 +56,52 @@ In the above middleware definition
 - The allow_origins parameter takes a list of origin strings permitted to make cross-origin requests. To allow cross-origin requests for all the origins, you can pass a list `['*']` as input to the allow_origins parameter.
 - The allow_credentials parameter, when set to True, permits the browser to include cookies and Authorization headers in cross-origin requests. The allow_credentials parameter cannot be set to True when  allow_origins is set to `['*']`.
 -  The allow_methods parameters takes a list of methods the browser is allowed to use in cross-origin requests. By default, it is set to `["GET"]`.
+ -  The allow_headers parameter defines the request headers the browser is allowed to include. The allowed values include Accept, Accept-Language, Content-Language, and Content-Type among others. 
 -  The expose_headers parameter defines the response headers the browser is allowed to read from cross-origin responses via Javascript. By default, browsers only expose a set of safe headers like 'Cache-Control', 'Content-Language', 'Content-Type', 'Expires', 'Last-Modified', and 'Pragma'.
--  The allow_headers parameter defines the request headers the browser is allowed to include.
 -  The max_age parameter defines the maximum time in seconds the browser can cache a preflight response. It defaults to 600 seconds.
 
 
 ### SessionMiddleware
+The session middleware adds server-managed and cookie-based session support to the web application. When we enable a SessionMiddleware, a request.session dictionary becomes available in every route handler. At the end of each request, Starlette serializes the session dictionary to JSON, signs it with a secret key, encodes the result, and writes it to a cookie. On the next request, the middleware reads the cookie, verifies the signature, and deserializes the payload back into request.session. 
+
+```
+Session  middleware example.
+```
+
+In the above middleware definition,
+
+- The secret_parameter takes the HMAC signing key as its input. Rotating the key invalidates every existing session and logs out all the active users. 
+-  The session_cookie parameter takes the name of the cookie written to the client. It defaults to "session".
+-  The max_age parameter defines the cookie lifetime in seconds, with a default value of 14 days.
+-  The same_site parameter controls when the browser sends the cookie in cross-site contexts. When set to the default value "lax", the browser sends the cookie on top-level negotiations bit nopt on cross-site sub-requests. When set to "strict", the browser never sends the cookie cross-site. When we set the same_site parameter to "none", the browser always sends the cookient but it requires https_only parameter to be set to True.
+-  The https_only parameter sets the cookie's `Secure` flag. When set to True, it restricts the cookie transmission to HTTPS connections. 
+
+
+The session data lives in the cookie, which is signed but not encrypted. Hence, we shouldn't store any secrets in the request.session object. Also, the cookie sizes are limited to 4096 bytes. Hence, we should use it only for state variables like user ID, a CSRF token, preference flag, and OAuth state parameter. 
+
+
 
 ### HTTPSRedirectMiddleware
-The HTTPSRedirectMiddleware ensures that all the traffic reaches the web application over and encrypted connection. It inspects the `scope['scheme']` attribute of every incoming request and responds with a `307 Temporary Redirect` to the equivalent `https` or `wss` URL for every `HTTP` or `ws` request. We can define a HTTPSRedirectMiddleware as follows 
+The HTTPSRedirectMiddleware ensures that all the traffic reaches the web application over and encrypted connection. It inspects the `scope['scheme']` attribute of every incoming request and responds with a `307 Temporary Redirect` to the equivalent `https` or `wss` URL for every `HTTP` or `ws` request. We can define a HTTPSRedirectMiddleware as follows: 
 
 ```py
 HTTPSRedirectMiddleware example
 ```
-The HTTPSRedirectMiddleware takes no configuration parameter. It redirects every plaintext request and lets the encrypted requets pass through unchanged. 
-
+The HTTPSRedirectMiddleware takes no configuration parameter. It redirects every plaintext request and lets the encrypted requets pass through unchanged. In terms of position, the HTTPSRedirectMiddleware should stay in the outermost layers, just inside TrustedHostMiddleware as there is no value in running authentication or session logic on a connection that is about to be redirected. 
 
 ### TrustedHostMiddleware
 
-The TrustedHostMiddleware guards the web application against HTTP host header injection attacks. 
+The TrustedHostMiddleware guards the web application against HTTP host header injection attacks. TrustedHostMiddleware reads the Host header from every incoming request and compares it against an allowed list of hosts. Requests with a host not present on the allowed list received 400 Bad Request and never proceed further. 
+
+```
+trusted host example
+```
+- The allowed_hosts parameter exact hostnames or `*` prefixed wildcard patterns. The hostname matching is performed on exact hostnames by default, while the subdomnains are supported via the `*` prefix. If you pass a list with single `*` i.e. `["*"]` to the allowed_hosts parameter, it allows all the hosts, effectively disabling the protection provided by TrustedHostMiddleware.
+- The www_redirect parameter redirects the requests from host myapp.com to www.myapp.com if only the www variant 
+
+
+www_redirect — When True (the default), a request whose Host is myapp.com is redirected to www.myapp.com if only the www. variant appears in allowed_hosts.
+
 
 ### GZipMiddleware
 
