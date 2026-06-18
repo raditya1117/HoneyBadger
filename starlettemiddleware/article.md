@@ -156,12 +156,18 @@ add middlewares using list
 ```
 
 ## How to add a starlette middleware in a FastAPI application? 
+FastAPI is built on top of Starlette i.e. the FastAPI class inherits the Starlette class. Thus, we can add starlette middlewares to a FastAPI application using the add_middleware() method as well as by passing the list of middlewares to the FastAPI constructor. Additionaly, FastAPI provides the `@app.middleware("http")` constructor to add custom functions as middlewares. Let's discuss all these approaches individually. 
 
-### Using add_middleware()
+We will use the following FastAPI calculator app to implement the middlewares. 
+```
+Fastapi calculator app
+```
 
-### Using FastAPI's @app.middleware("http") Decorator
+### Add middleware to a FastAPI application using add_middleware()
 
-### Using starlette middleware in FastAPI's Constructor
+### Add middleware to a FastAPI application using FastAPI's @app.middleware("http") Decorator
+
+### Add middleware to a FastAPI application using starlette middlewares in FastAPI Constructor
 
 ## Using multiple starlette midllewares in an application
 
