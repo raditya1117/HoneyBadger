@@ -30,6 +30,7 @@ pure asgi starlette middleware
 Instead of using the scope, receive, and send parameters to define a middleware, we can use the BaseHTTPMiddleware class defined in the starlette.middleware.base module to create starlette middlewares for HTTP connections.
 
 #### BaseHTTPMiddleware
+
 BaseHTTPMiddleware helps us create starlette middlewares using a simple request/response interface instead of handling the low-level ASGI messages. To create a middleware using BaseHTTPMiddleware, we just need to inherit the BaseHTTPMiddleware class and implement a dispatch() method to process requets and responses, as shown below:
 
 ```py
@@ -119,10 +120,40 @@ The GZipMiddleware processes the response after the route handler runs. If the c
 ### Custom starlette middleware examples
 
 ## How to add a middleware in a starlette application?
+We can add a middleware into a starlette application using two ways. 
 
-### Using add_middleware()
+1. Using add_middleware() method
+2. Passing middleware to starlette constructor
+To discuss both these approaches, we will use the calculator app from the the [FastAPI error handling](https://www.honeybadger.io/blog/fastapi-error-handling/) article. You can build a calculator app in starlette as follows:
+
+```
+calculator app
+```
+
+### Add middleware to a starlette application using the add_middleware() method
+
+The add_middleware() method, when invoked on a starlette app, takes a starlette middleware class and the inputs for the middleware class as its input arguments and adds the middleware to the starlette app. For example, we can add TrustedHostMiddleware to the starllette application as follows
+
+```
+add TrustedHostMiddleware 
+```
+In a similar manner, we can add CORSMiddleware to the starlette application as shown below:
+
+```
+CORSMiddleware
+```
+We can also define and add custom middlewares to the starlette application. For example, we can add the timing middleware to the starlette application as follows
+
+```
+timing middleware
+```
 
 ### Passing middleware to starlette constructor
+Instead of adding the middlewares one by one to the starlette application, we can use the Middleware class to create a list of starlette middlewares we want to add to a starlette application. Then, we can add the list of middlewares to the middleware parameter of the Starlette constructor, as shown below
+
+```
+add middlewares using list
+```
 
 ## How to add a starlette middleware in a FastAPI application? 
 
