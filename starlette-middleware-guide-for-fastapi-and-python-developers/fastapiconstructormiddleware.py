@@ -1,0 +1,66 @@
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from fastapi.responses import JSONResponse
+from starlette.middleware.cors import CORSMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.requests import Request
+from starlette.middleware import Middleware
+import time
+
+
+class TimingMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        start_time = time.perf_counter()
+        response = await call_next(request)
+        duration = time.perf_counter() - start_time
+        response.headers["X-Process-Time"] = f"{duration:.4f}s"
+        return response
+
+
+cors_middleware = Middleware(CORSMiddleware,
+                             allow_origins=["*"],
+                             allow_methods=["GET", "POST"],
+                             allow_headers=["Content-Type", "X-API-Key"],
+                             expose_headers=["X-Request-ID"],
+                             allow_credentials=False,
+                             max_age=3600)
+
+timing_middleware = Middleware(TimingMiddleware)
+
+app = FastAPI(middleware=[cors_middleware, timing_middleware])
+
+
+# Define the root API endpoint
+@app.get("/")
+async def root():
+    return JSONResponse(status_code=200,
+                        content={"type": "METADATA", "output": "Welcome to Calculator by HoneyBadger."})
+
+
+# Define the input data model
+class InputData(BaseModel):
+    num1: float
+    num2: float
+    operation: str
+
+
+# Define the calculator API endpoint
+@app.post("/calculate/")
+async def calculation(input_data: InputData):
+    num1 = input_data.num1
+    num2 = input_data.num2
+    operation = input_data.operation
+    if operation == "add":
+        result = num1 + num2
+    elif operation == "subtract":
+        result = num1 - num2
+    elif operation == "multiply":
+        result = num1 * num2
+    elif operation == "divide":
+        result = num1 / num2
+    else:
+        result = None
+    if result is None:
+        raise HTTPException(status_code=404, detail={"type": "FAILURE", "reason": "Not a valid operation"})
+    else:
+        return JSONResponse(status_code=200, content={"type": "SUCCESS", "output": result})
